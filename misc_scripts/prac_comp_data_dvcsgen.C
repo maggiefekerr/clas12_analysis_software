@@ -67,7 +67,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
 
             // retrieving positively polarized cross section
             std::ostringstream oss1;
-            oss1 << "python -u prac_dvcsgen.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
+            oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
             std::string posRun = oss1.str();
             FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
             if (!pipe1) {
