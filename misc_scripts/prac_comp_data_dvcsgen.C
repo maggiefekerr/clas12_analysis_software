@@ -11,7 +11,7 @@
 // numBins: 9
 // beamPol: 0.89
 
-void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
+void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
 
     // first making the initial asymmetry histogram plot
 
@@ -58,31 +58,48 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
-    // making model asymmetry, this was chatgpt cooking
+    // making model asymmetry
     Int_t numBinDiv = 10;
-    TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
+    TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
-            std::ostringstream oss;
-            Double_t pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
-            oss << "python -u prac_gepard.py km15_model " << xB << " " << q2 << " " << tpos << " " << pos*TMath::RadToDeg() << " " << E_beam << " ALU";
-            std::string pythonRun = oss.str();
+            Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
 
-            FILE* pipe = gSystem->OpenPipe(pythonRun.c_str(), "r");
-
-            if (!pipe) {
-                std::cerr << "Failed to run Python script" << std::endl;
+            // retrieving positively polarized cross section
+            std::ostringstream oss1;
+            oss1 << "python -u prac_dvcsgen.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
+            std::string posRun = oss1.str();
+            FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
+            if (!pipe1) {
+                std::cerr << "Failed to run positive cross section script" << std::endl;
                 return;
             }
-
-            char buffer[128];
-            std::string result;
-            while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-                result += buffer;
+            char buffer1[128];
+            std::string result1;
+            while (fgets(buffer1, sizeof(buffer1), pipe1) != nullptr) {
+                result1 += buffer1;
             }
-            gSystem->ClosePipe(pipe);
-            Double_t outAsym = std::stod(result);
-            hAsymKM15->SetBinContent((i-1)*numBinDiv + (j+1), outAsym);
+            gSystem->ClosePipe(pipe1);
+            Double_t pos_xs = std::stod(result1);
+
+            // retrieving negatively polarized cross section
+            std::ostringstream oss2;
+            oss2 << "python -u prac_dvcsgen.py vgg_model_xs_neg " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
+            std::string negRun = oss2.str();
+            FILE* pipe2 = gSystem->OpenPipe(negRun.c_str(), "r");
+            if (!pipe2) {
+                std::cerr << "Failed to run negative cross section script" << std::endl;
+                return;
+            }
+            char buffer2[128];
+            std::string result2;
+            while (fgets(buffer2, sizeof(buffer2), pipe2) != nullptr) {
+                result2 += buffer2;
+            }
+            gSystem->ClosePipe(pipe2);
+            Double_t neg_xs = std::stod(result2);
+
+            hAsymVGG->SetBinContent((i-1)*numBinDiv + (j+1), (pos_xs-neg_xs)/(pos_xs+neg_xs));
         }
     }
 
@@ -93,13 +110,13 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     hAsymData->SetMarkerStyle(21);
     hAsymData->SetStats(1);
 
-    hAsymKM15->SetMarkerColor(2);
-    hAsymKM15->SetLineColor(2);
-    hAsymKM15->SetMarkerStyle(21);
-    hAsymKM15->SetTitle("A_{LU} from Fall 2018 RG-A and KM15 Model");
-    hAsymKM15->GetXaxis()->SetTitle("#phi (rad)");
-    hAsymKM15->GetYaxis()->SetTitle("#frac{N^{+}-N^{-}}{N^{+}+N^{-}}");
-    hAsymKM15->SetStats(0);
+    hAsymVGG->SetMarkerColor(2);
+    hAsymVGG->SetLineColor(2);
+    hAsymVGG->SetMarkerStyle(21);
+    hAsymVGG->SetTitle("A_{LU} from Fall 2018 RG-A and VGG Model");
+    hAsymVGG->GetXaxis()->SetTitle("#phi (rad)");
+    hAsymVGG->GetYaxis()->SetTitle("#frac{N^{+}-N^{-}}{N^{+}+N^{-}}");
+    hAsymVGG->SetStats(0);
 
     for (Int_t i=1; i<=numBins; i++) {
         hAsymData->SetBinError(i, 1/TMath::Sqrt((hAdd->GetBinContent(i))*beamPol));
@@ -111,14 +128,14 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     fit->SetParameter(2,0);
     fit->SetLineColor(4);
 
-    hAsymKM15->Draw("P");
+    hAsymVGG->Draw("P");
     hAsymData->Draw("P sames");
     hAsymData->Fit("fit");
     gStyle->SetOptFit(0001);
 
     TLegend *leg1 = new TLegend(0.1,0.1,0.2,0.3);
     leg1->AddEntry(hAsymData,"data","ep");
-    leg1->AddEntry(hAsymKM15,"km15","p");
+    leg1->AddEntry(hAsymVGG,"vgg","p");
     leg1->Draw();
 
     TLatex *l = new TLatex();
@@ -129,5 +146,5 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     l->DrawLatexNDC(0.225, 0.150, Form("-t: %.3f", tpos));
 
     c1->Update();
-    c1->SaveAs("prac_comp-data-gepard_comp.png");
+    c1->SaveAs("prac_comp-data-dvcsgen_comp.png");
 }
