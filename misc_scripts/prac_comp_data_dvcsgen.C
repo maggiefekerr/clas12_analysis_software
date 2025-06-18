@@ -13,6 +13,7 @@
 
 void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
 
+    cout << "here" << endl;
     // first making the initial asymmetry histogram plot
 
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
@@ -64,7 +65,6 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
             Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
-            cout << "here" << endl;
             // retrieving positively polarized cross section
             std::ostringstream oss1;
             oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
