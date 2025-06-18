@@ -68,4 +68,4 @@ def vgg_model_xs_neg(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalf
 
 a= vgg_model_xs_neg(0.126, 1.759, 0.670, 90.0, 10.604)
 #print("sigma(+) =", a)
-print("sigma(−) =", b)
+print("sigma(−) =", a)
