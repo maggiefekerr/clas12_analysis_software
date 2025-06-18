@@ -57,7 +57,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
-    *Int_t numBinDiv = 10;
+    Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
