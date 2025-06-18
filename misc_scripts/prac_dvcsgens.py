@@ -2,7 +2,7 @@ import os
 import subprocess
 
 # pointing at print-mode dvcsgen installation
-os.environ['PATH'] = 'u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PATH','')
+os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PATH','')
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
 # returns polarized cross section for +'ve bea, polarization
