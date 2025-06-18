@@ -30,6 +30,8 @@ def vgg_model_xs_pos(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
+    print(numeric[-3])
+
     return str(numeric[-2])
 
 
