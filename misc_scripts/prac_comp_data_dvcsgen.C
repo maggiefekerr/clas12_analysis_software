@@ -64,7 +64,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
             Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
-
+            cout << "here" << endl;
             // retrieving positively polarized cross section
             std::ostringstream oss1;
             oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
@@ -74,7 +74,6 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
                 std::cerr << "Failed to run positive cross section script" << std::endl;
                 return;
             }
-            cout << "here" << endl;
             char buffer1[128];
             std::string result1;
             while (fgets(buffer1, sizeof(buffer1), pipe1) != nullptr) {
