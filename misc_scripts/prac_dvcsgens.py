@@ -61,4 +61,5 @@ def vgg_model_xs_neg(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
 
     return float(numeric[-3])
 
-    print(vgg_model_xs_pos(0.126, 1.759, 0.670, 90.0, 10.604))
+    a = vgg_model_xs_pos(0.126, 1.759, 0.670, 90.0, 10.604)
+    print(a)
