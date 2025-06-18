@@ -75,11 +75,10 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
             char buffer1[128];
             std::string result1;
             while (fgets(buffer1, sizeof(buffer1), pipe1) != nullptr) {
+                cout << buffer1 << endl;
                 result1 += buffer1;
             }
-            cout << "hello" << endl;
             gSystem->ClosePipe(pipe1);
-            cout << result1 << endl;
             Double_t pos_xs = std::stod(result1);
         }
     }
