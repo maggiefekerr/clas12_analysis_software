@@ -49,7 +49,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
             }
         }
     }
-    cout << "hello" << endl;
+
     TH1F *hAdd = new TH1F("hAdd", "hAdd", numBins, 0, 2*TMath::Pi());
     hAdd->Add(hPhi_pos, hPhi_neg);
     TH1F *hSub = new TH1F("hSub", "hSub", numBins, 0, 2*TMath::Pi());
@@ -57,6 +57,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     TH1F *hAsymData = new TH1F("hAsymData", "hAsymData", numBins, 0, 2*TMath::Pi());
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
+    cout << "hello" << endl;
 
     Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
