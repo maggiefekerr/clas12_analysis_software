@@ -32,9 +32,9 @@ def dvcsgen_polarized_cross_section(beam, x, Q2, t, phi_rad,
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    sigma_minus = float(numeric[-3])
+    #sigma_minus = float(numeric[-3])
     sigma_plus  = float(numeric[-2])
-    return sigma_plus, sigma_minus
+    return sigma_plus#, sigma_minus
 #enddef
 
 a, b = dvcsgen_polarized_cross_section(
