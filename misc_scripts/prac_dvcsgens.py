@@ -6,9 +6,8 @@ os.environ['PATH'] = 'u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PA
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
 # returns polarized cross section for +'ve bea, polarization
-def vgg_model_xs_pos(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=True):
-    # calls dvcsgen in print mode and returns positively polarized cross section
-
+def vgg_model_xs_pos(beam, x, Q2, t, phi_rad,
+                                    bh=3, gpd=101, globalfit=True):
     cmd = [
         'dvcsgen',
         '--beam', f'{beam:.3f}',
@@ -20,7 +19,6 @@ def vgg_model_xs_pos(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=Tr
         '--gpd',  str(gpd),
         '--ycol', '0.0001'
     ]
-
     if globalfit:
         cmd.append('--globalfit')
     proc = subprocess.run(cmd,
@@ -29,11 +27,13 @@ def vgg_model_xs_pos(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=Tr
                           text=True)
     if proc.returncode != 0:
         raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
-    
+
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    return float(numeric[-2])
+    #sigma_minus = float(numeric[-3])
+    sigma_plus  = float(numeric[-2])
+    return sigma_plus#, sigma_minus
 
 
 # returns polarized cross section for -'ve beam polarization
@@ -66,5 +66,12 @@ def vgg_model_xs_neg(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=Tr
 
     return float(numeric[-3])
 
-a = vgg_model_xs_pos(0.126, 1.759, 0.670, 90.0, 10.604)
-print(a)
+a= vgg_model_xs_pos(
+    beam    = 10.6,
+    x       = 0.126,
+    Q2      = 1.759,
+    t       = 0.670,
+    phi_rad = 90.0
+)
+print("sigma(+) =", a)
+#print("sigma(−) =", b)
