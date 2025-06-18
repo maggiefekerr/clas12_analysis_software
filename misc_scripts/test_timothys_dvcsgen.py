@@ -37,7 +37,7 @@ def dvcsgen_polarized_cross_section(beam, x, Q2, t, phi_rad,
     return sigma_plus#, sigma_minus
 #enddef
 
-a, b = dvcsgen_polarized_cross_section(
+a= dvcsgen_polarized_cross_section(
     beam    = 10.6,
     x       = 0.126,
     Q2      = 1.759,
@@ -45,4 +45,4 @@ a, b = dvcsgen_polarized_cross_section(
     phi_rad = 90.0
 )
 print("sigma(+) =", a)
-print("sigma(−) =", b)
+#print("sigma(−) =", b)
