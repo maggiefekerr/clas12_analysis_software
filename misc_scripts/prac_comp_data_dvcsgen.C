@@ -39,6 +39,8 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     TTreeReaderValue<double> Q2(r, "Q2");
     TTreeReaderValue<double> t1(r, "t1");
 
+    cout << "hello" << endl;
+
     while (r.Next()) {
         if ((xB_min < *x < xB_max) && (Q2_min < *Q2 < Q2_max) && (tpos_min < *t1*-1 < tpos_max)){
             if (*helicity == +1) {
@@ -63,9 +65,6 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
         for (int j=0; j<numBinDiv; j++) {
             Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
             // retrieving positively polarized cross section
-
-            cout << "hello" << endl;
-
             std::ostringstream oss1;
             oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos*TMath::RadToDeg() << " " << E_beam;
             std::string posRun = oss1.str();
