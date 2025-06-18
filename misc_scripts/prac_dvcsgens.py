@@ -8,9 +8,8 @@ os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 # returns polarized cross section for +'ve bea, polarization
 def vgg_model_xs_pos(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globalfit=True):
     # calls dvcsgen in print mode and returns positively polarized cross section
-    print("hello")
     cmd = ['dvcsgen',
-            '--beam', f'{beam:.3f}',
+            '--beam', f'{beam:.6f}',
             '--x', str(x), str(x),
             '--q2', str(Q2), str(Q2),
             '--t', str(t_pos), str(t_pos),
@@ -31,9 +30,7 @@ def vgg_model_xs_pos(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    print(str(numeric[-2]))
-
-    return str(numeric[-2])
+    return float(numeric[-2])
 
 
 # returns polarized cross section for -'ve beam polarization
@@ -62,4 +59,4 @@ def vgg_model_xs_neg(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    return str(numeric[-3])
+    return float(numeric[-3])
