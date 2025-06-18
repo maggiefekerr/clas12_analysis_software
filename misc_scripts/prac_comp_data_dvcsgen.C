@@ -74,6 +74,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
                 std::cerr << "Failed to run positive cross section script" << std::endl;
                 return;
             }
+            cout << "here" << endl;
             char buffer1[128];
             std::string result1;
             while (fgets(buffer1, sizeof(buffer1), pipe1) != nullptr) {
