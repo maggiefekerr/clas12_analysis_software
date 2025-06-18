@@ -10,7 +10,7 @@ def vgg_model_xs_pos(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
     # calls dvcsgen in print mode and returns positively polarized cross section
     cmd = ['dvcsgen',
             '--beam', f'{beam_E:.3f}',
-            '--x', str(x), str(x),
+            '--x', str(xB), str(xB),
             '--q2', str(Q2), str(Q2),
             '--t', str(t_pos), str(t_pos),
             '--phi', f'{phi_rad:.6f}',
@@ -39,7 +39,7 @@ def vgg_model_xs_neg(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globa
 
     cmd = ['dvcsgen',
             '--beam', f'{beam_E:.3f}',
-            '--x', str(x), str(x),
+            '--x', str(xB), str(xB),
             '--q2', str(Q2), str(Q2),
             '--t', str(t_pos), str(t_pos),
             '--phi', f'{phi_rad:.6f}',
