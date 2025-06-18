@@ -33,7 +33,7 @@ def vgg_model_xs_pos(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalf
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    return float(numeric[-2])
+    return str(numeric[-2])
 
 
 # returns polarized cross section for -'ve beam polarization
@@ -64,8 +64,8 @@ def vgg_model_xs_neg(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalf
     lines = proc.stdout.splitlines()
     numeric = [ln for ln in lines if ln.strip()]
 
-    return float(numeric[-3])
+    return str(numeric[-3])
 
-a= vgg_model_xs_neg(0.126, 1.759, 0.670, 90.0, 10.604)
+#a= vgg_model_xs_neg(0.126, 1.759, 0.670, 90.0, 10.604)
 #print("sigma(+) =", a)
-print("sigma(−) =", a)
+#print("sigma(−) =", a)
