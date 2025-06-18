@@ -35,7 +35,7 @@ def vgg_model_xs_pos(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalf
 
     print(float(numeric[-2]))
 
-    return float(numeric[-2])
+    return (numeric[-2])
 
 
 # returns polarized cross section for -'ve beam polarization
