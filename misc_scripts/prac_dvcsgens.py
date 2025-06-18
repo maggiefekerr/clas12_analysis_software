@@ -9,7 +9,7 @@ os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 def vgg_model_xs_pos(xB, Q2, t_pos, phi_rad, beam_E=10.604, bh=3, gpd=101, globalfit=True):
     # calls dvcsgen in print mode and returns positively polarized cross section
     cmd = ['dvcsgen',
-            '--beam', f'{beam:.3f}',
+            '--beam', f'{beam_E:.3f}',
             '--x', str(x), str(x),
             '--q2', str(Q2), str(Q2),
             '--t', str(t_pos), str(t_pos),
