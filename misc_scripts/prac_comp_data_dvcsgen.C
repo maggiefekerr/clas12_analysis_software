@@ -12,8 +12,6 @@
 // beamPol: 0.89
 
 void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
-
-    cout << "here" << endl;
     // first making the initial asymmetry histogram plot
 
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
@@ -60,7 +58,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     hAsymData->Scale(1./beamPol);
 
     // making model asymmetry
-    Int_t numBinDiv = 10;
+    /*Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
@@ -146,5 +144,5 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     l->DrawLatexNDC(0.225, 0.150, Form("-t: %.3f", tpos));
 
     c1->Update();
-    c1->SaveAs("prac_comp-data-dvcsgen_comp.png");
+    c1->SaveAs("prac_comp-data-dvcsgen_comp.png");*/
 }
