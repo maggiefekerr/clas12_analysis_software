@@ -6,7 +6,7 @@ os.environ['PATH'] = 'u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PA
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
 # returns polarized cross section for +'ve bea, polarization
-def vgg_model_xs_pos(x, Q2, t_pos, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=True):
+def vgg_model_xs_pos(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=True):
     # calls dvcsgen in print mode and returns positively polarized cross section
 
     cmd = [
@@ -37,7 +37,7 @@ def vgg_model_xs_pos(x, Q2, t_pos, phi_rad, beam=10.604, bh=3, gpd=101, globalfi
 
 
 # returns polarized cross section for -'ve beam polarization
-def vgg_model_xs_neg(x, Q2, t_pos, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=True):
+def vgg_model_xs_neg(x, Q2, t, phi_rad, beam=10.604, bh=3, gpd=101, globalfit=True):
     # calls dvcsgen in print mode and returns negatively polarized cross section
 
     cmd = [
