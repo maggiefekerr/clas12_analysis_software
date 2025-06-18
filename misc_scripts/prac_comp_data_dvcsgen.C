@@ -39,8 +39,6 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     TTreeReaderValue<double> Q2(r, "Q2");
     TTreeReaderValue<double> t1(r, "t1");
 
-    cout << "hello" << endl;
-
     while (r.Next()) {
         if ((xB_min < *x < xB_max) && (Q2_min < *Q2 < Q2_max) && (tpos_min < *t1*-1 < tpos_max)){
             if (*helicity == +1) {
@@ -51,6 +49,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
             }
         }
     }
+    cout << "hello" << endl;
     TH1F *hAdd = new TH1F("hAdd", "hAdd", numBins, 0, 2*TMath::Pi());
     hAdd->Add(hPhi_pos, hPhi_neg);
     TH1F *hSub = new TH1F("hSub", "hSub", numBins, 0, 2*TMath::Pi());
