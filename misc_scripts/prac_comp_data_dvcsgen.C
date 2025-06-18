@@ -80,6 +80,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
                 result1 += buffer1;
             }
             gSystem->ClosePipe(pipe1);
+            cout << result1 << endl;
             Double_t pos_xs = std::stod(result1);
 
             // retrieving negatively polarized cross section
