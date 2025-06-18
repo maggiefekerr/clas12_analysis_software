@@ -63,6 +63,9 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
         for (int j=0; j<numBinDiv; j++) {
             Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
             // retrieving positively polarized cross section
+
+            cout << "hello" << endl;
+
             std::ostringstream oss1;
             oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos*TMath::RadToDeg() << " " << E_beam;
             std::string posRun = oss1.str();
