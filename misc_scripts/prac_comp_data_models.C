@@ -5,14 +5,12 @@
 #include <sstream>
 
 // xB: 0.126, Q2: 1.759, t: -0.670, beamE: 10.604, numBins: 9, beamPol: 0.89
+// eventually want to reimplement the KM15 code to read out to a .txt file as well for consistency which is why I defined
+// a TString km15File here
 
-void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
-
-    // first making the initial asymmetry histogram plot
-
+void prac_comp_data_models(TString dataFile, TString vggFile, TString, TString km15File, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){
+    // data
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
-
-    // kinematic definitions & ranges
     xB_min = xB - 0.02;
     xB_max = xB + 0.02;
     Q2_min = q2 - 0.2;
@@ -23,11 +21,10 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     tpos_min = -1*t_max;
     tpos_max = -1*t_min;
 
-    TFile *f = TFile::Open(file);
+    TFile *f = TFile::Open(dataFile);
     TH1F *hPhi_pos = new TH1F("hPhi_pos", "hPhi_pos", numBins, 0, 2*TMath::Pi());
     TH1F *hPhi_neg = new TH1F("hPhi_neg", "hPhi_neg", numBins, 0, 2*TMath::Pi());
 
-    // reading through events and handling them
     TTreeReader r("PhysicsEvents", f);
     TTreeReaderValue<double> phi2(r, "phi2");
     TTreeReaderValue<int> helicity(r, "helicity");
@@ -45,6 +42,7 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
             }
         }
     }
+
     TH1F *hAdd = new TH1F("hAdd", "hAdd", numBins, 0, 2*TMath::Pi());
     hAdd->Add(hPhi_pos, hPhi_neg);
     TH1F *hSub = new TH1F("hSub", "hSub", numBins, 0, 2*TMath::Pi());
@@ -53,29 +51,51 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
-    // making model asymmetry, this was chatgpt cooking
+    // models
     Int_t numBinDiv = 10;
+
+    // vgg
+    TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
+
+    std::ostringstream oss1;
+    oss1 << "python -u prac_dvcsgens.py vgg_model " << vggFile << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam;
+    std::string posRun = oss1.str();
+    FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
+    if (!pipe1) {
+        std::cerr << "Failed to run positive cross section script" << std::endl;
+        return;
+    }
+
+    ifstream if_vgg(vggFile, ifstream::in);
+    Double_t phiVal, xsPosVal, xsNegVal;
+    for(int i=1; i <=(numBins*numBinDiv); i++) {
+        if_vgg >> phiVal >> xsPosVal >> xsNegVal;
+        hAsymVGG->SetBinContent(i, -1*(xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
+    }
+    if_vgg.close();
+
+    // km15
     TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
         for (int j=0; j<numBinDiv; j++) {
-            std::ostringstream oss;
+            std::ostringstream oss2;
             Double_t pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv + 2*TMath::Pi()/(2.0*numBins*numBinDiv);
-            oss << "python -u prac_gepard.py km15_model " << xB << " " << q2 << " " << tpos << " " << pos*TMath::RadToDeg() << " " << E_beam << " ALU";
-            std::string pythonRun = oss.str();
+            oss2 << "python -u prac_gepard.py km15_model " << xB << " " << q2 << " " << tpos << " " << pos*TMath::RadToDeg() << " " << E_beam << " ALU";
+            std::string pythonRun = oss2.str();
 
-            FILE* pipe = gSystem->OpenPipe(pythonRun.c_str(), "r");
+            FILE* pipe2 = gSystem->OpenPipe(pythonRun.c_str(), "r");
 
-            if (!pipe) {
+            if (!pipe2) {
                 std::cerr << "Failed to run Python script" << std::endl;
                 return;
             }
 
             char buffer[128];
             std::string result;
-            while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+            while (fgets(buffer, sizeof(buffer), pipe2) != nullptr) {
                 result += buffer;
             }
-            gSystem->ClosePipe(pipe);
+            gSystem->ClosePipe(pipe2);
             Double_t outAsym = std::stod(result);
             hAsymKM15->SetBinContent((i-1)*numBinDiv + (j+1), outAsym);
         }
@@ -83,17 +103,22 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
 
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
-    hAsymData->SetMarkerColor(4);
-    hAsymData->SetLineColor(4);
+    hAsymData->SetMarkerColor(1);
+    hAsymData->SetLineColor(1);
     hAsymData->SetMarkerStyle(21);
     hAsymData->SetStats(1);
 
-    hAsymKM15->SetMarkerColor(2);
-    hAsymKM15->SetLineColor(2);
+    hAsymVGG->SetMarkerColor(2);
+    hAsymVGG->SetLineColor(2);
+    hAsymVGG->SetMarkerStyle(21);
+    hAsymVGG->SetTitle("A_{LU} from Fall 2018 RG-A vs VGG and KM15 Models");
+    hAsymVGG->GetXaxis()->SetTitle("#phi (rad)");
+    hAsymVGG->GetYaxis()->SetTitle("#frac{N^{+}-N^{-}}{N^{+}+N^{-}}");
+    hAsymVGG->SetStats(0);
+
+    hAsymKM15->SetMarkerColor(4);
+    hAsymKM15->SetLineColor(4);
     hAsymKM15->SetMarkerStyle(21);
-    hAsymKM15->SetTitle("A_{LU} from Fall 2018 RG-A and KM15 Model");
-    hAsymKM15->GetXaxis()->SetTitle("#phi (rad)");
-    hAsymKM15->GetYaxis()->SetTitle("#frac{N^{+}-N^{-}}{N^{+}+N^{-}}");
     hAsymKM15->SetStats(0);
 
     for (Int_t i=1; i<=numBins; i++) {
@@ -106,13 +131,15 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     fit->SetParameter(2,0);
     fit->SetLineColor(4);
 
-    hAsymKM15->Draw("P");
+    hAsymVGG->Draw("P");
+    hAsymKM15->Draw("P sames");
     hAsymData->Draw("P sames");
     hAsymData->Fit("fit");
     gStyle->SetOptFit(0001);
 
     TLegend *leg1 = new TLegend(0.1,0.1,0.2,0.3);
     leg1->AddEntry(hAsymData,"data","ep");
+    leg1->AddEntry(hAsymVGG,"vgg","p");
     leg1->AddEntry(hAsymKM15,"km15","p");
     leg1->Draw();
 
@@ -124,5 +151,5 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     l->DrawLatexNDC(0.225, 0.150, Form("-t: %.3f", tpos));
 
     c1->Update();
-    c1->SaveAs("prac_comp-data-gepard_comp.png");
+    c1->SaveAs("prac_comp-data-models.png");
 }

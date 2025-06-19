@@ -74,50 +74,6 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     }
     if_vgg.close();
     
-    // making model asymmetry
-    /*Int_t numBinDiv = 10;
-    TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
-    for (int i=1; i<=numBins; i++) {
-        for (int j=0; j<numBinDiv; j++) {
-            Double_t phi_pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;
-            // retrieving positively polarized cross section
-            std::ostringstream oss1;
-            oss1 << "python -u prac_dvcsgens.py vgg_model_xs_pos " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
-            std::string posRun = oss1.str();
-            FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
-            if (!pipe1) {
-                std::cerr << "Failed to run positive cross section script" << std::endl;
-                return;
-            }
-            char buffer1[128];
-            std::string result1;
-            while (fgets(buffer1, sizeof(buffer1), pipe1) != nullptr) {
-                result1 += buffer1;
-            }
-            gSystem->ClosePipe(pipe1);
-            Double_t pos_xs = std::stod(result1);
-
-            // retrieving negatively polarized cross section
-            std::ostringstream oss2;
-            oss2 << "python -u prac_dvcsgen.py vgg_model_xs_neg " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << E_beam;
-            std::string negRun = oss2.str();
-            FILE* pipe2 = gSystem->OpenPipe(negRun.c_str(), "r");
-            if (!pipe2) {
-                std::cerr << "Failed to run negative cross section script" << std::endl;
-                return;
-            }
-            char buffer2[128];
-            std::string result2;
-            while (fgets(buffer2, sizeof(buffer2), pipe2) != nullptr) {
-                result2 += buffer2;
-            }
-            gSystem->ClosePipe(pipe2);
-            Double_t neg_xs = std::stod(result2);
-
-            hAsymVGG->SetBinContent((i-1)*numBinDiv + (j+1), (pos_xs-neg_xs)/(pos_xs+neg_xs));
-        }
-    }*/
-
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
     hAsymData->SetMarkerColor(4);
