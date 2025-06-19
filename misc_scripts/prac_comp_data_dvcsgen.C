@@ -67,17 +67,11 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     Double_t phiVal, xsPosVal, xsNegVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
-        //cout << phiVal << " " << xsPosVal << " " << xsNegVal << endl;
-        cout << phiVal << " " << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl;
+        // cout << phiVal << " " << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl; // check to make sure they are the same, they are!
         hAsymVGG->SetBinContent(i, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
     
-    /*TFile *f_vgg = TFile::Open("vgg_xs_phi-xsPos-xsNeg.txt", "r");
-    for (int i=1; i<=(numBins*numBinDiv); i++) {
-        
-        
-    }*/
     // making model asymmetry
     /*Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
@@ -120,7 +114,7 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
 
             hAsymVGG->SetBinContent((i-1)*numBinDiv + (j+1), (pos_xs-neg_xs)/(pos_xs+neg_xs));
         }
-    }
+    }*/
 
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
@@ -165,5 +159,5 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     l->DrawLatexNDC(0.225, 0.150, Form("-t: %.3f", tpos));
 
     c1->Update();
-    c1->SaveAs("prac_comp-data-dvcsgen_comp.png");*/
+    c1->SaveAs("prac_comp-data-dvcsgen_comp.png");
 }
