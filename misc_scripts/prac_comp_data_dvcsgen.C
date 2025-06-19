@@ -6,7 +6,7 @@
 
 // xB: 0.126, Q2: 1.759, t: -0.670, beamE: 10.604, numBins: 9, beamPol: 0.89
 
-void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
+void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
 
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
     xB_min = xB - 0.02;
@@ -19,7 +19,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     tpos_min = -1*t_max;
     tpos_max = -1*t_min;
 
-    TFile *f = TFile::Open(file);
+    TFile *f = TFile::Open(dataFile);
     TH1F *hPhi_pos = new TH1F("hPhi_pos", "hPhi_pos", numBins, 0, 2*TMath::Pi());
     TH1F *hPhi_neg = new TH1F("hPhi_neg", "hPhi_neg", numBins, 0, 2*TMath::Pi());
 
@@ -54,21 +54,18 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
 
-    std::ostringstream oss1;
+    /*std::ostringstream oss1;
     oss1 << "python -u prac_dvcsgens.py vgg_model " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << E_beam;
     std::string posRun = oss1.str();
     FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
     if (!pipe1) {
         std::cerr << "Failed to run positive cross section script" << std::endl;
         return;
-    }
+    }*/
 
 
-    ifstream if_vgg("vgg_xs_phi-xsPos-xsNeg.txt", ifstream::in);
-    //stringstream line;
+    ifstream if_vgg(vggFile, ifstream::in);
     Float_t phiVal, xsPosVal, xsNegVal;
-    //getline(f_vgg, line.str());
-    
     for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
         cout << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl;
