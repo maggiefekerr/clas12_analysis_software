@@ -4,19 +4,11 @@
 #include <string>
 #include <sstream>
 
-// xB: 0.126
-// Q2: 1.759
-// t: -0.670
-// beamE: 10.604
-// numBins: 9
-// beamPol: 0.89
+// xB: 0.126, Q2: 1.759, t: -0.670, beamE: 10.604, numBins: 9, beamPol: 0.89
 
 void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
-    // first making the initial asymmetry histogram plot
 
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
-
-    // kinematic definitions & ranges
     xB_min = xB - 0.02;
     xB_max = xB + 0.02;
     Q2_min = q2 - 0.2;
@@ -61,6 +53,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     // making model asymmetry
     Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
+
     std::ostringstream oss1;
     oss1 << "python -u prac_dvcsgens.py vgg_model " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << E_beam;
     std::string posRun = oss1.str();
@@ -70,6 +63,24 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
         return;
     }
 
+
+    ifstream f_vgg("vgg_xs_phi-xsPos-xsNeg.txt", ifstream::in);
+    stringstream line;
+    Float_t phiVal, xsPosVal, xsNegVal;
+    getline(f_vgg, line.str());
+    
+    while (getline(f_vgg, line.str())) {
+        line >> phiVal >> xsPosVal >> xsNegVal;
+    }
+
+    cout << phiVal << " " << xsPosVal << " " << xsNegVal;
+    f_vgg.close();
+    
+    /*TFile *f_vgg = TFile::Open("vgg_xs_phi-xsPos-xsNeg.txt", "r");
+    for (int i=1; i<=(numBins*numBinDiv); i++) {
+        
+        
+    }*/
     // making model asymmetry
     /*Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
