@@ -6,7 +6,7 @@
 
 // xB: 0.126, Q2: 1.759, t: -0.670, beamE: 10.604, numBins: 9, beamPol: 0.89
 
-void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
+void prac_comp_data_gepard(TString file, TString km15File, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){ // lowercase q2 is just so ROOT doesn't crash out
 
     // first making the initial asymmetry histogram plot
 
@@ -53,7 +53,29 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
-    // making model asymmetry, this was chatgpt cooking
+    // making model asymmetry
+    Int_t numBinDiv = 10;
+    TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
+
+    std::ostringstream oss1;
+    oss1 << "python -u prac_gepard.py km15_model " << km15File << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam << " " << "ALU";
+    std::string posRun = oss1.str();
+    FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
+    if (!pipe1) {
+        std::cerr << "Failed to run script" << std::endl;
+        return;
+    }
+
+    ifstream if_km15(km15File, ifstream::in);
+    Double_t phiVal, asyVal;
+    for(int i=1; i <=(numBins*numBinDiv); i++) {
+        if_km15 >> phiVal >> asyVal;
+        cout << phiVal << " " << asyVal << endl;
+        hAsymKM15->SetBinContent(i, asyVal);
+    }
+    if_km15.close();
+
+    /*// making model asymmetry, this was chatgpt cooking
     Int_t numBinDiv = 10;
     TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
@@ -79,7 +101,7 @@ void prac_comp_data_gepard(TString file, Double_t xB, Double_t q2, Double_t t, I
             Double_t outAsym = std::stod(result);
             hAsymKM15->SetBinContent((i-1)*numBinDiv + (j+1), outAsym);
         }
-    }
+    }*/
 
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);

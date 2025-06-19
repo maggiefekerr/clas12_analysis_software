@@ -18,14 +18,15 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
 
     for i in range(numBins):
         for j in range(numDiv):
-            phi = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*2*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
+            phi_rad = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*2*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
+            phi_trento = np.pi - phi_rad # this could be completely wrong but it would explain the discrepancy
             cmd = [
                 'dvcsgen',
                 '--beam', f'{beamE:.3f}',
                 '--x',    str(xB), str(xB),
                 '--q2',   str(Q2), str(Q2),
                 '--t',    str(tpos), str(tpos),
-                '--phi',  f'{phi:.6f}',
+                '--phi',  f'{phi_trento:.6f}',
                 '--bh',   str(bh),
                 '--gpd',  str(gpd),
                 '--ycol', '0.0001'
@@ -41,7 +42,7 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
             lines = proc.stdout.splitlines()
             numeric = [ln for ln in lines if ln.strip()]
                 
-            phiList.append(phi)
+            phiList.append(phi_rad)
             xsPosList.append((float)(numeric[-2]))
             xsNegList.append((float)(numeric[-3]))    
 
