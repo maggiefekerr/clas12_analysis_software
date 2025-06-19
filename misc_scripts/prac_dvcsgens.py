@@ -48,10 +48,10 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
     with open(file, "w") as f:
         for i in range(len(phiList)):
             if i != (len(phiList) - 1):
-                f.write(str(phiList[i]) + ".0" + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
+                f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
             else:
-                print(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
-                f.write(str(phiList[i]) + ".0" + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
+                #print(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
+                f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
     f.close()
 
 if __name__ == "__main__":

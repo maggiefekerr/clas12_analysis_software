@@ -64,11 +64,11 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     }
 
     ifstream if_vgg(vggFile, ifstream::in);
-    Float_t phiVal, xsPosVal, xsNegVal;
+    Double_t phiVal, xsPosVal, xsNegVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
-        cout << phiVal << " " << xsPosVal << " " << xsNegVal << endl;
-        //cout << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl;
+        //cout << phiVal << " " << xsPosVal << " " << xsNegVal << endl;
+        cout << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl;
         hAsymVGG->SetBinContent(i, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
