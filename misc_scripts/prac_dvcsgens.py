@@ -26,7 +26,7 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
                 '--x',    str(xB), str(xB),
                 '--q2',   str(Q2), str(Q2),
                 '--t',    str(tpos), str(tpos),
-                '--phi',  f'{phi_trento:.6f}',
+                '--phi',  f'{phi_rad:.6f}',
                 '--bh',   str(bh),
                 '--gpd',  str(gpd),
                 '--ycol', '0.0001'

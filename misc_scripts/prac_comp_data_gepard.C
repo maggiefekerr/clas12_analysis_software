@@ -59,8 +59,8 @@ void prac_comp_data_gepard(TString file, TString km15File, Double_t xB, Double_t
 
     std::ostringstream oss1;
     oss1 << "python -u prac_gepard.py km15_model " << km15File << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam << " " << "ALU";
-    std::string posRun = oss1.str();
-    FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
+    std::string asyRun1 = oss1.str();
+    FILE* pipe1 = gSystem->OpenPipe(asyRun1.c_str(), "r");
     if (!pipe1) {
         std::cerr << "Failed to run script" << std::endl;
         return;
@@ -70,7 +70,7 @@ void prac_comp_data_gepard(TString file, TString km15File, Double_t xB, Double_t
     Double_t phiVal, asyVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_km15 >> phiVal >> asyVal;
-        cout << phiVal << " " << asyVal << endl;
+        //cout << phiVal << " " << asyVal << endl;
         hAsymKM15->SetBinContent(i, asyVal);
     }
     if_km15.close();

@@ -59,10 +59,10 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
 
     std::ostringstream oss1;
     oss1 << "python -u prac_dvcsgens.py vgg_model " << vggFile << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam;
-    std::string posRun = oss1.str();
-    FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
+    std::string asyRun1 = oss1.str();
+    FILE* pipe1 = gSystem->OpenPipe(asyRun1.c_str(), "r");
     if (!pipe1) {
-        std::cerr << "Failed to run positive cross section script" << std::endl;
+        std::cerr << "Failed to run script" << std::endl;
         return;
     }
 
@@ -76,30 +76,24 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
 
     // km15
     TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
-    for (int i=1; i<=numBins; i++) {
-        for (int j=0; j<numBinDiv; j++) {
-            std::ostringstream oss2;
-            Double_t pos = hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv + 2*TMath::Pi()/(2.0*numBins*numBinDiv);
-            oss2 << "python -u prac_gepard.py km15_model " << xB << " " << q2 << " " << tpos << " " << pos*TMath::RadToDeg() << " " << E_beam << " ALU";
-            std::string pythonRun = oss2.str();
-
-            FILE* pipe2 = gSystem->OpenPipe(pythonRun.c_str(), "r");
-
-            if (!pipe2) {
-                std::cerr << "Failed to run Python script" << std::endl;
-                return;
-            }
-
-            char buffer[128];
-            std::string result;
-            while (fgets(buffer, sizeof(buffer), pipe2) != nullptr) {
-                result += buffer;
-            }
-            gSystem->ClosePipe(pipe2);
-            Double_t outAsym = std::stod(result);
-            hAsymKM15->SetBinContent((i-1)*numBinDiv + (j+1), outAsym);
-        }
+    
+    std::ostringstream oss2;
+    oss2 << "python -u prac_gepard.py km15_model " << km15File << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam << " " << "ALU";
+    std::string asyRun2 = oss2.str();
+    FILE* pipe2 = gSystem->OpenPipe(asyRun2.c_str(), "r");
+    if (!pipe2) {
+        std::cerr << "Failed to run script" << std::endl;
+        return;
     }
+
+    ifstream if_km15(km15File, ifstream::in);
+    Double_t phiVal, asyVal;
+    for(int i=1; i <=(numBins*numBinDiv); i++) {
+        if_km15 >> phiVal >> asyVal;
+        //cout << phiVal << " " << asyVal << endl;
+        hAsymKM15->SetBinContent(i, asyVal);
+    }
+    if_km15.close();
 
     cout << "here and alive" << endl;
 
