@@ -64,7 +64,7 @@ if __name__ == "__main__":
     f = sys.argv[7]
 
     if method == "vgg_model":
-        km15_model(float(a), float(b), float(c), int(d), int(e), float(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
+        vgg_model(float(a), float(b), float(c), int(d), int(e), float(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
 
     else:
         print(":(")
