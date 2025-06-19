@@ -3,6 +3,7 @@ sys.stdout.reconfigure(line_buffering=True)
 import os
 import subprocess
 import concurrent.futures
+import numpy as np
 
 # pointing at print-mode dvcsgen installation
 os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PATH','')
@@ -17,8 +18,8 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
 
     for i in range(numBins):
         for j in range(numDiv):
-            phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360.0/(numDiv*numBins) + 360.0/(2.0*numDiv*numBins)
-            #(i*360/numBins) + (360.0/numBins)*(j/numDiv)
+            phi_deg = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*32*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
+            #phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360.0/(numDiv*numBins) + 360.0/(2.0*numDiv*numBins)
             cmd = [
                 'dvcsgen',
                 '--beam', f'{beamE:.3f}',
