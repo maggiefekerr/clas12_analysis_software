@@ -62,7 +62,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
     std::ostringstream oss1;
-    oss1 << "python -u prac_dvcsgens.py vgg_model " << xB << " " << q2 << " " << tpos << " " << phi_pos << " " << numBins << " " << numBinDiv << E_beam;
+    oss1 << "python -u prac_dvcsgens.py vgg_model " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << E_beam;
     std::string posRun = oss1.str();
     FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
     if (!pipe1) {
