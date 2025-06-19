@@ -16,7 +16,7 @@ def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, global
     for i in range(numBins):
         for j in range(numDiv):
             phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360/(numDiv*numBins) + 360/(2*numDiv*numBins)
-            (i*360/numBins) + (360.0/numBins)*(j/numDiv)
+            #(i*360/numBins) + (360.0/numBins)*(j/numDiv)
             cmd = [
                 'dvcsgen',
                 '--beam', f'{beamE:.3f}',
