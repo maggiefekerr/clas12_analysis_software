@@ -8,7 +8,7 @@
 // eventually want to reimplement the KM15 code to read out to a .txt file as well for consistency which is why I defined
 // a TString km15File here
 
-void prac_comp_data_models(TString dataFile, TString vggFile, TString, TString km15File, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){
+void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, Double_t xB, Double_t q2, Double_t t, Int_t numBins, Double_t E_beam=10.604, Double_t beamPol=0.89){
     // data
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
     xB_min = xB - 0.02;

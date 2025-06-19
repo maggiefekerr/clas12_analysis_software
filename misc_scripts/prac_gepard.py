@@ -92,7 +92,6 @@ if __name__ == "__main__":
     f = sys.argv[7]
 
     if method == "km15_model":
-        #km15_model(float(a), float(b), float(c))
         km15_model(float(a), float(b), float(c), float(d), float(e), str(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
 
     elif method == "km15_model_inb":
