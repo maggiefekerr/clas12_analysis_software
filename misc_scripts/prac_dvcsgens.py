@@ -51,4 +51,19 @@ def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, global
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
     f.close()
 
+if __name__ == "__main__":
+    method = sys.argv[1]
+    a = sys.argv[2]
+    b = sys.argv[3]
+    c = sys.argv[4]
+    d = sys.argv[5]
+    e = sys.argv[6]
+    f = sys.argv[7]
+
+    if method == "vgg_model":
+        km15_model(float(a), float(b), float(c), int(d), int(e), float(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
+
+    else:
+        print(":(")
+
 vgg_model(0.126, 1.759, 0.670, 9, 10, 10.604)
