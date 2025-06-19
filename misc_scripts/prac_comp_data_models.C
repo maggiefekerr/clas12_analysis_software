@@ -74,8 +74,6 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     }
     if_vgg.close();
 
-    cout << "here and alive" << endl;
-
     // km15
     TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
@@ -102,6 +100,8 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
             hAsymKM15->SetBinContent((i-1)*numBinDiv + (j+1), outAsym);
         }
     }
+
+    cout << "here and alive" << endl;
 
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
