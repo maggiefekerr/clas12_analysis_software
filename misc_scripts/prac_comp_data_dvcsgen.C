@@ -64,17 +64,17 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     }
 
 
-    ifstream f_vgg("vgg_xs_phi-xsPos-xsNeg.txt", ifstream::in);
-    stringstream line;
+    ifstream if_vgg("vgg_xs_phi-xsPos-xsNeg.txt", ifstream::in);
+    //stringstream line;
     Float_t phiVal, xsPosVal, xsNegVal;
-    getline(f_vgg, line.str());
+    //getline(f_vgg, line.str());
     
-    while (getline(f_vgg, line.str())) {
-        line >> phiVal >> xsPosVal >> xsNegVal;
+    for(int i=0; i <=(numBins*numBinDiv); i++) {
+        if_vgg >> phiVal >> xsPosVal >> xsNegVal;
     }
 
     cout << phiVal << " " << xsPosVal << " " << xsNegVal;
-    f_vgg.close();
+    if_vgg.close();
     
     /*TFile *f_vgg = TFile::Open("vgg_xs_phi-xsPos-xsNeg.txt", "r");
     for (int i=1; i<=(numBins*numBinDiv); i++) {
