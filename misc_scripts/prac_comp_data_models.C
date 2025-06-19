@@ -51,8 +51,6 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
-    cout << "here and alive" << endl;
-
     // models
     Int_t numBinDiv = 10;
 
@@ -75,6 +73,8 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
         hAsymVGG->SetBinContent(i, -1*(xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
+
+    cout << "here and alive" << endl;
 
     // km15
     TH1F *hAsymKM15 = new TH1F("hAsymKM15", "hAsymKM15", numBins*numBinDiv, 0, 2*TMath::Pi());
