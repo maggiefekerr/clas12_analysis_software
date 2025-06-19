@@ -125,7 +125,7 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     fit->SetParameter(0,1);
     fit->SetParameter(1,1);
     fit->SetParameter(2,0);
-    fit->SetLineColor(4);
+    fit->SetLineColor(1);
 
     hAsymVGG->Draw("P");
     hAsymKM15->Draw("P sames");
