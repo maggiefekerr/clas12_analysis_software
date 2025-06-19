@@ -41,8 +41,8 @@ def vgg_model(xB, Q2, tpos, numBins, beamE=10.604, bh=3, gpd=101, globalfit=True
         xsNegList.append((float)(numeric[-3]))
 
     with open("vgg_xs_phi-xsPos-xsNeg.txt", "w") as f:
-        for i in range(len(phi)):
-            if i != (len(phi) - 1):
+        for i in range(len(phiList)):
+            if i != (len(phiList) - 1):
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
             else:
                 print(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
