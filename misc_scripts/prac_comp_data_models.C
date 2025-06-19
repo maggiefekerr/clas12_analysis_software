@@ -67,9 +67,9 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     }
 
     ifstream if_vgg(vggFile, ifstream::in);
-    Double_t phiVal, xsPosVal, xsNegVal;
+    Double_t phiVal1, xsPosVal, xsNegVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
-        if_vgg >> phiVal >> xsPosVal >> xsNegVal;
+        if_vgg >> phiVal1 >> xsPosVal >> xsNegVal;
         hAsymVGG->SetBinContent(i, -1*(xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
@@ -87,10 +87,10 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     }
 
     ifstream if_km15(km15File, ifstream::in);
-    Double_t phiVal, asyVal;
+    Double_t phiVal2, asyVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
-        if_km15 >> phiVal >> asyVal;
-        //cout << phiVal << " " << asyVal << endl;
+        if_km15 >> phiVal2 >> asyVal;
+        //cout << phiVal2 << " " << asyVal << endl;
         hAsymKM15->SetBinContent(i, asyVal);
     }
     if_km15.close();
