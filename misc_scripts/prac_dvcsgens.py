@@ -1,5 +1,8 @@
+import sys
+sys.stdout.reconfigure(line_buffering=True)
 import os
 import subprocess
+import concurrent.futures
 
 # pointing at print-mode dvcsgen installation
 os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PATH','')
