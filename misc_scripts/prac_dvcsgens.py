@@ -6,68 +6,45 @@ os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('P
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
 # returns polarized cross section for +'ve bea, polarization
-def vgg_model_xs_pos(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalfit=True):
-    # calls dvcsgen in print mode and returns positively polarized cross section
+def vgg_model(xB, Q2, tpos, numBins, beamE=10.604, bh=3, gpd=101, globalfit=True):
+    # calls dvcsgen in print mode and writes a file containing the phi values, pos & neg cross sections
+    phiList = []
+    xsPosList = []
+    xsNegList = []
 
-    cmd = [
-        'dvcsgen',
-        '--beam', f'{beamE:.3f}',
-        '--x',    str(xB), str(xB),
-        '--q2',   str(Q2), str(Q2),
-        '--t',    str(tpos), str(tpos),
-        '--phi',  f'{phi_deg:.6f}',
-        '--bh',   str(bh),
-        '--gpd',  str(gpd),
-        '--ycol', '0.0001'
-    ]
+    for i in range numBins:
+        phi_deg = ((2.0*(float)i+1.0)/2.0)*(360.0/(float)numBins)
+        cmd = [
+            'dvcsgen',
+            '--beam', f'{beamE:.3f}',
+            '--x',    str(xB), str(xB),
+            '--q2',   str(Q2), str(Q2),
+            '--t',    str(tpos), str(tpos),
+            '--phi',  f'{phi_deg:.6f}',
+            '--bh',   str(bh),
+            '--gpd',  str(gpd),
+            '--ycol', '0.0001'
+        ]
+        if globalfit:
+            cmd.append('--globalfit')
+        proc = subprocess.run(cmd,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True)
+        if proc.returncode != 0:
+            raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
+        lines = proc.stdout.splitlines()
+        numeric = [ln for ln in lines if ln.strip()]
+        
+        phiList.append(phi_deg)
+        xsPosList.append((float)numeric[-2])
+        xsNegList.append((float)numeric[-3])
 
-    if globalfit:
-        cmd.append('--globalfit')
-    proc = subprocess.run(cmd,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
-    
-    lines = proc.stdout.splitlines()
-    numeric = [ln for ln in lines if ln.strip()]
-
-    print(float(numeric[-2]))
-
-    return (numeric[-2])
-
-
-# returns polarized cross section for -'ve beam polarization
-def vgg_model_xs_neg(xB, Q2, tpos, phi_deg, beamE=10.604, bh=3, gpd=101, globalfit=True):
-    # calls dvcsgen in print mode and returns negatively polarized cross section
-
-    cmd = [
-        'dvcsgen',
-        '--beam', f'{beamE:.3f}',
-        '--x',    str(xB), str(xB),
-        '--q2',   str(Q2), str(Q2),
-        '--t',    str(tpos), str(tpos),
-        '--phi',  f'{phi_deg:.6f}',
-        '--bh',   str(bh),
-        '--gpd',  str(gpd),
-        '--ycol', '0.0001'
-    ]
-
-    if globalfit:
-        cmd.append('--globalfit')
-    proc = subprocess.run(cmd,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          text=True)
-    if proc.returncode != 0:
-        raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
-    
-    lines = proc.stdout.splitlines()
-    numeric = [ln for ln in lines if ln.strip()]
-
-    return str(numeric[-3])
-
-#a= vgg_model_xs_neg(0.126, 1.759, 0.670, 90.0, 10.604)
-#print("sigma(+) =", a)
-#print("sigma(−) =", a)
+    with open("vgg_xs_phi-xsPos-xsNeg.txt", "w") as f:
+        for i in range(len(phi)):
+            if i != (len(phi) - 1):
+                f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
+            else:
+                print(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
+                f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
+    f.close()
