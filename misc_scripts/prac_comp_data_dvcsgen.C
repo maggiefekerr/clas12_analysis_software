@@ -69,10 +69,10 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     Float_t phiVal, xsPosVal, xsNegVal;
     //getline(f_vgg, line.str());
     
-    for(int i=0; i <=(numBins*numBinDiv); i++) {
+    for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
-        cout << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i+1) << endl;
-        hAsymVGG->SetBinContent(i+1, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
+        cout << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl;
+        hAsymVGG->SetBinContent(i, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
     
