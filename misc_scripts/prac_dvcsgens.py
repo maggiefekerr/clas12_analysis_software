@@ -48,3 +48,5 @@ def vgg_model(xB, Q2, tpos, numBins, beamE=10.604, bh=3, gpd=101, globalfit=True
                 print(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
     f.close()
+
+vgg_model(0.126, 1.759, 0.670, 9, 10.604)
