@@ -51,6 +51,8 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     hAsymData->Divide(hSub, hAdd);
     hAsymData->Scale(1./beamPol);
 
+    cout << "here and alive" << endl;
+
     // models
     Int_t numBinDiv = 10;
 
