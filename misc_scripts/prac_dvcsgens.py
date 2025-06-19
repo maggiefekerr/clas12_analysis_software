@@ -12,36 +12,36 @@ def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, global
     xsPosList = []
     xsNegList = []
 
-
-#hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;    for i in range(numBins):
-        for j in range(numDiv):
-            phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360/(numDiv*numBins)
-            (i*360/numBins) + (360.0/numBins)*(j/numDiv)
-            cmd = [
-                'dvcsgen',
-                '--beam', f'{beamE:.3f}',
-                '--x',    str(xB), str(xB),
-                '--q2',   str(Q2), str(Q2),
-                '--t',    str(tpos), str(tpos),
-                '--phi',  f'{phi_deg:.6f}',
-                '--bh',   str(bh),
-                '--gpd',  str(gpd),
-                '--ycol', '0.0001'
-            ]
-            if globalfit:
-                cmd.append('--globalfit')
-            proc = subprocess.run(cmd,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                text=True)
-            if proc.returncode != 0:
-                raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
-            lines = proc.stdout.splitlines()
-            numeric = [ln for ln in lines if ln.strip()]
+#hAsymData->GetBinCenter(i) - 0.5*hAsymData->GetBinWidth(i) + j*hAsymData->GetBinWidth(i)/numBinDiv;    
+for i in range(numBins):
+    for j in range(numDiv):
+        phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360/(numDiv*numBins)
+        (i*360/numBins) + (360.0/numBins)*(j/numDiv)
+        cmd = [
+            'dvcsgen',
+            '--beam', f'{beamE:.3f}',
+            '--x',    str(xB), str(xB),
+            '--q2',   str(Q2), str(Q2),
+            '--t',    str(tpos), str(tpos),
+            '--phi',  f'{phi_deg:.6f}',
+            '--bh',   str(bh),
+            '--gpd',  str(gpd),
+            '--ycol', '0.0001'
+        ]
+        if globalfit:
+            cmd.append('--globalfit')
+        proc = subprocess.run(cmd,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True)
+        if proc.returncode != 0:
+            raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
+        lines = proc.stdout.splitlines()
+        numeric = [ln for ln in lines if ln.strip()]
             
-            phiList.append(phi_deg)
-            xsPosList.append((float)(numeric[-2]))
-            xsNegList.append((float)(numeric[-3]))
+        phiList.append(phi_deg)
+        xsPosList.append((float)(numeric[-2]))
+        xsNegList.append((float)(numeric[-3]))    
 
     with open("vgg_xs_phi-xsPos-xsNeg.txt", "w") as f:
         for i in range(len(phiList)):
