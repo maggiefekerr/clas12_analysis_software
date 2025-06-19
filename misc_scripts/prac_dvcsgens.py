@@ -13,7 +13,7 @@ def vgg_model(xB, Q2, tpos, numBins, beamE=10.604, bh=3, gpd=101, globalfit=True
     xsNegList = []
 
     for i in range(numBins):
-        phi_deg = ((2.0*(float)i+1.0)/2.0)*(360.0/(float)numBins)
+        phi_deg = (((2.0*i)+1.0)/2.0)*(360.0/numBins)
         cmd = [
             'dvcsgen',
             '--beam', f'{beamE:.3f}',
