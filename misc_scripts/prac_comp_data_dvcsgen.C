@@ -54,15 +54,14 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     Int_t numBinDiv = 10;
     TH1F *hAsymVGG = new TH1F("hAsymVGG", "hAsymVGG", numBins*numBinDiv, 0, 2*TMath::Pi());
 
-    /*std::ostringstream oss1;
+    std::ostringstream oss1;
     oss1 << "python -u prac_dvcsgens.py vgg_model " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << E_beam;
     std::string posRun = oss1.str();
     FILE* pipe1 = gSystem->OpenPipe(posRun.c_str(), "r");
     if (!pipe1) {
         std::cerr << "Failed to run positive cross section script" << std::endl;
         return;
-    }*/
-
+    }
 
     ifstream if_vgg(vggFile, ifstream::in);
     Float_t phiVal, xsPosVal, xsNegVal;
