@@ -18,15 +18,14 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
 
     for i in range(numBins):
         for j in range(numDiv):
-            phi_deg = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*2*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
-            #phi_deg = (2.0*i +1.0)*0.5*(360.0/numBins) - 0.5*360.0/numBins + j*360.0/(numDiv*numBins) + 360.0/(2.0*numDiv*numBins)
+            phi = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*2*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
             cmd = [
                 'dvcsgen',
                 '--beam', f'{beamE:.3f}',
                 '--x',    str(xB), str(xB),
                 '--q2',   str(Q2), str(Q2),
                 '--t',    str(tpos), str(tpos),
-                '--phi',  f'{phi_deg:.6f}',
+                '--phi',  f'{phi:.6f}',
                 '--bh',   str(bh),
                 '--gpd',  str(gpd),
                 '--ycol', '0.0001'
@@ -42,7 +41,7 @@ def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, 
             lines = proc.stdout.splitlines()
             numeric = [ln for ln in lines if ln.strip()]
                 
-            phiList.append(phi_deg)
+            phiList.append(phi)
             xsPosList.append((float)(numeric[-2]))
             xsNegList.append((float)(numeric[-3]))    
 

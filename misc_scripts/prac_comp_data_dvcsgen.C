@@ -67,8 +67,10 @@ void prac_comp_data_dvcsgen(TString dataFile, TString vggFile, Double_t xB, Doub
     Double_t phiVal, xsPosVal, xsNegVal;
     for(int i=1; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
-        // cout << phiVal << " " << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl; // check to make sure they are the same, they are!
-        hAsymVGG->SetBinContent(i, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
+        //cout << phiVal << " " << xsPosVal << " " << xsNegVal << endl; 
+        //cout << phiVal << " " << phiVal*TMath::DegToRad() << " " << hAsymVGG->GetBinCenter(i) << endl; // check to make sure they are the same, they are!
+        //hAsymVGG->SetBinContent(i, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal)); // when I drew it this way it was the right shape but like inverted, my guess is that we got which xs was pos and neg flipped, just multiplying by 1 for now though in case this is not the solution
+        hAsymVGG->SetBinContent(i, -1*(xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
     if_vgg.close();
     
