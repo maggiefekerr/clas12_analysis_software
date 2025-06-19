@@ -67,6 +67,6 @@ if __name__ == "__main__":
         vgg_model(float(a), float(b), float(c), int(d), int(e), float(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
 
     else:
-        print(":(")
+        print("doesn't work :(")
 
-vgg_model(0.126, 1.759, 0.670, 9, 10, 10.604)
+#vgg_model(0.126, 1.759, 0.670, 9, 10, 10.604)
