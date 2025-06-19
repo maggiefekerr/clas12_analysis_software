@@ -9,7 +9,7 @@ os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('P
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
 # returns polarized cross section for +'ve bea, polarization
-def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, globalfit=True):
+def vgg_model(file, xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, globalfit=True):
     # calls dvcsgen in print mode and writes a file containing the phi values, pos & neg cross sections
     phiList = []
     xsPosList = []
@@ -45,7 +45,7 @@ def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, global
             xsPosList.append((float)(numeric[-2]))
             xsNegList.append((float)(numeric[-3]))    
 
-    with open("vgg_xs_phi-xsPos-xsNeg.txt", "w") as f:
+    with open(file, "w") as f:
         for i in range(len(phiList)):
             if i != (len(phiList) - 1):
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
@@ -55,18 +55,17 @@ def vgg_model(xB, Q2, tpos, numBins, numDiv, beamE=10.604, bh=3, gpd=101, global
     f.close()
 
 if __name__ == "__main__":
-    method = sys.argv[1]
+    method = sys.argv[1] 
     a = sys.argv[2]
     b = sys.argv[3]
     c = sys.argv[4]
     d = sys.argv[5]
     e = sys.argv[6]
     f = sys.argv[7]
+    g = sys.argv[8]
 
     if method == "vgg_model":
-        vgg_model(float(a), float(b), float(c), int(d), int(e), float(f)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
+        vgg_model(str(a), float(b), float(c), float(d), int(e), int(f), float(g)) # at this stage we have to specify the observable because I don't know how to handle it otherwise actually I do I'm just too lazy
 
     else:
         print("doesn't work :(")
-
-#vgg_model(0.126, 1.759, 0.670, 9, 10, 10.604)
