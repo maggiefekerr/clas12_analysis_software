@@ -37,8 +37,8 @@ def vgg_model(xB, Q2, tpos, numBins, beamE=10.604, bh=3, gpd=101, globalfit=True
         numeric = [ln for ln in lines if ln.strip()]
         
         phiList.append(phi_deg)
-        xsPosList.append((float)numeric[-2])
-        xsNegList.append((float)numeric[-3])
+        xsPosList.append((float)(numeric[-2]))
+        xsNegList.append((float)(numeric[-3]))
 
     with open("vgg_xs_phi-xsPos-xsNeg.txt", "w") as f:
         for i in range(len(phi)):
