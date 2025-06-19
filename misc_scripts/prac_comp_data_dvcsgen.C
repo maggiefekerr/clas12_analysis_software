@@ -71,7 +71,7 @@ void prac_comp_data_dvcsgen(TString file, Double_t xB, Double_t q2, Double_t t, 
     
     for(int i=0; i <=(numBins*numBinDiv); i++) {
         if_vgg >> phiVal >> xsPosVal >> xsNegVal;
-        cout << phiVal << " " hAsymVGG->GetBinCenter(i+1) << endl;
+        cout << phiVal << " " << hAsymVGG->GetBinCenter(i+1) << endl;
         hAsymVGG->SetBinContent(i+1, (xsPosVal-xsNegVal)/(xsPosVal+xsNegVal));
     }
 
