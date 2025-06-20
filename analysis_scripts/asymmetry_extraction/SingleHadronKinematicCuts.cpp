@@ -70,7 +70,7 @@ static double beamEnergy(int run)
 //    travels +z with energy Eb(run).  “q” is virtual photon four‐vector: p_beam – p_e'.
 //    Then p_pi = (E_pi, p_vec_pi).  Finally t = (ΔE)^2 – |Δ→p|^2.
 //================================================================================
-static double compute_t_scalar(int run,
+/*static double compute_t_scalar(int run,
                                double e_p, double e_theta, double e_phi,
                                double p_p, double p_theta, double p_phi)
 {
@@ -108,7 +108,7 @@ static double compute_t_scalar(int run,
 
     // 6) t = (ΔE)^2 – (dx^2 + dy^2 + dz^2)
     return (dE*dE - (dx*dx + dy*dy + dz*dz));
-}
+}*/
 
 //================================================================================
 // applyCuts(…)
@@ -132,7 +132,7 @@ bool SingleHadronKinematicCuts::applyCuts(int currentFits, bool isMC)
     // if (*Mx2 < 3.24   ) return false;
 
     // 2) If the property is “enpi,” impose |t| < 1.0 as well:
-    if (property == "enpi") {
+    /*if (property == "enpi") {
         // compute t from the branches
         int    rn     = *runnum;
         double ec_p   = *e_p;
@@ -150,7 +150,7 @@ bool SingleHadronKinematicCuts::applyCuts(int currentFits, bool isMC)
         } else  {
             return true;
         }
-    }
+    }*/
 
     if (property == "dvcst1") {
         goodEvent = (-0.1 < *Mx2);
