@@ -2716,7 +2716,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
     // outputs of mean kinematic variables for LaTeX
     meanVariablesStream << std::fixed << std::setprecision(3); // Set precision to 3 digits 
     meanVariablesStream << (i+1) << "~&~" << meanQ2 << "~&~" << meanW << "~&~" << meanx << "~&~";
-    meanVariablesStream << meany << "~&~" << meant; 
+    meanVariablesStream << meany << "~&~" << meant1; 
     meanVariablesStream << std::string(" \\\\ \\hline ");
 
     // outputs of mean kinematic variables for plotting
