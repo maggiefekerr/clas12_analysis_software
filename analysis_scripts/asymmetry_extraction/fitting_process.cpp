@@ -2721,7 +2721,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
 
     // outputs of mean kinematic variables for plotting
     meanVariablesPlotStream << "{" << meanQ2 << ", " << meanW << ", " << meanx << ", ";
-    meanVariablesPlotStream << meany << ", "; meanVariablesPlotStream << meant << "}";
+    meanVariablesPlotStream << meany << ", "; meanVariablesPlotStream << meant1 << "}";
     if (i < numBins - 1) {
         meanVariablesPlotStream << ", "; 
     }
