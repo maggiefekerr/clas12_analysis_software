@@ -95,8 +95,6 @@ void prac_comp_data_models(TString dataFile, TString vggFile, TString km15File, 
     }
     if_km15.close();
 
-    cout << "here and alive" << endl;
-
     // plot and compare
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
     hAsymData->SetMarkerColor(1);
