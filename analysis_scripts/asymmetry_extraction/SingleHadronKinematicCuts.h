@@ -14,14 +14,14 @@ public:
 private:
     // Branch readers (added e_p, e_theta, p_theta for t‐calculation)
     TTreeReaderValue<int>    runnum;
-    TTreeReaderValue<int>    fiducial_status;
+    //TTreeReaderValue<int>    fiducial_status;
     TTreeReaderValue<double> e_p;       // scattered‐electron momentum
     TTreeReaderValue<double> e_theta;   // polar angle of scattered electron
     TTreeReaderValue<double> e_phi;     // azimuth of scattered electron
 
-    TTreeReaderValue<double> p_p;       // pion momentum
-    TTreeReaderValue<double> p_theta;   // polar angle of pion
-    TTreeReaderValue<double> p_phi;     // azimuth of pion
+    TTreeReaderValue<double> p1_p;       // pion momentum
+    TTreeReaderValue<double> p1_theta;   // polar angle of pion
+    TTreeReaderValue<double> p1_phi;     // azimuth of pion
 
     TTreeReaderValue<double> Q2;
     TTreeReaderValue<double> W;

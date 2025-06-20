@@ -16,7 +16,7 @@ static constexpr double m_pi = 0.13957;   // charged pion
 SingleHadronKinematicCuts::SingleHadronKinematicCuts(TTreeReader& reader)
     : BaseKinematicCuts(reader),
       runnum       (reader, "runnum"),
-      fiducial_status(reader, "fiducial_status"),
+      //fiducial_status(reader, "fiducial_status"),
 
       // Electron‐side branches (added e_p, e_theta)
       e_p          (reader, "e_p"),
@@ -24,9 +24,9 @@ SingleHadronKinematicCuts::SingleHadronKinematicCuts(TTreeReader& reader)
       e_phi        (reader, "e_phi"),
 
       // Pion‐side branches (added p_theta)
-      p_p          (reader, "p_p"),
-      p_theta      (reader, "p_theta"),
-      p_phi        (reader, "p_phi"),
+      p1_p          (reader, "p1_p"),
+      p1_theta      (reader, "p1_theta"),
+      p1_phi        (reader, "p1_phi"),
 
       // Standard DIS / hadron variables
       Q2           (reader, "Q2"),
