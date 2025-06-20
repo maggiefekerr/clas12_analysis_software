@@ -822,8 +822,8 @@ TH1D* createHistogramForBin_single_hadron(const char* histName, int binIndex,
   TTreeReaderValue<double> pT(dataReader, "pT");
   TTreeReaderValue<double> DepA(dataReader, "DepA");
   TTreeReaderValue<double> DepB(dataReader, "DepB");
-  // TTreeReaderValue<double> phi(dataReader, "phi");
-  TTreeReaderValue<double> phi(dataReader, "phi2");
+  TTreeReaderValue<double> phi(dataReader, "phi");
+  // TTreeReaderValue<double> phi(dataReader, "phi2");
   TTreeReaderValue<double> currentVariable(dataReader, propertyNames[currentFits].c_str());
   // TTreeReaderValue<int> currentVariable(dataReader, propertyNames[currentFits].c_str());
 
@@ -2589,7 +2589,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
 
     // Variables to calculate the mean kinematics in each bin
     double sumQ2 = 0; double sumW = 0; double sumx = 0; double sumy = 0;
-    double sumt = 0; 
+    double sumt1 = 0; 
 
     // Declare reader locations
     TTreeReaderValue<int> runnum(dataReader, "runnum");
@@ -2598,7 +2598,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
     TTreeReaderValue<double> W(dataReader, "W");
     TTreeReaderValue<double> x(dataReader, "x");
     TTreeReaderValue<double> y(dataReader, "y");
-    TTreeReaderValue<double> t(dataReader, "t");
+    TTreeReaderValue<double> t1(dataReader, "t1");
     TTreeReaderValue<double> DepA(dataReader, "DepA");
     TTreeReaderValue<double> DepB(dataReader, "DepB");
     TTreeReaderValue<double> DepC(dataReader, "DepC");
@@ -2621,7 +2621,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
         sumW += *W;
         sumx += *x;
         sumy += *y;
-        sumt += *t;
+        sumt1 += *t1;
 
         // sum the depolarization values
         sumDepA += *DepA;
@@ -2651,7 +2651,7 @@ void performChi2Fits_dvcs(const char* output_file, const char* kinematic_file,
     double meanW = numEvents > 0 ? sumW / numEvents : 0.0;
     double meanx = numEvents > 0 ? sumx / numEvents : 0.0;
     double meany = numEvents > 0 ? sumy / numEvents : 0.0;
-    double meant = numEvents > 0 ? sumt / numEvents : 0.0;
+    double meant1 = numEvents > 0 ? sumt1 / numEvents : 0.0;
 
     switch (asymmetry_index) {
       case 0: {// beam-spin asymmetry
