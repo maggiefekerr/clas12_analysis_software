@@ -37,9 +37,10 @@ SingleHadronKinematicCuts::SingleHadronKinematicCuts(TTreeReader& reader)
       y            (reader, "y"),
       x            (reader, "x"),
       xi           (reader, "xi"),
-      phi          (reader, "phi"),
+      phi2          (reader, "phi2"),
       z            (reader, "z"),
       t            (reader, "t"),
+      t1           (reader, "t1"),
       tmin         (reader, "tmin"),
       target_pol   (reader, "target_pol")
 {}
@@ -149,6 +150,11 @@ bool SingleHadronKinematicCuts::applyCuts(int currentFits, bool isMC)
         } else  {
             return true;
         }
+    }
+
+    if (property == "dvcst1") {
+        goodEvent = (-0.1 < *Mx2);
+        goodEvent = goodEvent && (0.1 < *Mx2);
     }
 
     if (property == "Fall18xB" || property == "Fall18pT" ||

@@ -31,9 +31,10 @@ private:
     TTreeReaderValue<double> y;
     TTreeReaderValue<double> x;
     TTreeReaderValue<double> xi;
-    TTreeReaderValue<double> phi;
+    TTreeReaderValue<double> phi2;
     TTreeReaderValue<double> z;
     TTreeReaderValue<double> t;         // unused for “enpi+,” we recalc
+    TTreeReaderValue<double> t1;
     TTreeReaderValue<double> tmin;
     TTreeReaderValue<double>    target_pol;
 };
