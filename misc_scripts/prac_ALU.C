@@ -27,10 +27,6 @@ void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_
     hDVCS_measAsym->SetLineColor(2);
     hDVCS_measAsym->SetMarkerStyle(24);
     hDVCS_measAsym->SetStats(0);
-    hDVCS_measAsym->SetTitle("A_{LU}");
-    hDVCS_measAsym->GetXaxis()->SetTitle("#phi (rad)");
-    //hDVCS_measAsym->GetYaxis()->SetTitle("A_{LU}");
-    hDVCS_measAsym->GetYaxis()->SetRangeUser(-0.4, 0.4);
 
     hPi0_Asym->SetMarkerColor(4);
     hPi0_Asym->SetLineColor(4);
@@ -40,11 +36,16 @@ void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_
     hDVCS_Asym->SetMarkerColor(1);
     hDVCS_Asym->SetLineColor(1);
     hDVCS_Asym->SetMarkerStyle(25);
-    hDVCS_Asym->SetStats(1);  
+    hDVCS_Asym->SetStats(0);  
+    //hDVCS_Asym->SetStats(1);
+    hDVCS_Asym->SetTitle("A_{LU}");
+    hDVCS_Asym->GetXaxis()->SetTitle("#phi (rad)");
+    //hDVCS_Asym->GetYaxis()->SetTitle("A_{LU}");
+    hDVCS_Asym->GetYaxis()->SetRangeUser(-0.5, 0.5);  
 
-    hDVCS_measAsym->Draw("P");
+    hDVCS_Asym->Draw("P");
     hPi0_Asym->Draw("P sames");
-    hDVCS_Asym->Draw("P sames");
+    hDVCS_measAsym->Draw("P sames");
     fit_measAsym->SetLineColor(2);
     hDVCS_measAsym->Fit("fit_measAsym");
     fit_pi0Asym->SetLineColor(4);
