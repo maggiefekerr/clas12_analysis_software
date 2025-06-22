@@ -457,6 +457,10 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     hCont->Draw("P");
 
     c1->SaveAs("prac_pi0-contamination.png");
+
+    for (int i=1; i<=numBins; i++) {
+        cout << hCont->GetBinContent(i) << endl;
+    }
 }
 
 // extracts this for specific xB, q2, t kinematics so it can be directly applied to the DVCS asymmetry for pi0 subtraction
