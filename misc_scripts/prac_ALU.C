@@ -70,12 +70,12 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
 
     // kinematic ranges
     Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
-    xB_min = xB - 0.1;
-    xB_max = xB + 0.1;
-    Q2_min = q2 - 0.2;
-    Q2_max = q2 + 0.2;
-    t_min = t - 0.1;
-    t_max = t + 0.1;
+    xB_min = xB - 0.05;
+    xB_max = xB + 0.05;
+    Q2_min = q2 - 0.1;
+    Q2_max = q2 + 0.1;
+    t_min = t - 0.05;
+    t_max = t + 0.05;
     tpos = -1*t;
     tpos_min = -1*t_max;
     tpos_max = -1*t_min;
