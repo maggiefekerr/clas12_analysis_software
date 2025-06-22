@@ -372,6 +372,25 @@ void prac_pi0_efficiency(TString dataFile, TString reconFile, TString genFile, I
     hGen_phi2->Draw("PE");
     hData_phi2_scaled->Draw("PE same");
 
+    if (hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMaximumBin()) > hGen_phi2->GetBinContent(hGen_phi2->GetMaximumBin())) {
+        hGen_phi2->GetYaxis()->SetRangeUser(0.0, hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMaximumBin())+0.005);
+        if (hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMinimumBin()) < hGen_phi2->GetBinContent(hGen_phi2->GetMinimumBin())){
+            hGen_phi2->GetYaxis()->SetRangeUser(hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMinimumBin())-0.005, hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMaximumBin())+0.005);
+        }
+        else {
+            hGen_phi2->GetYaxis()->SetRangeUser(hGen_phi2->GetBinContent(hGen_phi2->GetMinimumBin())-0.005, hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMaximumBin())+0.005);
+        }
+    }
+    else {
+        hGen_phi2->GetYaxis()->SetRangeUser(0.0, hGen_phi2->GetBinContent(hGen_phi2->GetMaximumBin())+0.005);
+        if (hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMinimumBin()) < hGen_phi2->GetBinContent(hGen_phi2->GetMinimumBin())){
+            hGen_phi2->GetYaxis()->SetRangeUser(hData_phi2_scaled->GetBinContent(hData_phi2_scaled->GetMinimumBin())-0.005, hGen_phi2->GetBinContent(hGen_phi2->GetMaximumBin())+0.005);
+        }
+        else {
+            hGen_phi2->GetYaxis()->SetRangeUser(hGen_phi2->GetBinContent(hGen_phi2->GetMinimumBin())-0.005, hGen_phi2->GetBinContent(hGen_phi2->GetMaximumBin())+0.005);
+        }
+    }
+
     TLegend *leg1 = new TLegend(0.45,0.7,0.55,0.9);
     leg1->AddEntry(hGen_phi2,"mc","ep");
     leg1->AddEntry(hData_phi2_scaled,"data","ep");
