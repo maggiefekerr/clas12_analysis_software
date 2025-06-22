@@ -284,6 +284,98 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
 }
 
 // comparing generated and reconstructed MC to extract bin by bin efficiency
-void prac_pi0_(){
+void prac_pi0_efficiency(TString dataFile, TString reconFile, TString genFile, Int_t numBins){
+    TFile *f_data = TFile::Open(dataFile);  
+    TFile *f_recon = TFile::Open(reconFile);
+    TFile *f_gen = TFile::Open(genFile);
 
+    TTree *t_data = (TTree*)f_data->Get("PhysicsEvents");
+    TTree *t_recon = (TTree*)f_recon->Get("PhysicsEvents");
+    TTree *t_gen = (TTree*)f_gen->Get("PhysicsEvents");
+
+    TH1F *hData_phi2 = new TH1F("hData_phi2", "hData_phi2", numBins, 0, 2*TMath::Pi());
+    t_data->Draw("phi2>>hData_phi2","","goff");
+    TH1F *hRecon_phi2 = new TH1F("hRecon_phi2", "hRecon_phi2", numBins, 0, 2*TMath::Pi());
+    t_recon->Draw("phi2>>hRecon_phi2","","goff");
+    TH1F *hGen_phi2 = new TH1F("hGen_phi2", "hGen_phi2", numBins, 0, 2*TMath::Pi());
+    t_gen->Draw("phi2>>hGen_phi2","","goff");
+    
+    TH1F *hRatio = new TH1F("hRatio", "hRatio", numBins, 0, 2*TMath::Pi());
+    for (int i=1; i<=12; i++) {
+        hRatio->SetBinContent(i, (double)hRecon_phi2->GetBinContent(i)/(double)hGen_phi2->GetBinContent(i));
+    }
+
+    TH1F *hData_phi2_scaled = new TH1F("hData_phi2_scaled", "hData_phi2_scaled", numBins, 0, 2*TMath::Pi());
+    for (int i=1; i<=12; i++) {
+        hData_phi2_scaled->SetBinContent(i, hData_phi2->GetBinContent(i)*(1/hRatio->GetBinContent(i)));
+    }
+
+    // summary plot
+    TCanvas *c1 = new TCanvas("c1", "c1", 6000, 4500);
+    c1->Divide(2,3);
+
+    c1->cd(1);
+    hRecon_phi2->SetMarkerColor(1);
+    hRecon_phi2->SetMarkerStyle(21);
+    hRecon_phi2->SetStats(0);
+    hRecon_phi2->SetTitle("#phi Distribution for DV#pi^{0}P Reconstructed MC");
+    hRecon_phi2->GetXaxis()->SetTitle("#phi (rad)");
+    hRecon_phi2->Draw("PE");
+
+    c1->cd(2);
+    hGen_phi2->SetMarkerColor(1);
+    hGen_phi2->SetMarkerStyle(21);
+    hGen_phi2->SetStats(0);
+    hGen_phi2->SetTitle("#phi Distribution for DV#pi^{0}P Generated MC");
+    hGen_phi2->GetXaxis()->SetTitle("#phi (rad)");
+    hGen_phi2->Draw("PE");
+
+    c1->cd(3);
+    hRatio->SetMarkerColor(1);
+    hRatio->SetMarkerStyle(21);
+    hRatio->SetStats(0);
+    hRatio->SetTitle("DV#pi^{0}P Reconstructed to Generated MC Event Efficiency in #phi");
+    hRatio->GetXaxis()->SetTitle("#phi (rad)");
+    hRatio->Draw("P");
+
+    c1->cd(5);
+    hData_phi2->SetMarkerColor(1);
+    hData_phi2->SetMarkerStyle(21);
+    hData_phi2->SetStats(0);
+    hData_phi2->SetTitle("#phi Distribution for DV#pi^{0}P Raw Data");
+    hData_phi2->GetXaxis()->SetTitle("#phi (rad)");
+    hData_phi2->Draw("PE");
+
+    c1->cd(6);
+    hData_phi2_scaled->SetMarkerColor(1);
+    hData_phi2_scaled->SetMarkerStyle(21);
+    hData_phi2_scaled->SetStats(0);
+    hData_phi2_scaled->SetTitle("#phi Distribution for DV#pi^{0}P Scaled Data");
+    hData_phi2_scaled->GetXaxis()->SetTitle("#phi (rad)");
+    hData_phi2_scaled->Draw("PE");
+
+    c1->SaveAs("prac_pi0-efficiency_1.png");
+
+    TCanvas *c2 = new TCanvas("c2", "c2", 2000, 1500);
+    hGen_phi2->Scale(1./(double)hGen_phi2->Integral());
+    hGen_phi2->SetMarkerColor(4);
+    hGen_phi2->SetMarkerStyle(21);
+    hGen_phi2->SetStats(0);
+    hGen_phi2->SetTitle("#phi Distribution for DV#pi^{0}P Normalized Generated MC and Scaled Data");
+    hGen_phi2->GetXaxis()->SetTitle("#phi (rad)");
+
+    hData_phi2_scaled->Scale(1./(double)hData_phi2_scaled->Integral());
+    hData_phi2_scaled->SetMarkerColor(2);
+    hData_phi2_scaled->SetMarkerStyle(21);
+    hData_phi2_scaled->SetStats(0);
+    
+    hGen_phi2->Draw("PE");
+    hData_phi2_scaled->Draw("PE same");
+
+    TLegend *leg1 = new TLegend(0.45,0.7,0.55,0.9);
+    leg1->AddEntry(hGen_phi2,"mc","ep");
+    leg1->AddEntry(hData_phi2_scaled,"data","ep");
+    leg1->Draw();
+
+    c2->SaveAs("prac_pi0-efficiency_2.png");
 }
