@@ -126,7 +126,7 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     // vgg model
     TH1F *hDVCS_VGGAsym = new TH1F("hDVCS_VGGAsym", "hDVCS_VGGAsym", numBins*numBinDiv, 0, 2*TMath::Pi());
     std::ostringstream oss1;
-    oss1 << "python -u prac_dvcsgens.py vgg_model " << vggFile << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam;
+    oss1 << "python -u prac_dvcsgens.py vgg_model " << vggFile << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << beamE;
     std::string asyRun1 = oss1.str();
     FILE* pipe1 = gSystem->OpenPipe(asyRun1.c_str(), "r");
     if (!pipe1) {
@@ -144,7 +144,7 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     // km15 model
     TH1F *hDVCS_KM15AsymK = new TH1F("hDVCS_KM15AsymK", "hDVCS_KM15AsymK", numBins*numBinDiv, 0, 2*TMath::Pi());
     std::ostringstream oss2;
-    oss2 << "python -u prac_gepard.py km15_model " << km15File << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << E_beam << " " << "ALU";
+    oss2 << "python -u prac_gepard.py km15_model " << km15File << " " << xB << " " << q2 << " " << tpos << " " << numBins << " " << numBinDiv << " " << beamE << " " << "ALU";
     std::string asyRun2 = oss2.str();
     FILE* pipe2 = gSystem->OpenPipe(asyRun2.c_str(), "r");
     if (!pipe2) {
@@ -175,8 +175,8 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     TH1F *hContamination = new TH1F("hContamination", "hContamination", numBins, 0, 2*TMath::Pi());
     hContamination->Multiply(hPi0_phi, hDiv2);
     for (int i=1; i<=numBins; i++) {
-        if (hCont->GetBinContent(i) == 0) {
-            hCont->SetBinContent(i, 0.0);
+        if (hContamination->GetBinContent(i) == 0) {
+            hContamination->SetBinContent(i, 0.0);
         }
     }
 
