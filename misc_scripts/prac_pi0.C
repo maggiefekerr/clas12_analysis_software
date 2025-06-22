@@ -171,14 +171,14 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
     c1->cd(1);
     hData_Q2->Scale(1./(double)numData);
     hData_Q2->SetMarkerColor(2);
-    hData_Q2->SetMarkerStyle(21);
+    hData_Q2->SetMarkerStyle(24);
     hData_Q2->SetStats(0);
     hData_Q2->SetTitle("DV#pi^{0}P Q^{2}");
     hData_Q2->GetXaxis()->SetTitle("Q^{2} (Gev^{2})");
 
     hRecon_Q2->Scale(1/(double)numRecon);
     hRecon_Q2->SetMarkerColor(4);
-    hRecon_Q2->SetMarkerStyle(21);
+    hRecon_Q2->SetMarkerStyle(24);
 
     if (hData_Q2->GetBinContent(hData_Q2->GetMaximumBin()) > hRecon_Q2->GetBinContent(hRecon_Q2->GetMaximumBin())) {
         hData_Q2->GetYaxis()->SetRangeUser(0.0, hData_Q2->GetBinContent(hData_Q2->GetMaximumBin())+0.01);
@@ -192,21 +192,21 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
 
     TLegend *leg1 = new TLegend(0.8,0.4,0.9,0.6);
     leg1->AddEntry(hData_Q2,"data","ep");
-    leg1->AddEntry(hRecon_Q2,"reconstructed mc","ep");
+    leg1->AddEntry(hRecon_Q2,"mc","ep");
     leg1->Draw();
 
     // t1
     c1->cd(2);
     hData_t1->Scale(1./(double)numData);
     hData_t1->SetMarkerColor(2);
-    hData_t1->SetMarkerStyle(21);
+    hData_t1->SetMarkerStyle(24);
     hData_t1->SetStats(0);
     hData_t1->SetTitle("DV#pi^{0}P -t");
     hData_t1->GetXaxis()->SetTitle("-t (GeV^{2})");
 
     hRecon_t1->Scale(1./(double)numRecon);
     hRecon_t1->SetMarkerColor(4);
-    hRecon_t1->SetMarkerStyle(21);
+    hRecon_t1->SetMarkerStyle(24);
 
     if (hData_t1->GetBinContent(hData_t1->GetMaximumBin()) > hRecon_t1->GetBinContent(hRecon_t1->GetMaximumBin())) {
         hData_t1->GetYaxis()->SetRangeUser(0.0, hData_t1->GetBinContent(hData_t1->GetMaximumBin())+0.005);
@@ -220,21 +220,21 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
 
     TLegend *leg4 = new TLegend(0.8,0.5,0.9,0.7);
     leg4->AddEntry(hData_t1,"data","ep");
-    leg4->AddEntry(hRecon_t1,"reconstructed mc","ep");
+    leg4->AddEntry(hRecon_t1,"mc","ep");
     leg4->Draw();
 
     // Mx2
     c1->cd(3);
     hData_Mx2->Scale(1./(double)numData);
     hData_Mx2->SetMarkerColor(2);
-    hData_Mx2->SetMarkerStyle(21);
+    hData_Mx2->SetMarkerStyle(24);
     hData_Mx2->SetStats(0);
     hData_Mx2->SetTitle("DV#pi^{0}P Mx^{2}");
     hData_Mx2->GetXaxis()->SetTitle("Mx^{2} (GeV^{2})");
 
     hRecon_Mx2->Scale(1./(double)numRecon);
     hRecon_Mx2->SetMarkerColor(4);
-    hRecon_Mx2->SetMarkerStyle(21);
+    hRecon_Mx2->SetMarkerStyle(24);
 
     if (hData_Mx2->GetBinContent(hData_Mx2->GetMaximumBin()) > hRecon_Mx2->GetBinContent(hRecon_Mx2->GetMaximumBin())) {
         hData_Mx2->GetYaxis()->SetRangeUser(0.0, hData_Mx2->GetBinContent(hData_Mx2->GetMaximumBin())+0.05);
@@ -248,21 +248,21 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
 
     TLegend *leg2 = new TLegend(0.8,0.4,0.9,0.6);
     leg2->AddEntry(hData_Mx2,"data","ep");
-    leg2->AddEntry(hRecon_Mx2,"reconstructed mc","ep");
+    leg2->AddEntry(hRecon_Mx2,"mc","ep");
     leg2->Draw();
 
     // phi2
     c1->cd(4);
     hData_phi2->Scale(1./(double)numData);
     hData_phi2->SetMarkerColor(2);
-    hData_phi2->SetMarkerStyle(21);
+    hData_phi2->SetMarkerStyle(24);
     hData_phi2->SetStats(0);
     hData_phi2->SetTitle("DV#pi^{0}P #phi");
     hData_phi2->GetXaxis()->SetTitle("#phi (rad)");
 
     hRecon_phi2->Scale(1./(double)numRecon);
     hRecon_phi2->SetMarkerColor(4);
-    hRecon_phi2->SetMarkerStyle(21);
+    hRecon_phi2->SetMarkerStyle(24);
 
     if (hData_phi2->GetBinContent(hData_phi2->GetMaximumBin()) > hRecon_phi2->GetBinContent(hRecon_phi2->GetMaximumBin())) {
         hData_phi2->GetYaxis()->SetRangeUser(0.0, hData_phi2->GetBinContent(hData_phi2->GetMaximumBin())+0.01);
@@ -276,7 +276,7 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
 
     TLegend *leg3 = new TLegend(0.45,0.7,0.55,0.9);
     leg3->AddEntry(hData_phi2,"data","ep");
-    leg3->AddEntry(hRecon_phi2,"reconstructed mc","ep");
+    leg3->AddEntry(hRecon_phi2,"mc","ep");
     leg3->Draw();
 
     c1->Update();
