@@ -21,7 +21,7 @@ void prac_ALU_pi0_asymmetry(TH1F* hPi0_Asym, TF1* fit_pi0Asym) {
 
 }
 
-void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_Asym, TF1* fit_measAsym, TF1* fit_pi0, TF1* fit_dvcsAsym){
+void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_Asym, TF1* fit_measAsym, TF1* fit_pi0Asym, TF1* fit_dvcsAsym){
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
     hDVCS_measAsym->SetMarkerColor(2);
     hDVCS_measAsym->SetLineColor(2);
@@ -45,7 +45,7 @@ void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_
     hPi0_Asym->Draw("P sames");
     hDVCS_Asym->Draw("P sames");
     hDVCS_measAsym->Fit("fit_measAsym");
-    hPi0_Asym->Fit("fit_pi0");
+    hPi0_Asym->Fit("fit_pi0Asym");
     hDVCS_Asym->Fit("fit_dvcsAsym");
     gStyle->SetOptFit(0001);
 }
@@ -191,5 +191,5 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     fit_dvcsAsym->SetParameter(1,1);
     fit_dvcsAsym->SetParameter(2,0);
 
-    prac_ALU_dvcs_asymmetry(hDVCS_measAsym, hPi0_Asym, hDVCS_Asym, fit_measAsym, fit_pi0, fit_dvcsAsym);
+    prac_ALU_dvcs_asymmetry(hDVCS_measAsym, hPi0_Asym, hDVCS_Asym, fit_measAsym, fit_pi0Asym, fit_dvcsAsym);
 }
