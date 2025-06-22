@@ -20,28 +20,28 @@ void prac_pi0_kinematics(TString file, Int_t numBins) {
     c1->Divide(2,2);
 
     c1->cd(1);
-    hQ2->SetTitle("Fall 2018 DV#pi^{0}P Q^{2}");
+    hQ2->SetTitle("DV#pi^{0}P Q^{2}");
     hQ2->GetXaxis()->SetTitle("Q^{2} (GeV^{2})");
     hQ2->SetMarkerColor(1);
     hQ2->SetMarkerStyle(21);
     hQ2->Draw("PE");
 
     c1->cd(2);
-    ht1->SetTitle("Fall 2018 DV#pi^{0}P -t");
+    ht1->SetTitle("DV#pi^{0}P -t");
     ht1->GetXaxis()->SetTitle("-t (GeV^{2})");
     ht1->SetMarkerColor(1);
     ht1->SetMarkerStyle(21);
     ht1->Draw("PE");
 
     c1->cd(3);
-    hMx2_1->SetTitle("Fall 2018 DV#pi^{0}P #pi^{0} Mx^{2}");
+    hMx2_1->SetTitle("DV#pi^{0}P #pi^{0} Mx^{2}");
     hMx2_1->GetXaxis()->SetTitle("Mx^{2} (GeV^{2})");
     hMx2_1->SetMarkerColor(1);
     hMx2_1->SetMarkerStyle(21);
     hMx2_1->Draw("PE");
 
     c1->cd(4);
-    hphi2->SetTitle("Fall 2018 DV#pi^{0}P #phi");
+    hphi2->SetTitle("DV#pi^{0}P #phi");
     hphi2->GetXaxis()->SetTitle("#phi (rad)");
     hphi2->SetMarkerColor(1);
     hphi2->SetMarkerStyle(21);
@@ -126,7 +126,7 @@ void prac_pi0_asym(TString file, Int_t numBins, Double_t beamPol = 1.0){
     l->DrawLatexNDC(0.64, 0.53, "([p0]*sin(x))/(1+[p1]*cos(x))+[p2]");
 
     c2->Update();
-    c2->SaveAs("prac_pi0_asym-asym.png");
+    c2->SaveAs("prac_pi0-asym.png");
 }
 
 // comparing data with reconstructed MC
@@ -173,7 +173,7 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
     hData_Q2->SetMarkerColor(2);
     hData_Q2->SetMarkerStyle(21);
     hData_Q2->SetStats(0);
-    hData_Q2->SetTitle("Q^{2}");
+    hData_Q2->SetTitle("DV#pi^{0}P Q^{2}");
     hData_Q2->GetXaxis()->SetTitle("Q^{2} (Gev^{2})");
 
     hRecon_Q2->Scale(1/(double)numRecon);
@@ -201,7 +201,7 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
     hData_t1->SetMarkerColor(2);
     hData_t1->SetMarkerStyle(21);
     hData_t1->SetStats(0);
-    hData_t1->SetTitle("-t");
+    hData_t1->SetTitle("DV#pi^{0}P -t");
     hData_t1->GetXaxis()->SetTitle("-t (GeV^{2})");
 
     hRecon_t1->Scale(1./(double)numRecon);
@@ -229,7 +229,7 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
     hData_Mx2->SetMarkerColor(2);
     hData_Mx2->SetMarkerStyle(21);
     hData_Mx2->SetStats(0);
-    hData_Mx2->SetTitle("Mx^{2}");
+    hData_Mx2->SetTitle("DV#pi^{0}P Mx^{2}");
     hData_Mx2->GetXaxis()->SetTitle("Mx^{2} (GeV^{2})");
 
     hRecon_Mx2->Scale(1./(double)numRecon);
@@ -257,7 +257,7 @@ void prac_pi0_recon_comp(TString dataFile, TString reconFile, Int_t numBins){
     hData_phi2->SetMarkerColor(2);
     hData_phi2->SetMarkerStyle(21);
     hData_phi2->SetStats(0);
-    hData_phi2->SetTitle("#phi");
+    hData_phi2->SetTitle("DV#pi^{0}P #phi");
     hData_phi2->GetXaxis()->SetTitle("#phi (rad)");
 
     hRecon_phi2->Scale(1./(double)numRecon);
