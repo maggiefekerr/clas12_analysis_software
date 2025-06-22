@@ -465,12 +465,11 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
 
     TLatex *l = new TLatex();
     l->SetTextSize(0.035);
-    l->DrawLatexNDC(0.625, 0.53, "([p0]*sin(x))/(1+[p1]*cos(x))+[p2]");
-    l->DrawLatexNDC(0.7, 0.900, Form("x_{B}: %.3f", xB));
-    l->DrawLatexNDC(0.7, 0.850, Form("Q^{2}: %.3f", q2));
-    l->DrawLatexNDC(0.7, 0.800, Form("-t: %.3f", tpos));
+    l->DrawLatexNDC(0.8, 0.850, Form("x_{B}: %.3f", xB));
+    l->DrawLatexNDC(0.8, 0.800, Form("Q^{2}: %.3f", q2));
+    l->DrawLatexNDC(0.8, 0.750, Form("-t: %.3f", tpos));
 
-    c1->SaveAs("prac_pi0-contamination.png");
+    c1->SaveAs(Form("prac_pi0-contamination-xB%.3f-Q2%0.3f-t%0.3f.png", xB, q2, tpos));
 }
 
 // extracts this for specific xB, q2, t kinematics so it can be directly applied to the DVCS asymmetry for pi0 subtraction
