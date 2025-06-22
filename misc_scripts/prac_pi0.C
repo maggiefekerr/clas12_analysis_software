@@ -401,7 +401,7 @@ void prac_pi0_efficiency(TString dataFile, TString reconFile, TString genFile, I
 
 // dvcsPionFile refers to running the pi0 data through the processing_dvcs analysis script
 // dvcsFile refers to running the actual data through the processing_dvcs analysis script (ie the number of detected DVCS events)
-void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPionFile, TString dvcsFile, Int_t numBins) {
+void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPionFile, TString dvcsFile, Double_t xB, Double_t q2, Double_t t, Int_t numBins) {
     TFile *f_data = TFile::Open(dataFile);
     TFile *f_recon = TFile::Open(reconFile);
     TFile *f_dvcsPion = TFile::Open(dvcsPionFile);
@@ -412,14 +412,31 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     TTree *t_dvcsPion = (TTree*)f_dvcsPion->Get("PhysicsEvents");
     TTree *t_dvcs = (TTree*)f_dvcs->Get("PhysicsEvents");
 
+    Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
+    xB_min = xB - 0.01;
+    xB_max = xB + 0.01;
+    Q2_min = q2 - 0.1;
+    Q2_max = q2 + 0.1;
+    t_min = t - 0.005;
+    t_max = t + 0.005;
+    tpos = -1*t;
+    tpos_min = -1*t_max;
+    tpos_max = -1*t_min;
+
+    TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xB_min, xB_max, Q2_min, Q2_max, t_min, t_max);
+
     TH1F *hData = new TH1F("hData", "hData", numBins, 0, 2*TMath::Pi());
-    t_data->Draw("phi2>>hData", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    //t_data->Draw("phi2>>hData", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    t_data->Draw("phi2>>hData", cuts, "goff");
     TH1F *hRecon = new TH1F("hRecon", "hRecon", numBins, 0, 2*TMath::Pi());
-    t_recon->Draw("phi2>>hRecon", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    //t_recon->Draw("phi2>>hRecon", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    t_recon->Draw("phi2>>hRecon", cuts, "goff");
     TH1F *hDVCSPion = new TH1F("hDVCSPion", "hDVCSPion", numBins, 0, 2*TMath::Pi());
-    t_dvcsPion->Draw("phi2>>hDVCSPion", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    //t_dvcsPion->Draw("phi2>>hDVCSPion", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    t_dvcsPion->Draw("phi2>>hDVCSPion", cuts, "goff");    
     TH1F *hDVCS = new TH1F("hDVCS", "hDVCS", numBins, 0, 2*TMath::Pi());
-    t_dvcs->Draw("phi2>>hDVCS", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    //t_dvcs->Draw("phi2>>hDVCS", "x > 0.125 && x < 0.127 && Q2 > 1.69 && Q2 < 1.89 && t1 > -0.720 && t1 < -0.520", "goff");
+    t_dvcs->Draw("phi2>>hDVCS", cuts, "goff");
 
     TH1F *hDiv1 = new TH1F("hDiv1", "hDiv1", numBins, 0, 2*TMath::Pi());
     hDiv1->Divide(hDVCSPion, hRecon);
