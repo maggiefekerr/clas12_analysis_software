@@ -183,7 +183,7 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     // dvcs asymmetry
     TH1F *hDVCS_Asym = new TH1F("hDVCS_Asym", "hDVCS_Asym", numBins, 0, 2*TMath::Pi());
     for (int i=1; i<=numBins; i++) {
-        hDVCS_Asym->SetBinContent((1.0/(1.0 - hContamination->GetBinContent(i)))*(hDVCS_measAsym->GetBinContent(i) - (hContamination->GetBinContent(i))*(hPi0_Asym->GetBinContent(i))));
+        hDVCS_Asym->SetBinContent(i, (1.0/(1.0 - hContamination->GetBinContent(i)))*(hDVCS_measAsym->GetBinContent(i) - (hContamination->GetBinContent(i))*(hPi0_Asym->GetBinContent(i))));
     }
     hDVCS_Asym->Scale(1./beamPol);
     TF1 *fit_dvcsAsym = new TF1("fit_dvcsAsym", "[0]*sin(x)/(1+[1]*cos(x))+[2]", 0, 2*TMath::Pi());
