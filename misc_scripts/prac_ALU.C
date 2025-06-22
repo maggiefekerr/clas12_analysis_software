@@ -191,4 +191,5 @@ void prac_ALU(TString dvcsFile, TString pi0File, TString vggFile, TString km15Fi
     fit_dvcsAsym->SetParameter(1,1);
     fit_dvcsAsym->SetParameter(2,0);
 
+    prac_ALU_dvcs_asymmetry(hDVCS_measAsym, hPi0_Asym, hDVCS_Asym, fit_measAsym, fit_pi0, fit_dvcsAsym);
 }
