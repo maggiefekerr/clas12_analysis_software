@@ -447,6 +447,12 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     TH1F *hCont = new TH1F("hCont", "hCont", numBins, 0, 2*TMath::Pi());
     hCont->Multiply(hData, hDiv2);
 
+    for (int i=1; i<=numBins; i++) {
+        if (hCont->GetBinContent(i) == 0) {
+            hCont->SetBinContent(i, 0.0);
+        }
+    }
+
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
     hCont->SetTitle("DV#pi^{0}P Contamination Constants");
     hCont->GetXaxis()->SetTitle("#phi (rad)");
@@ -454,13 +460,10 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     hCont->SetMarkerColor(1);
     hCont->SetMarkerStyle(21);
     hCont->SetStats(0);
+    hCont->GetYaxis()->SetRangeUser(-0.001, hCont->GetBinContent(hCont->GetMaximumBin())+0.05);
     hCont->Draw("P");
 
     c1->SaveAs("prac_pi0-contamination.png");
-
-    for (int i=1; i<=numBins; i++) {
-        cout << hCont->GetBinContent(i) << endl;
-    }
 }
 
 // extracts this for specific xB, q2, t kinematics so it can be directly applied to the DVCS asymmetry for pi0 subtraction
