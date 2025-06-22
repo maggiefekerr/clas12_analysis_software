@@ -463,6 +463,13 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     hCont->GetYaxis()->SetRangeUser(-0.01, hCont->GetBinContent(hCont->GetMaximumBin())+0.05);
     hCont->Draw("P");
 
+    TLatex *l = new TLatex();
+    l->SetTextSize(0.035);
+    l->DrawLatexNDC(0.625, 0.53, "([p0]*sin(x))/(1+[p1]*cos(x))+[p2]");
+    l->DrawLatexNDC(0.7, 0.900, Form("x_{B}: %.3f", xB));
+    l->DrawLatexNDC(0.7, 0.850, Form("Q^{2}: %.3f", q2));
+    l->DrawLatexNDC(0.7, 0.800, Form("-t: %.3f", tpos));
+
     c1->SaveAs("prac_pi0-contamination.png");
 }
 
