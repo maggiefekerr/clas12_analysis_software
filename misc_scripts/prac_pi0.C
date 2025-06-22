@@ -398,3 +398,68 @@ void prac_pi0_efficiency(TString dataFile, TString reconFile, TString genFile, I
 
     c2->SaveAs("prac_pi0-efficiency_2.png");
 }
+
+// dvcsPionFile refers to running the pi0 data through the processing_dvcs analysis script
+// dvcsFile refers to running the actual data through the processing_dvcs analysis script (ie the number of detected DVCS events)
+void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPionFile, TString dvcsFile, Int_t numBins) {
+    TFile *f_data = TFile::Open(dataFile);
+    TFile *f_recon = TFile::Open(reconFile);
+    TFile *f_dvcsPion = TFile::Open(dvcsPionFile);
+    TFile *f_dvcs = TFile::Open(dvcsFile);
+
+    TTree *t_data = (TTree*)f_data->Get("PhysicsEvents");
+    TTree *t_recon = (TTree*)f_recon->Get("PhysicsEvents");
+    TTree *t_dvcsPion = (TTree*)f_dvcsPion->Get("PhysicsEvents");
+    TTree *t_dvcs = (TTree*)f_dvcs->Get("PhysicsEvents");
+
+    TH1F *hData = new TH1F("hData", "hData", numBins, 0, 2*TMath::Pi());
+    t_data->Draw("phi2>>hData", "", "goff");
+    TH1F *hRecon = new TH1F("hRecon", "hRecon", numBins, 0, 2*TMath::Pi());
+    t_recon->Draw("phi2>>hRecon", "", "goff");
+    TH1F *hDVCSPion = new TH1F("hDVCSPion", "hDVCSPion", numBins, 0, 2*TMath::Pi());
+    t_dvcsPion->Draw("phi2>>hDVCSPion", "", "goff");
+    TH1F *hDVCS = new TH1F("hDVCS", "hDVCS", numBins, 0, 2*TMath::Pi());
+    t_dvcs->Draw("phi2>>hDVCS", "", "goff");
+
+    TH1F *hDiv1 = new TH1F("hDiv1", "hDiv1", numBins, 0, 2*TMath::Pi());
+    hDiv1->Divide(hDVCSPion, hRecon);
+
+    TH1F *hDiv2 = new TH1F("hDiv2", "hDiv2", numBins, 0, 2*TMath::Pi());
+    hDiv2->Divide(hDiv1, hDVCS);
+
+    TH1F *hCont = new TH1F("hCont", "hCont", numBins, 0, 2*TMath::Pi());
+    hCont->Multiply(hData, hDiv2);
+
+    TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
+    hCont->SetTitle("DV#pi^{0}P Contamination Constants");
+    hCont->GetXaxis()->SetTitle("#phi (rad)");
+    hCont->GetYaxis()->SetTitle("c_{i}");
+    hCont->SetMarkerColor(1);
+    hCont->SetMarkerStyle(21);
+    hCont->SetStats(0);
+    hCont->Draw("P");
+    hCont->SaveAs("prac_pi0-contamination.png");
+}
+
+// extracts this for specific xB, q2, t kinematics so it can be directly applied to the DVCS asymmetry for pi0 subtraction
+void prac_pi0_contamination_return(TString dataFile, TString reconFile, TString dvcsFile, Double_t xB, Double_t q2, Double_t t, Int_t numBins) {
+    // kinematic settings
+    Double_t xB_min, xB_max, Q2_min, Q2_max, t_min, t_max, tpos, tpos_min, tpos_max;
+    xB_min = xB - 0.02;
+    xB_max = xB + 0.02;
+    Q2_min = q2 - 0.2;
+    Q2_max = q2 + 0.2;
+    t_min = t - 0.1;
+    t_max = t + 0.1;
+    tpos = -1*t;
+    tpos_min = -1*t_max;
+    tpos_max = -1*t_min;
+
+    TFile *f_data = TFile::Open(dataFile);
+    TFile *f_recon = TFile::Open(reconFile);
+    TFile *f_dvcs = TFile::Open(dvcsFile);
+
+    TTree *t_data = (TTree*)f_data->Get("PhysicsEvents");
+    TTree *t_recon = (TTree*)f_recon->Get("PhysicsEvents");
+    TTree *t_dvcs = (TTree*)f_dvcs->Get("PhysicsEvents");
+}
