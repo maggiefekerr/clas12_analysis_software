@@ -460,7 +460,7 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     hCont->SetMarkerColor(1);
     hCont->SetMarkerStyle(21);
     hCont->SetStats(0);
-    hCont->GetYaxis()->SetRangeUser(-0.001, hCont->GetBinContent(hCont->GetMaximumBin())+0.05);
+    hCont->GetYaxis()->SetRangeUser(-0.01, hCont->GetBinContent(hCont->GetMaximumBin())+0.05);
     hCont->Draw("P");
 
     c1->SaveAs("prac_pi0-contamination.png");
