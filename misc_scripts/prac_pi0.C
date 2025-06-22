@@ -391,7 +391,7 @@ void prac_pi0_efficiency(TString dataFile, TString reconFile, TString genFile, I
         }
     }
 
-    TLegend *leg1 = new TLegend(0.45,0.7,0.55,0.9);
+    TLegend *leg1 = new TLegend(0.45,0.1,0.55,0.3);
     leg1->AddEntry(hGen_phi2,"mc","ep");
     leg1->AddEntry(hData_phi2_scaled,"data","ep");
     leg1->Draw();
