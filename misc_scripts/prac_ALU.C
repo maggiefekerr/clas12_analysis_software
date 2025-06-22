@@ -41,7 +41,7 @@ void prac_ALU_dvcs_asymmetry(TH1F* hDVCS_measAsym, TH1F* hPi0_Asym, TH1F* hDVCS_
     hDVCS_Asym->SetTitle("A_{LU}");
     hDVCS_Asym->GetXaxis()->SetTitle("#phi (rad)");
     //hDVCS_Asym->GetYaxis()->SetTitle("A_{LU}");
-    hDVCS_Asym->GetYaxis()->SetRangeUser(-0.5, 0.5);  
+    //hDVCS_Asym->GetYaxis()->SetRangeUser(-0.5, 0.5);  
 
     hDVCS_Asym->Draw("P");
     hPi0_Asym->Draw("P sames");
