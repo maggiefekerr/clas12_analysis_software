@@ -413,13 +413,13 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     TTree *t_dvcs = (TTree*)f_dvcs->Get("PhysicsEvents");
 
     TH1F *hData = new TH1F("hData", "hData", numBins, 0, 2*TMath::Pi());
-    t_data->Draw("phi2>>hData", "", "goff");
+    t_data->Draw("phi2>>hData", "x > 0.124 && x < 0.128 && Q2 > 1.59 && Q2 < 1.99 && t1 > -0.770 && t1 < -0.570", "goff");
     TH1F *hRecon = new TH1F("hRecon", "hRecon", numBins, 0, 2*TMath::Pi());
-    t_recon->Draw("phi2>>hRecon", "", "goff");
+    t_recon->Draw("phi2>>hRecon", "x > 0.124 && x < 0.128 && Q2 > 1.59 && Q2 < 1.99 && t1 > -0.770 && t1 < -0.570", "goff");
     TH1F *hDVCSPion = new TH1F("hDVCSPion", "hDVCSPion", numBins, 0, 2*TMath::Pi());
-    t_dvcsPion->Draw("phi2>>hDVCSPion", "", "goff");
+    t_dvcsPion->Draw("phi2>>hDVCSPion", "x > 0.124 && x < 0.128 && Q2 > 1.59 && Q2 < 1.99 && t1 > -0.770 && t1 < -0.570", "goff");
     TH1F *hDVCS = new TH1F("hDVCS", "hDVCS", numBins, 0, 2*TMath::Pi());
-    t_dvcs->Draw("phi2>>hDVCS", "", "goff");
+    t_dvcs->Draw("phi2>>hDVCS", "x > 0.124 && x < 0.128 && Q2 > 1.59 && Q2 < 1.99 && t1 > -0.770 && t1 < -0.570", "goff");
 
     TH1F *hDiv1 = new TH1F("hDiv1", "hDiv1", numBins, 0, 2*TMath::Pi());
     hDiv1->Divide(hDVCSPion, hRecon);
@@ -430,14 +430,7 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     TH1F *hCont = new TH1F("hCont", "hCont", numBins, 0, 2*TMath::Pi());
     hCont->Multiply(hData, hDiv2);
 
-    TH1F *hCont2 = new TH1F("hCont2", "hCont2", numBins, 0, 2*TMath::Pi());
-    for (int i=1; i<=numBins; i++) {
-        hCont2->SetBinContent(i, (double)hData->GetBinContent(i)*(((double)hDVCSPion->GetBinContent(i)/(double)hRecon->GetBinContent(i)))/(double)hDVCS->GetBinContent(i));
-    }
-
     TCanvas *c1 = new TCanvas("c1", "c1", 2000, 1500);
-    c1->Divide(2,1);
-    c1->cd(1);
     hCont->SetTitle("DV#pi^{0}P Contamination Constants");
     hCont->GetXaxis()->SetTitle("#phi (rad)");
     hCont->GetYaxis()->SetTitle("c_{i}");
@@ -445,15 +438,6 @@ void prac_pi0_contamination(TString dataFile, TString reconFile, TString dvcsPio
     hCont->SetMarkerStyle(21);
     hCont->SetStats(0);
     hCont->Draw("P");
-
-    c1->cd(2);
-    hCont2->SetTitle("DV#pi^{0}P Contamination Constants");
-    hCont2->GetXaxis()->SetTitle("#phi (rad)");
-    hCont2->GetYaxis()->SetTitle("c_{i}");
-    hCont2->SetMarkerColor(1);
-    hCont2->SetMarkerStyle(21);
-    hCont2->SetStats(0);
-    hCont2->Draw("P");
 
     c1->SaveAs("prac_pi0-contamination.png");
 }
