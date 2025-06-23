@@ -37,7 +37,7 @@ void vgg_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
             hVGG->GetYaxis()->SetRangeUser(-2.0,1.0);
             hVGG->SetMarkerColor(1);
             hVGG->SetMarkerStyle(21);
-            hKMhVGG15->SetMarkerSize(1);
+            hVGG->SetMarkerSize(1);
             hVGG->SetStats(0);
             hVGG->Draw("P");
 
