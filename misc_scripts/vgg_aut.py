@@ -56,7 +56,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
 #vgg_aut("test.txt", 0.126, 1.759, 0.670, 9, 10.604)
 
 if __name__ == "__main__":
-   method = sys.argv[1]
+    method = sys.argv[1]
     a = sys.argv[2]
     b = sys.argv[3]
     c = sys.argv[4]
