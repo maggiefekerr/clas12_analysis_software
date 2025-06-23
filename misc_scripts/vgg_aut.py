@@ -47,7 +47,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
 
     with open(file, "w") as f:
         for i in range(numBins):
-            if i != (len(numBins) - 1):
+            if i != (numBins - 1):
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]) + '\n')
             else:
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
