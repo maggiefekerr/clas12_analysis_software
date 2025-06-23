@@ -40,7 +40,8 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
             raise RuntimeError(f"dvcsgen failed:\n{proc.stderr}")
         lines = proc.stdout.splitlines()
         numeric = [ln for ln in lines if ln.strip()]
-                
+    
+        print(numeric)
         phiList.append(inputPhiList[i])
         xsPosList.append((float)(numeric[-3]))
         xsNegList.append((float)(numeric[-2]))    
