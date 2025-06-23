@@ -17,7 +17,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
     xsNegList = []
 
     for i in range(numBins):
-        phi_rad = (2.0*i +1.0)*0.5*(2*np.pi/numBins) - 0.5*2*np.pi/numBins + j*2*np.pi/(numDiv*numBins) + 2*np.pi/(2.0*numDiv*numBins)
+        phi_rad = inputPhiList[i]
         cmd = [
             'dvcsgen',
             '--beam', f'{beamE:.3f}',
@@ -53,7 +53,9 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
     f.close()
 
-if __name__ == "__main__":
+vgg_aut("test.txt", 0.126, 1.759, 0.670, 9, 10.604)
+
+"""if __name__ == "__main__":
    method = sys.argv[1]
     a = sys.argv[2]
     b = sys.argv[3]
@@ -65,4 +67,4 @@ if __name__ == "__main__":
     if method == "vgg_aut":
         km15_aut(str(a), float(b), float(c), float(d), int(e), float(f))
     else:
-        print(":(")
+        print(":(")"""
