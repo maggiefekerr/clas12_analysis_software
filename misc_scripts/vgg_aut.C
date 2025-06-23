@@ -14,6 +14,7 @@ void vgg_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
             c1->cd(j+3);
             TH1F *hVGG = new TH1F("hVGG", "", numBins, 0, 360);
             Double_t tpos, xB, Q2;
+            cout << tpos << endl;
             if_input_vgg >> tpos >> xB >> Q2;
 
             TString histFile = Form("./vgg_aut_output/output_-t_%.3f_xB_%.3f_Q2_%.3f.txt", tpos, xB, Q2);
