@@ -65,6 +65,6 @@ if __name__ == "__main__":
     f = sys.argv[7]
 
     if method == "vgg_aut":
-        km15_aut(str(a), float(b), float(c), float(d), int(e), float(f))
+        vgg_aut(str(a), float(b), float(c), float(d), int(e), float(f))
     else:
         print(":(")
