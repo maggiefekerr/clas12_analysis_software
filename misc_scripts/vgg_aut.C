@@ -28,10 +28,10 @@ void vgg_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
             }
 
             ifstream if_output_vgg(histFile, ifstream::in);
-            Double_t phi, asy;
+            Double_t phi, xsPos, xsNeg;
             for(int k=1; k <=numBins; k++) {
-                if_output_vgg >> phi >> asy;
-                hVGG->SetBinContent(k, asy);
+                if_output_vgg >> phi >> xsPos >> xsNeg;
+                hVGG->SetBinContent(k, (xsPos-xsNeg)/(xsPos+xsNeg));
             }
             if_output_vgg.close();
 
