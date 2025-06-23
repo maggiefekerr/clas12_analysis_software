@@ -5,21 +5,20 @@
 #include <string>
 #include <sstream>
 
-void km15_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
-    // currently there are 28 binnings, so just hard-coding that to make it easier
-    std::ifstream if_input_km15(paramFile);
+void vgg_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
+    std::ifstream if_input_vgg(paramFile);
     for (int i=0; i<4; i++) {
         TCanvas *c1 = new TCanvas("c1", "c1", 6000, 4500);
         c1->Divide(3,3,0,0);
         for (int j=0; j<7; j++) {
             c1->cd(j+3);
-            TH1F *hKM15 = new TH1F("hKM15", "", numBins, 0, 360);
+            TH1F *hVGG = new TH1F("hVGG", "", numBins, 0, 360);
             Double_t tpos, xB, Q2;
-            if_input_km15 >> tpos >> xB >> Q2;
+            if_input_vgg >> tpos >> xB >> Q2;
 
-            TString histFile = Form("./km15_aut_output/output_-t_%.3f_xB_%.3f_Q2_%.3f.txt", tpos, xB, Q2);
+            TString histFile = Form("./vgg_aut_output/output_-t_%.3f_xB_%.3f_Q2_%.3f.txt", tpos, xB, Q2);
             std::ostringstream oss;
-            oss << "python -u km15_aut.py km15_aut " << histFile << " " << tpos << " " << xB << " " << Q2 << " " << numBins << " " << beamE;
+            oss << "python -u vgg_aut.py vgg_aut " << histFile << " " << tpos << " " << xB << " " << Q2 << " " << numBins << " " << beamE;
             std::string run = oss.str();
             FILE* pipe = gSystem->OpenPipe(run.c_str(), "r");
             if (!pipe) {
@@ -27,20 +26,20 @@ void km15_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
                 return;
             }
 
-            ifstream if_output_km15(histFile, ifstream::in);
+            ifstream if_output_vgg(histFile, ifstream::in);
             Double_t phi, asy;
             for(int k=1; k <=numBins; k++) {
-                if_output_km15 >> phi >> asy;
-                hKM15->SetBinContent(k, asy);
+                if_output_vgg >> phi >> asy;
+                hVGG->SetBinContent(k, asy);
             }
-            if_output_km15.close();
+            if_output_vgg.close();
 
-            hKM15->GetYaxis()->SetRangeUser(-2.0,1.0);
-            hKM15->SetMarkerColor(1);
-            hKM15->SetMarkerStyle(21);
-            hKM15->SetMarkerSize(1);
-            hKM15->SetStats(0);
-            hKM15->Draw("P");
+            hVGG->GetYaxis()->SetRangeUser(-2.0,1.0);
+            hVGG->SetMarkerColor(1);
+            hVGG->SetMarkerStyle(21);
+            hKMhVGG15->SetMarkerSize(1);
+            hVGG->SetStats(0);
+            hVGG->Draw("P");
 
             TLatex *l = new TLatex();
             if ((j == 4) || (j == 5) || (j == 6)) {
@@ -71,15 +70,15 @@ void km15_aut(TString paramFile, Int_t numBins, Double_t beamE=10.604){
             }
 
             if ((j == 1) || (j == 4)) {
-                hKM15->GetYaxis()->SetTitle("A_{UT}");
+                hVGG->GetYaxis()->SetTitle("A_{UT}");
             }
             if ((j == 4) || (j == 5) || (j == 6)) {
-                hKM15->GetXaxis()->SetTitle("#phi [#circ]");
+                hVGG->GetXaxis()->SetTitle("#phi [#circ]");
             }
             c1->Update();
         }
         c1->Update();
-        c1->SaveAs(Form("./km15_aut_output/output_%d.png", i));   
+        c1->SaveAs(Form("./vgg_aut_output/output_%d.png", i));   
     }
-    if_input_km15.close();
+    if_input_vgg.close();
 }

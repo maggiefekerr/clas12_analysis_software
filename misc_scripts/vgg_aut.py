@@ -17,7 +17,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
     xsNegList = []
 
     for i in range(numBins):
-        phi_rad = inputPhiList[i]
+        phi_rad = inputPhiList[i]*np.pi/180.
         cmd = [
             'dvcsgen',
             '--beam', f'{beamE:.3f}',
@@ -31,7 +31,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
         ]
         cmd.append('--tpol')
         cmd.append('--globalfit')
-        print(cmd)
+        #print(cmd)
         proc = subprocess.run(cmd,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
@@ -41,7 +41,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
         lines = proc.stdout.splitlines()
         numeric = [ln for ln in lines if ln.strip()]
                 
-        phiList.append(phi_rad)
+        phiList.append(inputPhiList[i])
         xsPosList.append((float)(numeric[-3]))
         xsNegList.append((float)(numeric[-2]))    
 
@@ -53,9 +53,9 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
                 f.write(str(phiList[i]) + " " + str(xsPosList[i]) + " " + str(xsNegList[i]))
     f.close()
 
-vgg_aut("test.txt", 0.126, 1.759, 0.670, 9, 10.604)
+#vgg_aut("test.txt", 0.126, 1.759, 0.670, 9, 10.604)
 
-"""if __name__ == "__main__":
+if __name__ == "__main__":
    method = sys.argv[1]
     a = sys.argv[2]
     b = sys.argv[3]
@@ -67,4 +67,4 @@ vgg_aut("test.txt", 0.126, 1.759, 0.670, 9, 10.604)
     if method == "vgg_aut":
         km15_aut(str(a), float(b), float(c), float(d), int(e), float(f))
     else:
-        print(":(")"""
+        print(":(")
