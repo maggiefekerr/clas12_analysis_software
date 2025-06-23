@@ -9,7 +9,7 @@ import numpy as np
 os.environ['PATH'] = '/u/home/mkerr/dvcsgens/dvcsgen_print:' + os.environ.get('PATH','')
 os.environ['CLASDVCS_PDF'] = '/u/home/mkerr/dvcsgens/dvcsgen_print'
 
-def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
+def vgg_aut(file, tpos, xB, Q2, numBins, beamE=10.604):
     # calls dvcsgen in print mode and writes a file containing the phi values, pos & neg cross sections
     inputPhiList = [20., 60., 100., 140., 180., 220., 260., 300., 340.]
     phiList = []
