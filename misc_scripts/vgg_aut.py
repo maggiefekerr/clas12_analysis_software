@@ -41,7 +41,7 @@ def vgg_aut(file, xB, Q2, tpos, numBins, beamE=10.604):
         lines = proc.stdout.splitlines()
         numeric = [ln for ln in lines if ln.strip()]
     
-        print(numeric)
+        print(numeric[-3])
         phiList.append(inputPhiList[i])
         xsPosList.append((float)(numeric[-3]))
         xsNegList.append((float)(numeric[-2]))    
