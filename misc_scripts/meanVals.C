@@ -37,13 +37,13 @@ void meanVals(TString fileName, TString runName) {
             Double_t tposMin = (Q2min*2.*(1.-xBmin)*(1.-TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
             Double_t tposMax = (Q2min*2.*(1.-xBmin)*(1.+TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
             Double_t tDiff = tposMax - tposMin;
-            cout << eps << " " << tposMin << " " << tposMax << " " << tDiff << endl;
+            //cout << eps << " " << tposMin << " " << tposMax << " " << tDiff << endl;
             Double_t tposList[5] = {tposMin, tposMin + tDiff/4., tposMin + tDiff/2., tposMin + (3./4.)*tDiff, tposMax}; // these are all positive values
             for (int k=0; k<4; k++){
                 Double_t tposmin = tposList[k];
                 Double_t tposmax = tposList[k+1];
-                cout << Q2min << " " << Q2max << " " << xBmin << " " << xBmax << " " << tposmin << " " << tposmax << endl;
-                /*TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
+                //cout << Q2min << " " << Q2max << " " << xBmin << " " << xBmax << " " << tposmin << " " << tposmax << endl;
+                TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
                 TH1F *hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
                 TH1F *ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
 
@@ -53,10 +53,10 @@ void meanVals(TString fileName, TString runName) {
                 t->Draw("x>>hxB", cuts, "goff");
                 t->Draw("t1>>ht", cuts, "goff");
 
-                of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;*/
+                of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
                 num += 1;
             }
         }
     }
-    cout << num << endl;
+    //cout << num << endl;
 }
