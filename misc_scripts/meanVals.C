@@ -22,7 +22,7 @@ void meanVals(TString fileName, TString runName) {
                                 {0.0, 0.56, 1.0, 0.0}  // setting last point to zero, will handle this in for loop
                             };
     TFile *file = new TFile(fileName); 
-    TTree *t = new (TTree*)file->Get("PhysicsEvents");
+    TTree *t = (TTree*)file->Get("PhysicsEvents");
     
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
