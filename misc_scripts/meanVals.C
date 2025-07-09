@@ -27,7 +27,7 @@ void meanVals(TString fileName, TString runName) {
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
         Double_t Q2max = Q2List[i+1];
-        for(int j=0; j<numBins[i]-1; j++) {
+        for(int j=0; j<xB_numBins[i]-1; j++) {
             Double_t xBmin = xBList[i][j];
             Double_t xBmax = xBList[i][j+1];
         
@@ -37,8 +37,8 @@ void meanVals(TString fileName, TString runName) {
             Double_t tDiff = tposMax - tposMin;
             Double_t tposList[5] = {tposMin, tposMin + tDiff/4, tposMin + tDiff/2, tposMin + (3/4)*tDiff, tposMax}; // these are all positive values
             for (int k=0; k<4; k++){
-                tposmin = tposList[k];
-                tposmax = tposList[k+1];
+                Double_t tposmin = tposList[k];
+                Double_t tposmax = tposList[k+1];
                 TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
                 TH1F *hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
                 TH1F *ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
