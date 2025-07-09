@@ -43,7 +43,7 @@ void meanVals(TString fileName, TString runName) {
                 TH1F *hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
                 TH1F *ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
 
-                TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tmax, -1*tmin);
+                TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tposmax, -1*tposmin);
 
                 tree->Draw("Q2>>hQ2", cuts, "goff");
                 tree->Draw("x>>hxB", cuts, "goff");
