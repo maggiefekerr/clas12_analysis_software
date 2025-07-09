@@ -30,26 +30,27 @@ void meanVals(TString fileName, TString runName) {
         for(int j=0; j<numBins[i]-1; j++) {
             Double_t xBmin = xBList[i][j];
             Double_t xBmax = xBList[i][j+1];
-        }
-        Double_t eps = 2*xBmin*Q2min/mp;
-        Double_t tposMin = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
-        Double_t tposMax = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
-        Double_t tDiff = tposMax - tposMin;
-        Double_t tposList[5] = {tposMin, tposMin + tDiff/4, tposMin + tDiff/2, tposMin + (3/4)*tDiff, tposMax}; // these are all positive values
-        for (int k=0; k<4; k++){
-            tposmin = tposList[k];
-            tposmax = tposList[k+1];
-            TH1F hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
-            TH1F hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
-            TH1F ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
+        
+            Double_t eps = 2*xBmin*Q2min/mp;
+            Double_t tposMin = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
+            Double_t tposMax = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
+            Double_t tDiff = tposMax - tposMin;
+            Double_t tposList[5] = {tposMin, tposMin + tDiff/4, tposMin + tDiff/2, tposMin + (3/4)*tDiff, tposMax}; // these are all positive values
+            for (int k=0; k<4; k++){
+                tposmin = tposList[k];
+                tposmax = tposList[k+1];
+                TH1F hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
+                TH1F hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
+                TH1F ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
 
-            TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tmax, -1*tmin);
+                TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tmax, -1*tmin);
 
-            tree->Draw("Q2>>hQ2", cuts, "goff");
-            tree->Draw("x>>hxB", cuts, "goff");
-            tree->Draw("t1>>ht", cuts, "goff");
+                tree->Draw("Q2>>hQ2", cuts, "goff");
+                tree->Draw("x>>hxB", cuts, "goff");
+                tree->Draw("t1>>ht", cuts, "goff");
 
-            of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
+                of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
+            }
         }
     }
 }
