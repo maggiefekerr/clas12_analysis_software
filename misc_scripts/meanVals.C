@@ -23,6 +23,8 @@ void meanVals(TString fileName, TString runName) {
                             };
     TFile *file = new TFile(fileName); 
     TTree *t = (TTree*)file->Get("PhysicsEvents");
+
+    Int_t num = 0;
     
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
@@ -31,7 +33,7 @@ void meanVals(TString fileName, TString runName) {
             Double_t xBmin = xBList[i][j];
             Double_t xBmax = xBList[i][j+1];
         
-            Double_t eps = 2*xBmin*Q2min/mp;
+            Double_t eps = 2.*xBmin*Q2min/mp;
             Double_t tposMin = (Q2min*2.*(1.-xBmin)*(1.-TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
             Double_t tposMax = (Q2min*2.*(1.-xBmin)*(1.-TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
             Double_t tDiff = tposMax - tposMin;
@@ -52,7 +54,9 @@ void meanVals(TString fileName, TString runName) {
                 t->Draw("t1>>ht", cuts, "goff");
 
                 of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;*/
+                num += 1;
             }
         }
     }
+    cout << num << endl;
 }
