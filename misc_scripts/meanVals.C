@@ -22,7 +22,7 @@ void meanVals(TString fileName, TString runName) {
                                 {0.0, 0.56, 1.0, 0.0}  // setting last point to zero, will handle this in for loop
                             };
     TFile *file = new TFile(fileName); 
-    TTree *tree = new (TTree*)file->Get("PhysicsEvents");
+    TTree *t = new (TTree*)file->Get("PhysicsEvents");
     
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
@@ -45,9 +45,9 @@ void meanVals(TString fileName, TString runName) {
 
                 TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tposmax, -1*tposmin);
 
-                tree->Draw("Q2>>hQ2", cuts, "goff");
-                tree->Draw("x>>hxB", cuts, "goff");
-                tree->Draw("t1>>ht", cuts, "goff");
+                t->Draw("Q2>>hQ2", cuts, "goff");
+                t->Draw("x>>hxB", cuts, "goff");
+                t->Draw("t1>>ht", cuts, "goff");
 
                 of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
             }
