@@ -12,14 +12,14 @@ void meanVals(TString fileName, TString runName) {
     TString outputName = Form("%s_meanVals_Q2_xB_t.txt", runName.Data());
     std::ofstream of_meanVals(outputName);
     Double_t mp = 0.93827;
-    Double_t Q2List[7] = {0.0, 1.4, 1.8, 2.4, 3.2, 5.0, 10.0};
+    Double_t Q2List[7] = {0.0001, 1.4, 1.8, 2.4, 3.2, 5.0, 10.0};
     Int_t xB_numBins[6] = {3, 3, 3, 3, 2, 2};
-    Double_t xBList[6][4] = {   {0.0, 0.13, 0.21, 1.0},
-                                {0.0, 0.13, 0.21, 1.0},
-                                {0.0, 0.16, 0.26, 1.0},
-                                {0.0, 0.21, 0.33, 1.0},
-                                {0.0, 0.33, 1.0, 0.0}, // setting last point to zero, will handle this in for loop
-                                {0.0, 0.56, 1.0, 0.0}  // setting last point to zero, will handle this in for loop
+    Double_t xBList[6][4] = {   {0.0001, 0.13, 0.21, 1.0},
+                                {0.0001, 0.13, 0.21, 1.0},
+                                {0.0001, 0.16, 0.26, 1.0},
+                                {0.0001, 0.21, 0.33, 1.0},
+                                {0.0001, 0.33, 1.0, 0.0}, // setting last point to zero, will handle this in for loop
+                                {0.0001, 0.56, 1.0, 0.0}  // setting last point to zero, will handle this in for loop
                             };
     TFile *file = new TFile(fileName); 
     TTree *t = (TTree*)file->Get("PhysicsEvents");
