@@ -9,7 +9,7 @@
 // Q2 > 5.0; xB: < 0.56, > 0.56
 
 void meanVals(TString fileName, TString runName) {
-    TString outputName = Form("%s_meanVals_Q2_xB_t.txt" runName.Data());
+    TString outputName = Form("%s_meanVals_Q2_xB_t.txt", runName.Data());
     std::ofstream of_meanVals(outputName);
     Double_t mp = 0.93827;
     Double_t Q2List[7] = {0.0, 1.4, 1.8, 2.4, 3.2, 5.0, 10.0};
@@ -22,7 +22,7 @@ void meanVals(TString fileName, TString runName) {
                                 {0.0, 0.56, 1.0, 0.0}  // setting last point to zero, will handle this in for loop
                             };
     TFile *file = new TFile(fileName); 
-    TTree *tree = new (*TTree)file->Get("PhysicsEvents");
+    TTree *tree = new (TTree*)file->Get("PhysicsEvents");
     
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
