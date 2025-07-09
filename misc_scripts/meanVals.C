@@ -39,9 +39,9 @@ void meanVals(TString fileName, TString runName) {
             for (int k=0; k<4; k++){
                 tposmin = tposList[k];
                 tposmax = tposList[k+1];
-                TH1F hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
-                TH1F hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
-                TH1F ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
+                TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
+                TH1F *hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
+                TH1F *ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
 
                 TString cuts = Form("x > %0.3f && x < %0.3f && Q2 > %0.3f && Q2 < %0.3f && t1 > %0.3f && t1 < %0.3f", xBmin, xBmax, Q2min, Q2max, -1*tmax, -1*tmin);
 
