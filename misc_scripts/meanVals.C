@@ -39,7 +39,8 @@ void meanVals(TString fileName, TString runName) {
             for (int k=0; k<4; k++){
                 Double_t tposmin = tposList[k];
                 Double_t tposmax = tposList[k+1];
-                TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
+                cout << Q2min << " " << Q2max " " << xBmin << " " << xBmax << " " << tposmin << " " << tposmax << endl;
+                /*TH1F *hQ2 = new TH1F("hQ2", "hQ2", 100, Q2min, Q2max);
                 TH1F *hxB = new TH1F("hQ2", "hQ2", 100, xBmin, xBmax);
                 TH1F *ht = new TH1F("hQ2", "hQ2", 100, tposmin, tposmax);
 
@@ -49,7 +50,7 @@ void meanVals(TString fileName, TString runName) {
                 t->Draw("x>>hxB", cuts, "goff");
                 t->Draw("t1>>ht", cuts, "goff");
 
-                of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
+                of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;*/
             }
         }
     }
