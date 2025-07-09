@@ -27,13 +27,13 @@ void meanVals(TString fileName, TString runName) {
     for (int i=0; i<5; i++) {
         Double_t Q2min = Q2List[i];
         Double_t Q2max = Q2List[i+1];
-        for(int j=0; j<xB_numBins[i]-1; j++) {
+        for(int j=0; j<xB_numBins[i]; j++) {
             Double_t xBmin = xBList[i][j];
             Double_t xBmax = xBList[i][j+1];
         
             Double_t eps = 2*xBmin*Q2min/mp;
-            Double_t tposMin = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
-            Double_t tposMax = (Q2min*2*(1-xBmin)*(1-TMath::Sqrt(1+eps*eps))+(eps*eps))/(4*xBmin*(1-xBmin)+(eps*eps));
+            Double_t tposMin = (Q2min*2.*(1.-xBmin)*(1.-TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
+            Double_t tposMax = (Q2min*2.*(1.-xBmin)*(1.-TMath::Sqrt(1.+eps*eps))+(eps*eps))/(4.*xBmin*(1.-xBmin)+(eps*eps));
             Double_t tDiff = tposMax - tposMin;
             cout << eps << " " << tposMin << " " << tposMax << " " << tDiff << endl;
             Double_t tposList[5] = {tposMin, tposMin + tDiff/4., tposMin + tDiff/2., tposMin + (3./4.)*tDiff, tposMax}; // these are all positive values
