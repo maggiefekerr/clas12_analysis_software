@@ -61,7 +61,7 @@ void meanVals(){
     }
     if_f18in.close();
     if_f18out.close();
-    if_s19out.close();
+    if_s19in.close();
 
     of_meanVals.close();
 }
