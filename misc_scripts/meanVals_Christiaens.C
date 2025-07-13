@@ -49,15 +49,15 @@ void meanVals(){
         Double_t num_f18out, Q2_f18out, t_f18out, xB_f18out;
         Double_t num_s19in, Q2_s19in, t_s19in, xB_s19in;
 
-        if_f18in >> num_f18in >> Q2_f18in >> t_f18in >> xB_f18in;
-        if_f18out >> num_f18out >> Q2_f18out >> t_f18out >> xB_f18in;
-        if_s19out >> num_s19in >> Q2_s19in >> t_s19in >> xB_s19in;
+        if_f18in >> num_f18in >> Q2_f18in >> xB_f18in >> t_f18in;
+        if_f18out >> num_f18out >> Q2_f18out >> xB_f18out >> t_f18out;
+        if_s19in >> num_s19in >> Q2_s19in >> xB_s19in >> t_s19in;
 
         Double_t meanQ2 = (num_f18in*Q2_f18in + num_f18out*Q2_f18out + num_s19in*Q2_s19in)/(num_f18in + num_f18out + num_s19in);
         Double_t meant = (num_f18in*t_f18in + num_f18out*t_f18out + num_s19in*t_s19in)/(num_f18in + num_f18out + num_s19in);
         Double_t meanxB = (num_f18in*xB_f18in + num_f18out*xB_f18out + num_s19in*xB_s19in)/(num_f18in + num_f18out + num_s19in);
 
-        of_meanVals << meanQ2 << " " << meant << " " << meanxB << endl;
+        of_meanVals << meanQ2 << " " << meanxB << " " << meant << endl;
     }
     if_f18in.close();
     if_f18out.close();
