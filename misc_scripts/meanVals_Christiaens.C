@@ -2,7 +2,7 @@
 
 // getting the mean Q2, xB, t values for each of the three runs
 void meanVals_forRun(TString fileName, TString runName) {
-    TString outputName = Form("%s_meanVals_Q2_xB_t.txt", runName.Data());
+    TString outputName = Form("%s_meanValsC_Q2_xB_t.txt", runName.Data()); // C to indicate they are the mean values from the Christiaens binning
     std::ofstream of_meanVals(outputName);
 
     Double_t minxBList[24] = {0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26, 0.0, 0.16, 0.26};
@@ -31,11 +31,37 @@ void meanVals_forRun(TString fileName, TString runName) {
         t->Draw("t1>>ht", cuts, "goff");
 
         cout << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
-        of_meanVals << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
+        of_meanVals << hQ2->Integral() << " " << hQ2->GetMean() << " " << hxB->GetMean() << " " << ht->GetMean() << endl;
     }
+    of_meanVals.close();
 }
 
 // getting weighted average across the runs
 void meanVals(){
+    std::ifstream if_f18in("fall2018_in_meanValsC_Q2_xB_t.txt");
+    std::ifstream if_f18out("fall2018_out_meanValsC_Q2_xB_t.txt");
+    std::ifstream if_s19out("spring2019_in_meanValsC_Q2_xB_t.txt");
 
+    std::ofstream of_meanVals("meanValsC_Q2_xB_t.txt"); // C to indicate they are the mean values from the Christiaens binning
+
+    for (int i=0; i<24; i++) {
+        Double_t num_f18in, Q2_f18in, t_f18in, xB_f18in;
+        Double_t num_f18out, Q2_f18out, t_f18out, xB_f18out;
+        Double_t num_s19in, Q2_s19in, t_s19in, xB_s19in;
+
+        if_f18in >> num_f18in >> Q2_f18in >> t_f18in >> xB_f18in;
+        if_f18out >> num_f18out >> Q2_f18out >> t_f18out >> xB_f18in;
+        if_s19out >> num_s19in >> Q2_s19in >> t_s19in >> xB_s19in;
+
+        Double_t meanQ2 = (num_f18in*Q2_f18in + num_f18out*Q2_f18out + num_s19in*Q2_s19in)/(num_f18in + num_f18out + num_s19in);
+        Double_t meant = (num_f18in*t_f18in + num_f18out*t_f18out + num_s19in*t_s19in)/(num_f18in + num_f18out + num_s19in);
+        Double_t meanxB = (num_f18in*xB_f18in + num_f18out*xB_f18out + num_s19in*xB_s19in)/(num_f18in + num_f18out + num_s19in);
+
+        of_meanVals << meanQ2 << " " << meant << " " << meanxB << endl;
+    }
+    if_f18in.close();
+    if_f18out.close();
+    if_s19out.close();
+
+    of_meanVals.close();
 }
