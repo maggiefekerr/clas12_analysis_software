@@ -40,7 +40,7 @@ void meanVals_forRun(TString fileName, TString runName) {
 void meanVals(){
     std::ifstream if_f18in("fall2018_in_meanValsC_Q2_xB_t.txt");
     std::ifstream if_f18out("fall2018_out_meanValsC_Q2_xB_t.txt");
-    std::ifstream if_s19out("spring2019_in_meanValsC_Q2_xB_t.txt");
+    std::ifstream if_s19in("spring2019_in_meanValsC_Q2_xB_t.txt");
 
     std::ofstream of_meanVals("meanValsC_Q2_xB_t.txt"); // C to indicate they are the mean values from the Christiaens binning
 
