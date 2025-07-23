@@ -337,7 +337,7 @@ void plot_ratios_asy() {
 
     for (int i=0; i<4; i++) {
         c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
-        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05,);
+        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
         
         std::ifstream if_asyms(Form("./ratios/data/alu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB, asyA, asyH, ratio;
@@ -355,7 +355,7 @@ void plot_ratios_asy() {
 
         hRatio[i]->Draw("COLZ");
 
-        c1[i]->SaveAs(Form("./ratio_asym_%.2f.png", t[i]));
+        c1[i]->SaveAs(Form("./ratio_asym_-t_%.2f.png", t[i]));
         c1[i]->Close();
         if_asyms.close();
     }
@@ -384,7 +384,7 @@ void plot_ratios_xs() {
 
         hRatio[i]->Draw("COLZ");
 
-        c1[i]->SaveAs(Form("./ratio_xs_%.2f.png", t[i]));
+        c1[i]->SaveAs(Form("./ratio_xs_-t_%.2f.png", t[i]));
         c1[i]->Close();
         if_xs.close();
     }
