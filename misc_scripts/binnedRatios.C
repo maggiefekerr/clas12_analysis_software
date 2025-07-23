@@ -351,7 +351,7 @@ void plot_ratios_asy() {
         hRatio[i]->GetYaxis()->SetTitle("x_{B}");
         hRatio[i]->GetZaxis()->SetTitle("A^{#it{H}}_{LU} / A^{all}_{LU}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 5.0);
-        hRatio[i]->SetOptStat(0);
+        hRatio[i]->SetStats(0);
 
         hRatio[i]->Draw("COLZ");
 
