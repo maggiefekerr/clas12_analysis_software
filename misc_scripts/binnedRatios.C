@@ -238,7 +238,7 @@ void plot_model_data_asy() {
 
     for (int i=0; i<4; i++) {
         std::ifstream if_inputs(Form("./ratios/data/input_kinematics_-t_%.2f.txt", t[i]));
-        std::ofstream of_outputs(Form("./ratios/data/outputs_kinematics_&_amps_-t_%.2f.txt", t[i]));
+        std::ofstream of_outputs(Form("./ratios/data/alu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB;
 
         while (if_inputs >> Q2 >> xB) {
@@ -247,7 +247,7 @@ void plot_model_data_asy() {
             TGraph *gAll = new TGraph();
             Double_t phiA, asyA;
             while (if_all >> phiA >> asyA) {
-                gAll->Add(phiA, asyA);
+                gAll->AddPoint(phiA, asyA);
             }
             TF1 *fitA = new TF1("fitA", "[0]*sin(x)/(1+[1]*cos(x))+[2]", 0, 2*TMath::Pi());
             fitA->SetParameter(0,1);
@@ -261,7 +261,7 @@ void plot_model_data_asy() {
             TGraph *gOnlyH = new TGraph();
             Double_t phiH, asyH;
             while (if_onlyH >> phiH >> asyH) {
-                gOnlyH->Add(phiH, asyH);
+                gOnlyH->AddPoint(phiH, asyH);
             }
             TF1 *fitH = new TF1("fitH", "[0]*sin(x)/(1+[1]*cos(x))+[2]", 0, 2*TMath::Pi());
             fitH->SetParameter(0,1);
@@ -287,7 +287,7 @@ void plot_model_data_xs(){
 
     for (int i=0; i<4; i++) {
         std::ifstream if_inputs(Form("./ratios/data/input_kinematics_-t_%.2f.txt", t[i]));
-        std::ofstream of_outputs(Form("./ratios/data/outputs_kinematics_&_amps_-t_%.2f.txt", t[i]));
+        std::ofstream of_outputs(Form("./ratios/data/xslu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB;
 
         while (if_inputs >> Q2 >> xB) {
@@ -296,7 +296,7 @@ void plot_model_data_xs(){
             TGraph *gAll = new TGraph();
             Double_t phiA, xsA;
             while (if_all >> phiA >> xsA) {
-                gAll->Add(phiA, xsA);
+                gAll->AddPoint(phiA, xsA);
             }
             TF1 *fitA = new TF1("fitA", "[0]+[1]*cos(x)+[2]*cos(2*x)", 0, 2*TMath::Pi());
             fitA->SetParameter(0,0);
@@ -310,7 +310,7 @@ void plot_model_data_xs(){
             TGraph *gOnlyH = new TGraph();
             Double_t phiH, xsH;
             while (if_onlyH >> phiH >> xsH) {
-                gOnlyH->Add(phiH, xsH);
+                gOnlyH->AddPoint(phiH, xsH);
             }
             TF1 *fitH = new TF1("fitH", "[0]+[1]*cos(x)+[2]*cos(2*x)", 0, 2*TMath::Pi());
             fitH->SetParameter(0,0);
@@ -319,13 +319,71 @@ void plot_model_data_xs(){
             gOnlyH->Fit("fitH");
             if_onlyH.close();
 
-            Double_t intA = fitA->Integral(0, 2(TMath::Pi()));
-            Double_t intH = fitH->Integral(0, 2(TMath::Pi()));
+            Double_t intA = fitA->Integral(0, 2*(TMath::Pi()));
+            Double_t intH = fitH->Integral(0, 2*(TMath::Pi()));
 
             of_outputs << Q2 << " " << xB << " " << " " << intA << " " << intH << " " << intH/intA << endl;
         }
 
         if_inputs.close();
         of_outputs.close();
+    }
+}
+
+void plot_ratios_asy() {
+    Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
+    TCanvas *c1[4];
+    TH2F *hRatio[4];
+
+    for (int i=0; i<4; i++) {
+        c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
+        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 61, 0.95, 7.05, 65, 0.055, 0.705);
+        
+        std::ifstream if_asyms(Form("./ratios/data/alu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
+        Double_t Q2, xB, asyA, asyH, ratio;
+
+        while (if_asyms >> Q2 >> xB >> asyA >> asyH >> ratio) {
+            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
+        }
+
+        hRatio[i]->SetTitle(Form("-t = %.2f GeV^2"), t[i]);
+        hRatio[i]->GetXaxis()->SetTitle("Q^2 [GeV^2]");
+        hRatio[i]->GetYaxis()->SetTitle("x_{B}");
+        hRatio[i]->GetZaxis()->SetTitle("A^{#it{H}}_{LU} / A^{all}_{LU}");
+
+        hRatio[i]->Draw("COLZ");
+
+        c1[i]->SaveAs(Form("./ratio_asym_%.2f.png", t[i]));
+        c1[i]->Close();
+        if_asyms.close();
+    }
+}
+
+void plot_ratios_xs() {
+    Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
+    TCanvas *c1[4];
+    TH2F *hRatio[4];
+
+    for (int i=0; i<4; i++) {
+        c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
+        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 61, 0.95, 7.05, 65, 0.055, 0.705);
+        
+        std::ifstream if_xs(Form("./ratios/data/xslu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
+        Double_t Q2, xB, intA, intH, ratio;
+
+        while (if_xs >> Q2 >> xB >> intA >> intH >> ratio) {
+            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
+        }
+
+        hRatio[i]->SetTitle(Form("-t = %.2f GeV^2"), t[i]);
+        hRatio[i]->GetXaxis()->SetTitle("Q^2 [GeV^2]");
+        hRatio[i]->GetYaxis()->SetTitle("x_{B}");
+        hRatio[i]->GetZaxis()->SetTitle("d#sigma^{#it{H}} / d#sigma^{all}");
+
+        hRatio[i]->Draw("COLZ");
+
+        c1[i]->SaveAs(Form("./ratio_xs_%.2f.png", t[i]));
+        c1[i]->Close();
+        if_xs.close();
     }
 }
