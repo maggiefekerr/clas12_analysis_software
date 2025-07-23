@@ -343,7 +343,7 @@ void plot_ratios_asy() {
         Double_t Q2, xB, asyA, asyH, ratio;
 
         while (if_asyms >> Q2 >> xB >> asyA >> asyH >> ratio) {
-            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
+            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(xB), hRatio[i]->GetYaxis()->FindBin(Q2), ratio);
         }
 
         hRatio[i]->SetTitle(Form("A^{#it{H}}_{LU} / A^{all}_{LU}, -t = %.2f GeV^{2}", t[i]));
@@ -374,7 +374,7 @@ void plot_ratios_xs() {
         Double_t Q2, xB, intA, intH, ratio;
 
         while (if_xs >> Q2 >> xB >> intA >> intH >> ratio) {
-            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
+            hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(xB), hRatio[i]->GetYaxis()->FindBin(Q2), ratio);
         }
 
         hRatio[i]->SetTitle(Form("d#sigma^{#it{H}} / d#sigma^{all}, -t = %.2f GeV^{2}", t[i]));
