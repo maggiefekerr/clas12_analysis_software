@@ -377,8 +377,8 @@ void plot_ratios_xs() {
             hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(xB), hRatio[i]->GetYaxis()->FindBin(Q2), ratio);
         }
 
-        hRatio[i]->SetTitle(Form("#frac{#int_{0}^{2#pi}d#sigma^{#it{H}}}{#int_{0}^{2#pi}d#sigma^{all}}, -t = %.2f GeV^{2}", t[i]));
-        hRatio[i]->GetYaxis()->SetTitle("Q^2 [GeV^{2}]");
+        hRatio[i]->SetTitle(Form("#frac{ #int_{0}^{2#pi}d#sigma^{#it{H}} } { #int_{0}^{2#pi}d#sigma^{all} }, -t = %.2f GeV^{2}", t[i]));
+        hRatio[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
         hRatio[i]->GetXaxis()->SetTitle("x_{B}");
         //hRatio[i]->GetZaxis()->SetTitle("#int_{0}^{2#pi}d#sigma^{#it{H}} / #int_{0}^{2#pi}d#sigma^{all}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 1.5);
