@@ -337,7 +337,7 @@ void plot_ratios_asy() {
 
     for (int i=0; i<4; i++) {
         c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
-        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 61, 0.95, 7.05, 65, 0.055, 0.705);
+        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05,);
         
         std::ifstream if_asyms(Form("./ratios/data/alu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB, asyA, asyH, ratio;
@@ -346,9 +346,9 @@ void plot_ratios_asy() {
             hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
         }
 
-        hRatio[i]->SetTitle(Form("-t = %.2f GeV^{2}", t[i]));
-        hRatio[i]->GetXaxis()->SetTitle("Q^{2} [GeV^{2}]");
-        hRatio[i]->GetYaxis()->SetTitle("x_{B}");
+        hRatio[i]->SetTitle(Form("A^{#it{H}}_{LU} / A^{all}_{LU}, -t = %.2f GeV^{2}", t[i]));
+        hRatio[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
+        hRatio[i]->GetXaxis()->SetTitle("x_{B}");
         hRatio[i]->GetZaxis()->SetTitle("A^{#it{H}}_{LU} / A^{all}_{LU}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 5.0);
         hRatio[i]->SetStats(0);
@@ -368,7 +368,7 @@ void plot_ratios_xs() {
 
     for (int i=0; i<4; i++) {
         c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
-        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 61, 0.95, 7.05, 65, 0.055, 0.705);
+        hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
         
         std::ifstream if_xs(Form("./ratios/data/xslu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB, intA, intH, ratio;
@@ -377,9 +377,9 @@ void plot_ratios_xs() {
             hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(Q2), hRatio[i]->GetYaxis()->FindBin(xB), ratio);
         }
 
-        hRatio[i]->SetTitle(Form("-t = %.2f GeV^{2}", t[i]));
-        hRatio[i]->GetXaxis()->SetTitle("Q^2 [GeV^{2}]");
-        hRatio[i]->GetYaxis()->SetTitle("x_{B}");
+        hRatio[i]->SetTitle(Form("d#sigma^{#it{H}} / d#sigma^{all}, -t = %.2f GeV^{2}", t[i]));
+        hRatio[i]->GetYaxis()->SetTitle("Q^2 [GeV^{2}]");
+        hRatio[i]->GetXaxis()->SetTitle("x_{B}");
         hRatio[i]->GetZaxis()->SetTitle("d#sigma^{#it{H}} / d#sigma^{all}");
 
         hRatio[i]->Draw("COLZ");
