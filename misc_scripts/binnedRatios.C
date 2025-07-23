@@ -381,7 +381,8 @@ void plot_ratios_xs() {
         hRatio[i]->GetYaxis()->SetTitle("Q^2 [GeV^{2}]");
         hRatio[i]->GetXaxis()->SetTitle("x_{B}");
         hRatio[i]->GetZaxis()->SetTitle("#int_{0}^{2#pi}d#sigma^{#it{H}} / #int_{0}^{2#pi}d#sigma^{all}");
-
+        hRatio[i]->GetZaxis()->SetRangeUser(0.0, 2.5);
+        hRatio[i]->SetStats(0);
         hRatio[i]->Draw("COLZ");
 
         c1[i]->SaveAs(Form("./ratios/ratio_xs_-t_%.2f.png", t[i]));
