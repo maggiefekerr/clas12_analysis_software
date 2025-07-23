@@ -52,7 +52,7 @@ def xs(directory, name, Q2, xB, t, beamE, numBins):
         pt.prepare()
         xsList.append(float(th_KM15.predict(pt)))
 
-   file = "./ratios/data/" + directory + "/xs/-t_" + str(t) + "/" + name + ".txt"
+    file = "./ratios/data/" + directory + "/xs/-t_" + str(t) + "/" + name + ".txt"
 
     with open(file, "w") as f:
         for i in range(numBins):
