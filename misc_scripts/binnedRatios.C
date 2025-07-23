@@ -215,21 +215,117 @@ void get_model_data_asy(TString directory, Int_t tVal){ // current options are "
     }
 }
 
-void get_model_data_xs(TString directory){ // current options are "all" and "only_h"
+void get_model_data_xs(TString directory, Int_t tVal){ // current options are "all" and "only_h"
     Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
+    std::ifstream if_inputs(Form("./ratios/data/input_kinematics_-t_%.2f.txt", t[tVal]));
+    Double_t Q2, xB;
+    while (if_inputs >> Q2 >> xB) {
+        TString fileName = Form("xslu_Q2-%.2f_xB-%.2f_-t-%.2f", Q2, xB, t[tVal]);
+        std::ostringstream oss;
+        oss << "python -u binnedRatios_km15_xs_LU.py xs " << directory << " " << fileName << " " << Q2 << " " << xB << " " << t[tVal] << " 10.6 100";
+        std::string run = oss.str();
+        FILE* pipe = gSystem->OpenPipe(run.c_str(), "r");
+        if (!pipe) {
+            std::cerr << "Failed to run script" << std::endl;
+            return;
+        }
+    }
+}
+
+// plots full, only H; fits; writes out fit to file
+void plot_model_data_asy() {
+    Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
+
     for (int i=0; i<4; i++) {
         std::ifstream if_inputs(Form("./ratios/data/input_kinematics_-t_%.2f.txt", t[i]));
+        std::ofstream of_outputs(Form("./ratios/data/outputs_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB;
+
         while (if_inputs >> Q2 >> xB) {
-            TString fileName = Form("xslu_Q2-%.2f_xB-%.2f_-t-%.2f", Q2, xB, t[i]);
-            std::ostringstream oss;
-            oss << "python -u binnedRatios_km15_xs_LU.py xs " << directory << " " << fileName << " " << Q2 << " " << xB << " " << t[i] << " 10.6 100";
-            std::string run = oss.str();
-            FILE* pipe = gSystem->OpenPipe(run.c_str(), "r");
-            if (!pipe) {
-                std::cerr << "Failed to run script" << std::endl;
-                return;
+            // dealing with all GPDs
+            std::ifstream if_all(Form("./ratios/data/all/asy/-t_%.1f/alu_Q2-%.2f_xB-%.2f_-t-%.2f.txt", t[i], Q2, xB, t[i]));
+            TGraph *gAll = new TGraph();
+            Double_t phiA, asyA;
+            while (if_all >> phiA >> asyA) {
+                gAll->Add(phiA, asyA);
             }
+            TF1 *fitA = new TF1("fitA", "[0]*sin(x)/(1+[1]*cos(x))+[2]", 0, 2*TMath::Pi());
+            fitA->SetParameter(0,1);
+            fitA->SetParameter(1,1);
+            fitA->SetParameter(2,0);
+            gAll->Fit("fitA");
+            if_all.close();
+
+            // dealing with only H
+            std::ifstream if_onlyH(Form("./ratios/data/only_h/asy/-t_%.1f/alu_Q2-%.2f_xB-%.2f_-t-%.2f.txt", t[i], Q2, xB, t[i]));
+            TGraph *gOnlyH = new TGraph();
+            Double_t phiH, asyH;
+            while (if_onlyH >> phiH >> asyH) {
+                gOnlyH->Add(phiH, asyH);
+            }
+            TF1 *fitH = new TF1("fitH", "[0]*sin(x)/(1+[1]*cos(x))+[2]", 0, 2*TMath::Pi());
+            fitH->SetParameter(0,1);
+            fitH->SetParameter(1,1);
+            fitH->SetParameter(2,0);
+            gOnlyH->Fit("fitH");
+            if_onlyH.close();
+
+            Double_t ampA = fitA->GetParameter(0);
+            Double_t ampH = fitH->GetParameter(0);
+
+            of_outputs << Q2 << " " << xB << " " << " " << ampA << " " << ampH << " " << ampH/ampA << endl;
         }
+
+        if_inputs.close();
+        of_outputs.close();
+    }
+}
+
+// plots full, only H; fits; writes out fit to file
+void plot_model_data_xs(){
+    Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
+
+    for (int i=0; i<4; i++) {
+        std::ifstream if_inputs(Form("./ratios/data/input_kinematics_-t_%.2f.txt", t[i]));
+        std::ofstream of_outputs(Form("./ratios/data/outputs_kinematics_&_amps_-t_%.2f.txt", t[i]));
+        Double_t Q2, xB;
+
+        while (if_inputs >> Q2 >> xB) {
+            // dealing with all GPDs
+            std::ifstream if_all(Form("./ratios/data/all/xs/-t_%.1f/xslu_Q2-%.2f_xB-%.2f_-t-%.2f.txt", t[i], Q2, xB, t[i]));
+            TGraph *gAll = new TGraph();
+            Double_t phiA, xsA;
+            while (if_all >> phiA >> xsA) {
+                gAll->Add(phiA, xsA);
+            }
+            TF1 *fitA = new TF1("fitA", "[0]+[1]*cos(x)+[2]*cos(2*x)", 0, 2*TMath::Pi());
+            fitA->SetParameter(0,0);
+            fitA->SetParameter(1,-0.5);
+            fitA->SetParameter(2,0);
+            gAll->Fit("fitA");
+            if_all.close();
+
+            // dealing with only H
+            std::ifstream if_onlyH(Form("./ratios/data/only_h/xs/-t_%.1f/xslu_Q2-%.2f_xB-%.2f_-t-%.2f.txt", t[i], Q2, xB, t[i]));
+            TGraph *gOnlyH = new TGraph();
+            Double_t phiH, xsH;
+            while (if_onlyH >> phiH >> xsH) {
+                gOnlyH->Add(phiH, xsH);
+            }
+            TF1 *fitH = new TF1("fitH", "[0]+[1]*cos(x)+[2]*cos(2*x)", 0, 2*TMath::Pi());
+            fitH->SetParameter(0,0);
+            fitH->SetParameter(1,-0.5);
+            fitH->SetParameter(2,0);
+            gOnlyH->Fit("fitH");
+            if_onlyH.close();
+
+            Double_t intA = fitA->Integral(0, 2(TMath::Pi()));
+            Double_t intH = fitH->Integral(0, 2(TMath::Pi()));
+
+            of_outputs << Q2 << " " << xB << " " << " " << intA << " " << intH << " " << intH/intA << endl;
+        }
+
+        if_inputs.close();
+        of_outputs.close();
     }
 }
