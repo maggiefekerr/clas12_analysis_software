@@ -160,14 +160,14 @@ band_style = {'color':'tab:red', 'alpha':0.2}
 zero_line  = {'color':'gray','linestyle':'--','linewidth':1}
 
 tex_map = {"H":"H", "Ht":r"\tilde H", "E":"E", "Et":r"\tilde E"}
-N_REPLICAS = 1000
+N_REPLICAS = 10000
 
 # ─── Plot loop ────────────────────────────────────────────────────────────────
 from matplotlib.lines import Line2D
 
 legend_elements = [
     Line2D([0], [0], color='tab:blue', linestyle='-', lw=2.5, label='Original'),
-    Line2D([0], [0], color='tab:red',  linestyle='--',lw=2.5, label='Fit median'),
+    Line2D([0], [0], color='tab:red',  linestyle='--',lw=2.5, label='RGA pass-1'),
     plt.Rectangle((0,0),1,1,fc='tab:red',alpha=0.2,ec=None,label='95% CI')
 ]
 
