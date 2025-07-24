@@ -333,18 +333,25 @@ void plot_model_data_xs(){
 void plot_ratios_asy() {
     Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
     TCanvas *c1[4];
+    TCanvas *c2[4];
     TH2F *hRatio[4];
+    TH2F *hRatio2[4];
 
     for (int i=0; i<4; i++) {
         c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
         hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
+        hRatio2[i] = new TH2F(Form("hRatio2_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
         
         std::ifstream if_asyms(Form("./ratios/data/alu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB, asyA, asyH, ratio;
 
         while (if_asyms >> Q2 >> xB >> asyA >> asyH >> ratio) {
             hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(xB), hRatio[i]->GetYaxis()->FindBin(Q2), ratio);
+            if ((ratio >= 0.9) && (ratio <= 1.1)) {
+                hRatio2[i]->SetBinContent(hRatio2[i]->GetXaxis()->FindBin(xB), hRatio2[i]->GetYaxis()->FindBin(Q2), ratio);
+            }
         }
+        if_asyms.close();
 
         hRatio[i]->SetTitle(Form("A^{#it{H}}_{LU} / A^{all}_{LU}, -t = %.2f GeV^{2}", t[i]));
         hRatio[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
@@ -352,41 +359,65 @@ void plot_ratios_asy() {
         hRatio[i]->GetZaxis()->SetTitle("A^{#it{H}}_{LU} / A^{all}_{LU}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 5.0);
         hRatio[i]->SetStats(0);
-
         hRatio[i]->Draw("COLZ");
 
         c1[i]->SaveAs(Form("./ratios/ratio_asym_-t_%.2f.png", t[i]));
         c1[i]->Close();
-        if_asyms.close();
+        
+        hRatio2[i]->SetTitle(Form("0.9 < A^{#it{H}}_{LU} / A^{all}_{LU} < 1.1, -t = %.2f GeV^{2}", t[i]));
+        hRatio2[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
+        hRatio2[i]->GetXaxis()->SetTitle("x_{B}");
+        hRatio2[i]->GetZaxis()->SetTitle("A^{#it{H}}_{LU} / A^{all}_{LU}");
+        hRatio2[i]->GetZaxis()->SetRangeUser(0.0, 5.0);
+        hRatio2[i]->SetStats(0);
+        hRatio2[i]->Draw("COLZ");
+
+        c2[i]->SaveAs(Form("./ratios/ratio_asym_0.9_1.1_-t_%.2f.png", t[i]));
+        c2[i]->Close();
     }
 }
 
 void plot_ratios_xs() {
     Double_t t[4] = {0.1, 0.4, 0.7, 1.0};
     TCanvas *c1[4];
+    TCanvas *c2[4];
     TH2F *hRatio[4];
+    TH2F *hRatio2[4];
 
     for (int i=0; i<4; i++) {
         c1[i] = new TCanvas(Form("c1_%i", i), Form("c1_%i", i), 2000, 1500);
         hRatio[i] = new TH2F(Form("hRatio_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
+        hRatio2[i] = new TH2F(Form("hRatio2_%i", i), "", 65, 0.055, 0.705, 61, 0.95, 7.05);
         
         std::ifstream if_xs(Form("./ratios/data/xslu_output_kinematics_&_amps_-t_%.2f.txt", t[i]));
         Double_t Q2, xB, intA, intH, ratio;
 
         while (if_xs >> Q2 >> xB >> intA >> intH >> ratio) {
             hRatio[i]->SetBinContent(hRatio[i]->GetXaxis()->FindBin(xB), hRatio[i]->GetYaxis()->FindBin(Q2), ratio);
+            if ((ratio >= 0.9) && (ratio <= 1.1)) {
+                hRatio2[i]->SetBinContent(hRatio2[i]->GetXaxis()->FindBin(xB), hRatio2[i]->GetYaxis()->FindBin(Q2), ratio);
+            }
         }
+        if_xs.close();
 
-        hRatio[i]->SetTitle(Form("#int_{0}^{2#pi} d#sigma^{#it{H}} / #int_{0}^{2#pi} d#sigma^{all}, -t = %.2f GeV^{2}", t[i]));
+        hRatio[i]->SetTitle(Form("sigma^{#it{H}} / #sigma^{all}, -t = %.2f GeV^{2}", t[i]));
         hRatio[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
         hRatio[i]->GetXaxis()->SetTitle("x_{B}");
-        //hRatio[i]->GetZaxis()->SetTitle("#int_{0}^{2#pi}d#sigma^{#it{H}} / #int_{0}^{2#pi}d#sigma^{all}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 1.5);
         hRatio[i]->SetStats(0);
         hRatio[i]->Draw("COLZ");
 
         c1[i]->SaveAs(Form("./ratios/ratio_xs_-t_%.2f.png", t[i]));
         c1[i]->Close();
-        if_xs.close();
+
+        hRatio2[i]->SetTitle(Form("0.9 < sigma^{#it{H}} / #sigma^{all} < 1.1, -t = %.2f GeV^{2}", t[i]));
+        hRatio2[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
+        hRatio2[i]->GetXaxis()->SetTitle("x_{B}");
+        hRatio2[i]->GetZaxis()->SetRangeUser(0.0, 1.5);
+        hRatio2[i]->SetStats(0);
+        hRatio2[i]->Draw("COLZ");
+
+        c2[i]->SaveAs(Form("./ratios/ratio_xs_0.9_1.1_-t_%.2f.png", t[i]));
+        c2[i]->Close();
     }
 }
