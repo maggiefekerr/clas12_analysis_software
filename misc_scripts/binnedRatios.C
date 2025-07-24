@@ -412,7 +412,7 @@ void plot_ratios_xs() {
         c1[i]->Close();
 
         c2[i] = new TCanvas(Form("c2_%i", i), Form("c2_%i", i), 2000, 1500);
-        hRatio2[i]->SetTitle(Form("0.9 < sigma^{#it{H}} / #sigma^{all} < 1.1, -t = %.2f GeV^{2}", t[i]));
+        hRatio2[i]->SetTitle(Form("0.9 < #sigma^{#it{H}} / #sigma^{all} < 1.1, -t = %.2f GeV^{2}", t[i]));
         hRatio2[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
         hRatio2[i]->GetXaxis()->SetTitle("x_{B}");
         hRatio2[i]->GetZaxis()->SetRangeUser(0.0, 1.5);
