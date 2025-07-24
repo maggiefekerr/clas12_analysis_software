@@ -401,7 +401,7 @@ void plot_ratios_xs() {
         }
         if_xs.close();
 
-        hRatio[i]->SetTitle(Form("sigma^{#it{H}} / #sigma^{all}, -t = %.2f GeV^{2}", t[i]));
+        hRatio[i]->SetTitle(Form("#sigma^{#it{H}} / #sigma^{all}, -t = %.2f GeV^{2}", t[i]));
         hRatio[i]->GetYaxis()->SetTitle("Q^{2} [GeV^{2}]");
         hRatio[i]->GetXaxis()->SetTitle("x_{B}");
         hRatio[i]->GetZaxis()->SetRangeUser(0.0, 1.5);
