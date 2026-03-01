@@ -384,7 +384,7 @@ public class TCSParticles {
 
     public double get_elec_vz() {
         return elec_vz;
-    } // returns electron vx
+    } // returns electron vz
 
     public double get_posi_vx() {
         return posi_vx;
@@ -396,7 +396,7 @@ public class TCSParticles {
 
     public double get_posi_vz() {
         return posi_vz;
-    } // returns positron vx
+    } // returns positron vz
 
     public double get_prot_vx() {
         return prot_vx;
@@ -408,5 +408,5 @@ public class TCSParticles {
 
     public double get_prot_vz() {
         return prot_vz;
-    } // returns proton vx
+    } // returns proton vz
 }

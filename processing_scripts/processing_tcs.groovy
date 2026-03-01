@@ -35,6 +35,11 @@ public static void main(String[] args) {
 	    System.exit(0);
 	}
 
+	// If the input directory is provided, iterate through each file recursively
+	def hipo_list = []
+	(args[0] as File).eachFileRecurse(FileType.FILES) 
+		{ if (it.name.endsWith('.hipo')) hipo_list << it }
+
     // Set the output file name based on the provided 2nd argument or use the default name
 	String output_file = args.length < 2 ? "tcs_dummy_out.txt" : args[1];
 	if (args.length < 2) 
@@ -96,7 +101,7 @@ public static void main(String[] args) {
 	GenericKinematicFitter fitter = new tcs_fitter(10.6041);
 
     // set filter for final states
-	EventFilter filter = new EventFilter("11:-11:2212:Xn");  
+	EventFilter filter = new EventFilter("11:-11:2212:X+:X-:Xn");  
 
     // setup QA database
 	QADB qa = new QADB("latest");
@@ -244,6 +249,8 @@ public static void main(String[] args) {
 	                	.append(prot_theta).append(" ")
 	                	.append(prot_phi).append(" ")
 	                	.append(prot_vz).append("\n");
+
+					print(line)
 
 					// Append the line to the batchLines StringBuilder
 	                batchLines.append(line.toString());
