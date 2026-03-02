@@ -1611,6 +1611,7 @@ int main(int argc, char *argv[]) {
             else { 
                 for (const auto& run_info : run_info_list) {
                     if (run_info.runnum == runnum) {
+                        cout << "HERE" << endl;
                         target_pol = run_info.target_polarization;
                         break;
                     }
@@ -1628,8 +1629,6 @@ int main(int argc, char *argv[]) {
             sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);*/
 
             tree->Fill(); // Fill the tree with the read data
-
-            cout << "HERE" << endl;
         }
     }
 
