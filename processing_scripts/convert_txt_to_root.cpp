@@ -1598,6 +1598,7 @@ int main(int argc, char *argv[]) {
 
     // TCS
     if (script_index == 7 && is_mc == 0) {
+        cout << "\n\n\n HERE \n\n\n" << endl;
         while (infile >> num_pos >> num_neg >> num_neutral >> 
                          runnum >> evnum >> helicity >> 
                          elec_detector >> posi_detector >> prot_detector >> 
