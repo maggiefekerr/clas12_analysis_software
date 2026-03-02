@@ -236,8 +236,8 @@ public static void main(String[] args) {
 						.append(prot_detector).append(" ")
 						.append(elec_chi2).append(" ")
 						.append(posi_chi2).append(" ")
-						.append(prot_chi2).append(" ")
-	                	.append(elec_p).append(" ")
+						.append(prot_chi2).append("\n");
+	                	/*.append(elec_p).append(" ")
 	                	.append(elec_theta).append(" ")
 	                	.append(elec_phi).append(" ")
 	                	.append(elec_vz).append(" ")
@@ -248,7 +248,7 @@ public static void main(String[] args) {
 	                	.append(prot_p).append(" ")
 	                	.append(prot_theta).append(" ")
 	                	.append(prot_phi).append(" ")
-	                	.append(prot_vz).append("\n");
+	                	.append(prot_vz).append("\n");*/
 
 					// print(line)
 

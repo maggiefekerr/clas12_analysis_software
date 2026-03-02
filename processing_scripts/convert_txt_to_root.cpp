@@ -1598,14 +1598,13 @@ int main(int argc, char *argv[]) {
 
     // TCS
     if (script_index == 7 && is_mc == 0) {
-        cout << "\n\n\n HERE \n\n\n" << endl;
         while (infile >> num_pos >> num_neg >> num_neutral >> 
                          runnum >> evnum >> helicity >> 
                          elec_detector >> posi_detector >> prot_detector >> 
-                         elec_chi2 >> posi_chi2 >> prot_chi2 >>
+                         elec_chi2 >> posi_chi2 >> prot_chi2 /*>>
                          elec_p >> elec_theta >> elec_phi >> elec_vz >> 
                          posi_p >> posi_theta >> posi_phi >> posi_vz >> 
-                         prot_p >> prot_theta >> prot_phi >> prot_vz ) {
+                         prot_p >> prot_theta >> prot_phi >> prot_vz*/ ) {
 
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }
@@ -1619,14 +1618,14 @@ int main(int argc, char *argv[]) {
             }
 
             // Convert spherical coordinates to Cartesian coordinates for each hadron
-            double elec_px, elec_py, elec_pz;
+            /*double elec_px, elec_py, elec_pz;
             sphericalToCartesian(elec_p, elec_phi, elec_theta, elec_px, elec_py, elec_pz);
             
             double posi_px, posi_py, posi_pz;
             sphericalToCartesian(posi_p, posi_phi, posi_theta, posi_px, posi_py, posi_pz);
             
             double prot_px, prot_py, prot_pz;
-            sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);
+            sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);*/
 
             tree->Fill(); // Fill the tree with the read data
         }
