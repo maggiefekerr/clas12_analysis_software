@@ -250,7 +250,7 @@ public static void main(String[] args) {
 	                	.append(prot_phi).append(" ")
 	                	.append(prot_vz).append("\n");
 
-					print(line)
+					// print(line)
 
 					// Append the line to the batchLines StringBuilder
 	                batchLines.append(line.toString());
