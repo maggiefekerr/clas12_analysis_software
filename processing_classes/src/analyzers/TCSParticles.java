@@ -138,20 +138,20 @@ public class TCSParticles {
         beam_lv.setPxPyPzM(0, 0, Math.pow(Eb * Eb - kinematic_variables.particle_mass(11) * kinematic_variables.particle_mass(11), 0.5),
                            kinematic_variables.particle_mass(11));
         // electron
-        String electron_string = "[11," + elec_rec_index + "]"; // using found index value for all in case e+ listed first
+        String electron_string = "[11,0]"; // using found index value for all in case e+ listed first
         Particle scattered_electron = recEvent.getParticle(electron_string);
         LorentzVector elec_lv = new LorentzVector();
         elec_lv.setPxPyPzM(scattered_electron.px(), scattered_electron.py(),
                            scattered_electron.pz(), kinematic_variables.particle_mass(11));
         // positron
-        String positron_string = "[-11," + posi_rec_index + "]"; // using found index value for all in case e+ listed first
+        String positron_string = "[-11,0]"; // using found index value for all in case e+ listed first
         Particle scattered_positron = recEvent.getParticle(positron_string);
         LorentzVector posi_lv = new LorentzVector();
         System.out.println(Double.toString(scattered_positron.pz()));
         posi_lv.setPxPyPzM(scattered_positron.px(), scattered_positron.py(),
                            scattered_positron.pz(), kinematic_variables.particle_mass(-11));
         // proton
-        String proton_string = "[2212," + prot_rec_index + "]"; // using found index value for all in case e+ listed first
+        String proton_string = "[2212,0]"; // using found index value for all in case e+ listed first
         Particle scattered_proton = recEvent.getParticle(proton_string);
         LorentzVector prot_lv = new LorentzVector();
         prot_lv.setPxPyPzM(scattered_proton.px(), scattered_proton.py(),
