@@ -153,6 +153,7 @@ public class tcs_fitter extends GenericKinematicFitter {
                 float vx = rec_Bank.getFloat("vx", particle_Index);
                 float vy = rec_Bank.getFloat("vy", particle_Index);
                 float vz = rec_Bank.getFloat("vz", particle_Index);
+                float chi2pid = rec_Bank.getFloat("chi2pid", particle_Index);
                 double p = Math.sqrt(px * px + py * py + pz * pz);
 
                 int sector = generic_tests.sector(particle_Index, track_Bank); // 0 FT/CD, 1-6 FD
@@ -178,7 +179,7 @@ public class tcs_fitter extends GenericKinematicFitter {
 
                 //if (pid == 11 && electron_test(particle_Index, p, rec_Bank, cal_Bank,
                         //traj_Bank, run_Bank, cc_Bank)) {
-                if (pid == 11) {
+                if (pid == 11 && Math.abs(chi2pid) < 5.0) {
 
                     float[] momentum = {px, py, pz};
 //                    if (inbending) {
@@ -195,11 +196,10 @@ public class tcs_fitter extends GenericKinematicFitter {
                     System.out.println(Double.toString(pz));
                 }
 
-                if (pid == -11) {
+                if (pid == -11 && Math.abs(chi2pid) < 5.0) {
 
                     float[] momentum = {px, py, pz};
-                    //energy_loss_corrections.sebastian_photon_energy_loss_corrections(particle_Index, momentum, rec_Bank, run_Bank);
-//
+
                     px = momentum[0];
                     py = momentum[1];
                     pz = momentum[2];
@@ -210,7 +210,7 @@ public class tcs_fitter extends GenericKinematicFitter {
 
                 //if (pid == 2212 && proton_test(particle_Index, pid, vz, vz_e, rec_Bank, cal_Bank,
                         //traj_Bank, run_Bank)) {
-                if (pid == 2212) {
+                if (pid == 2212 && Math.abs(chi2pid) < 5.0) {
 
                     float[] momentum = {px, py, pz};
 //                    energy_loss_corrections.proton_energy_loss_corrections(particle_Index, momentum, rec_Bank, run_Bank);
