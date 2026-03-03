@@ -1151,7 +1151,7 @@ int main(int argc, char *argv[]) {
         tree->Branch("elec_chi2", &elec_chi2, "elec_chi2/D");
         tree->Branch("posi_chi2", &posi_chi2, "posi_chi2/D");
         tree->Branch("prot_chi2", &prot_chi2, "prot_chi2/D");
-        /*tree->Branch("elec_p", &elec_p, "elec_p/D");
+        tree->Branch("elec_p", &elec_p, "elec_p/D");
         tree->Branch("elec_theta", &elec_theta, "elec_theta/D");
         tree->Branch("elec_phi", &elec_phi, "elec_phi/D");
         tree->Branch("elec_vz", &elec_vz, "elec_vz/D");
@@ -1162,7 +1162,7 @@ int main(int argc, char *argv[]) {
         tree->Branch("prot_p", &prot_p, "prot_p/D");
         tree->Branch("prot_theta", &prot_theta, "prot_theta/D");
         tree->Branch("prot_phi", &prot_phi, "prot_phi/D");
-        tree->Branch("prot_vz", &prot_vz, "prot_vz/D");*/
+        tree->Branch("prot_vz", &prot_vz, "prot_vz/D");
     }
 
     // Case for tcs mc 
@@ -1601,10 +1601,10 @@ int main(int argc, char *argv[]) {
         while (infile >> num_pos >> num_neg >> num_neutral >> 
                          runnum >> evnum >> helicity >> 
                          elec_detector >> posi_detector >> prot_detector >> 
-                         elec_chi2 >> posi_chi2 >> prot_chi2 /*>>
+                         elec_chi2 >> posi_chi2 >> prot_chi2 >>
                          elec_p >> elec_theta >> elec_phi >> elec_vz >> 
                          posi_p >> posi_theta >> posi_phi >> posi_vz >> 
-                         prot_p >> prot_theta >> prot_phi >> prot_vz*/ ) {
+                         prot_p >> prot_theta >> prot_phi >> prot_vz ) {
 
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }

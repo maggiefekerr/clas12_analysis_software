@@ -210,7 +210,7 @@ public static void main(String[] args) {
 					prot_e     = variables.get_prot_e(); 
 					prot_theta = variables.get_prot_theta();
 					prot_phi   = variables.get_prot_phi();
-					print("electron momentum: " + elec_p + "\n");
+
 					// vertices
 					elec_vx = variables.get_elec_vx();
 					elec_vy = variables.get_elec_vy();
@@ -235,8 +235,8 @@ public static void main(String[] args) {
 						.append(prot_detector).append(" ")
 						.append(elec_chi2).append(" ")
 						.append(posi_chi2).append(" ")
-						.append(prot_chi2).append("\n");
-	                	/*.append(elec_p).append(" ")
+						.append(prot_chi2).append();
+	                	.append(elec_p).append(" ")
 	                	.append(elec_theta).append(" ")
 	                	.append(elec_phi).append(" ")
 	                	.append(elec_vz).append(" ")
@@ -247,7 +247,7 @@ public static void main(String[] args) {
 	                	.append(prot_p).append(" ")
 	                	.append(prot_theta).append(" ")
 	                	.append(prot_phi).append(" ")
-	                	.append(prot_vz).append("\n");*/
+	                	.append(prot_vz).append("\n");
 
 					// print(line)
 
