@@ -36,6 +36,8 @@ public class TCSParticles {
     protected double posi_vx, posi_vy, posi_vz; // positron vertex
     protected double prot_vx, prot_vy, prot_vz; // proton vertex
 
+    protected int elec_rec_index, posi_rec_index, prot_rec_index;
+
     // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
     // event selection :)
 
@@ -92,9 +94,9 @@ public class TCSParticles {
         generic_tests generic_tests = new generic_tests();
         fiducial_cuts fiducial_cuts = new fiducial_cuts();
 
-        int elec_rec_index = getIndex(rec_Bank, 11, 0);
-        int posi_rec_index = getIndex(rec_Bank, -11, 0);
-        int prot_rec_index = getIndex(rec_Bank, 2212, 0);
+        elec_rec_index = getIndex(rec_Bank, 11, 0);
+        posi_rec_index = getIndex(rec_Bank, -11, 0);
+        prot_rec_index = getIndex(rec_Bank, 2212, 0);
 
         elec_chi2 = rec_Bank.getFloat("chi2pid", elec_rec_index);
         posi_chi2 = rec_Bank.getFloat("chi2pid", posi_rec_index);
@@ -202,6 +204,18 @@ public class TCSParticles {
         if (prot_phi < 0) {
             prot_phi = 2 * Math.PI + prot_phi;
         }
+    }
+
+    public int get_elec_rec_num() {
+        return elec_rec_index;
+    }
+
+    public int get_posi_rec_num() {
+        return posi_rec_index;
+    }
+
+    public int get_prot_rec_num() {
+        return prot_rec_index;
     }
 
     public int get_helicity() { // -1, 0, or 1. 0 equals unassigned by EventBuilder
