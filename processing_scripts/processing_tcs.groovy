@@ -163,12 +163,12 @@ public static void main(String[] args) {
 												   userProvidedOverride == 1 ||
 												   qa.pass(runnum, evnum)); // just using QADB for now, if ever decide to do RG-A will need to revisit this
 			if (process_event) {
-				print("processing event");
 				// get # of particles 
 		        int elec_num = research_Event.countByPid(11);
 		        int posi_num = research_Event.countByPid(-11);
 				int prot_num = research_Event.countByPid(2212);
 
+				print(elec_num + " " + posi_num + " " + prot_num);
 				// supply runnum and boolean for radiative simulation or not
 				BeamEnergy Eb = new BeamEnergy(research_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
