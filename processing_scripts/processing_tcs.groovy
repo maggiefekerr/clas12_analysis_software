@@ -168,7 +168,7 @@ public static void main(String[] args) {
 		        int posi_num = research_Event.countByPid(-11);
 				int prot_num = research_Event.countByPid(2212);
 
-				print(elec_num + " " + posi_num + " " + prot_num);
+				print("electron number: " + elec_num + " positron number: " + posi_num + " proton number: " + prot_num + "\n");
 				// supply runnum and boolean for radiative simulation or not
 				BeamEnergy Eb = new BeamEnergy(research_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
