@@ -210,6 +210,7 @@ public static void main(String[] args) {
 					prot_e     = variables.get_prot_e(); 
 					prot_theta = variables.get_prot_theta();
 					prot_phi   = variables.get_prot_phi();
+					print("positron momentum: " + posi_p + "\n");
 
 					// vertices
 					elec_vx = variables.get_elec_vx();
