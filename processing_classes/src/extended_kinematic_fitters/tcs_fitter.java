@@ -192,6 +192,7 @@ public class tcs_fitter extends GenericKinematicFitter {
 
                     Particle elec = new Particle(pid, px, py, pz, vx, vy, vz_e);
                     physEvent.addParticle(elec);
+                    System.out.println("added electron");
                 }
 
                 if (pid == -11) {
@@ -204,6 +205,7 @@ public class tcs_fitter extends GenericKinematicFitter {
                     pz = momentum[2];
                     Particle posi = new Particle(pid, px, py, pz, vx, vy, vz);
                     physEvent.addParticle(posi);
+                    System.out.println("added positron");
                 }
 
                 //if (pid == 2212 && proton_test(particle_Index, pid, vz, vz_e, rec_Bank, cal_Bank,
@@ -220,6 +222,7 @@ public class tcs_fitter extends GenericKinematicFitter {
                     pz = momentum[2];
                     Particle prot = new Particle(pid, px, py, pz, vx, vy, vz);
                     physEvent.addParticle(prot);
+                    System.out.println("added proton");
                 }
             }
 
