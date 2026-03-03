@@ -147,7 +147,7 @@ public class TCSParticles {
         String positron_string = "[-11,0]"; // using found index value for all in case e+ listed first
         Particle scattered_positron = recEvent.getParticle(positron_string);
         LorentzVector posi_lv = new LorentzVector();
-        System.out.println(Double.toString(scattered_positron.pz()));
+        //System.out.println(Double.toString(scattered_positron.pz()));
         posi_lv.setPxPyPzM(scattered_positron.px(), scattered_positron.py(),
                            scattered_positron.pz(), kinematic_variables.particle_mass(-11));
         // proton
