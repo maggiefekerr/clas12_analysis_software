@@ -235,7 +235,7 @@ public static void main(String[] args) {
 						.append(prot_detector).append(" ")
 						.append(elec_chi2).append(" ")
 						.append(posi_chi2).append(" ")
-						.append(prot_chi2).append();
+						.append(prot_chi2).append(" ")
 	                	.append(elec_p).append(" ")
 	                	.append(elec_theta).append(" ")
 	                	.append(elec_phi).append(" ")

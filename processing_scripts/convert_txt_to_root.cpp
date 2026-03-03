@@ -1611,7 +1611,7 @@ int main(int argc, char *argv[]) {
             else { 
                 for (const auto& run_info : run_info_list) {
                     if (run_info.runnum == runnum) {
-                        cout << "HERE" << endl;
+                        //cout << "HERE" << endl;
                         target_pol = run_info.target_polarization;
                         break;
                     }
@@ -1619,14 +1619,14 @@ int main(int argc, char *argv[]) {
             }
 
             // Convert spherical coordinates to Cartesian coordinates for each hadron
-            /*double elec_px, elec_py, elec_pz;
+            double elec_px, elec_py, elec_pz;
             sphericalToCartesian(elec_p, elec_phi, elec_theta, elec_px, elec_py, elec_pz);
             
             double posi_px, posi_py, posi_pz;
             sphericalToCartesian(posi_p, posi_phi, posi_theta, posi_px, posi_py, posi_pz);
             
             double prot_px, prot_py, prot_pz;
-            sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);*/
+            sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);
 
             tree->Fill(); // Fill the tree with the read data
         }
