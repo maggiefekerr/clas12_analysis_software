@@ -86,7 +86,7 @@ public static void main(String[] args) {
 
     // declare physics event variables
 
-    double helicity;
+    int helicity;
 	int num_pos, num_neg, num_neutrals; 
     int elec_detector, posi_detector, prot_detector;
 	double elec_chi2, posi_chi2, prot_chi2;
