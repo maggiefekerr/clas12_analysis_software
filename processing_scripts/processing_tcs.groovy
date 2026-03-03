@@ -168,11 +168,11 @@ public static void main(String[] args) {
 		        int posi_num = research_Event.countByPid(-11);
 				int prot_num = research_Event.countByPid(2212);
 
-				print("electron number: " + elec_num + " positron number: " + posi_num + " proton number: " + prot_num + "\n");
 				// supply runnum and boolean for radiative simulation or not
 				BeamEnergy Eb = new BeamEnergy(research_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
 				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+				print("beam energy: " + energy);
 				TCSParticles variables = new TCSParticles(event, research_Event, energy); 
 				// this is the class for defining all relevant kinematic variables
 				if (variables.channel_test(variables)) {
