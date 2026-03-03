@@ -172,7 +172,6 @@ public static void main(String[] args) {
 				BeamEnergy Eb = new BeamEnergy(research_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
 				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
-				print("beam energy: " + energy);
 				TCSParticles variables = new TCSParticles(event, research_Event, energy); 
 				// this is the class for defining all relevant kinematic variables
 				if (variables.channel_test(variables)) {
@@ -211,7 +210,7 @@ public static void main(String[] args) {
 					prot_e     = variables.get_prot_e(); 
 					prot_theta = variables.get_prot_theta();
 					prot_phi   = variables.get_prot_phi();
-
+					print("electron momentum: " + elec_p + "\n");
 					// vertices
 					elec_vx = variables.get_elec_vx();
 					elec_vy = variables.get_elec_vy();
