@@ -329,7 +329,7 @@ public static void main(String[] args) {
           "36: DepC,             " +
           "37: DepV,             " +
           "38: DepW              " +
-          "39: sector            " +
+          "39: sector"
         )
 
         println("Set p1 PID = $p1_Str")
