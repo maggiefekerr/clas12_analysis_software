@@ -270,7 +270,7 @@ public static void main(String[] args) {
                                 .append(Depolarization_C).append(" ")
                                 .append(Depolarization_V).append(" ")
                                 .append(Depolarization_W).append(" ")
-                                .append(sector).append("\n")
+                                .append(sector).append("\n");
                         batchLines.append(line.toString())
                         lineCount++
 
