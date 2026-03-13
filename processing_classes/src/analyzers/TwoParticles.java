@@ -18,6 +18,7 @@ public class TwoParticles {
 
     protected int fiducial_status = -1;
     protected int detector = -1;
+    protected int sector = -1;
 
     protected int num_elec, num_piplus, num_piminus, num_kplus, num_kminus, num_protons, num_particles;
     protected int num_pos, num_neg, num_neutrals;
@@ -96,6 +97,7 @@ public class TwoParticles {
         HipoDataBank rec_Bank = (HipoDataBank) event.getBank("REC::Particle");
         HipoDataBank cal_Bank = (HipoDataBank) event.getBank("REC::Calorimeter");
         HipoDataBank traj_Bank = (HipoDataBank) event.getBank("REC::Traj");
+        HipoDataBank track_Bank = (HipoDataBank) event.getBank("REC::Track");
 
         helicity = eventBank.getByte("helicity", 0);
         runnum = configBank.getInt("run", 0);
@@ -128,6 +130,8 @@ public class TwoParticles {
         } else if (generic_tests.central_detector_cut(p_rec_index, rec_Bank)) {
             detector = 2;
         }
+
+        sector = generic_tests.sector(p_rec_index, track_Bank); // 0 FT/CD, 1-6 FD // *** CHECK *** that the particle index is reconstructed correctly
 
         boolean passesForwardDetector_1 = generic_tests.forward_detector_cut(p_rec_index, rec_Bank)
                 ? fiducial_cuts.dc_fiducial_cut(p_rec_index, rec_Bank, traj_Bank, configBank) : true;
@@ -347,6 +351,7 @@ public class TwoParticles {
 
     public int get_runnum() { return runnum; }
     public int get_detector() { return detector; }
+    public int get_sector() { return sector; }
     public int get_num_pos() { return num_pos; }
     public int get_num_neg() { return num_neg; }
     public int get_num_neutrals() { return num_neutrals; }

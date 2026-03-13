@@ -89,7 +89,7 @@ public static void main(String[] args) {
     }
 
     // ~~~~~~~~~~~~~~~~ prepare physics analysis ~~~~~~~~~~~~~~~~ //
-    int helicity, detector
+    int helicity, detector, sector
     int num_pos, num_neg, num_neutrals
     double e_p, e_theta, e_phi, p_phi, p_p, p_theta, open_angle
     double Q2, W, y, Mx2, x, t, tmin, z, xF, pT, eta, xi, phi, vz_e, vz_p
@@ -191,6 +191,7 @@ public static void main(String[] args) {
                         int fiducial_status = variables.get_fiducial_status()
                         helicity = variables.get_helicity()
                         detector = variables.get_detector()
+                        sector = variables.get_sector()
                         num_pos = variables.get_num_pos()
                         num_neg = variables.get_num_neg()
                         num_neutrals = variables.get_num_neutrals()
@@ -268,8 +269,8 @@ public static void main(String[] args) {
                                 .append(Depolarization_B).append(" ")
                                 .append(Depolarization_C).append(" ")
                                 .append(Depolarization_V).append(" ")
-                                .append(Depolarization_W).append("\n")
-
+                                .append(Depolarization_W).append(" ")
+                                .append(sector).append("\n")
                         batchLines.append(line.toString())
                         lineCount++
 
@@ -327,7 +328,8 @@ public static void main(String[] args) {
           "35: DepB,             " +
           "36: DepC,             " +
           "37: DepV,             " +
-          "38: DepW"
+          "38: DepW              " +
+          "39: sector            " +
         )
 
         println("Set p1 PID = $p1_Str")

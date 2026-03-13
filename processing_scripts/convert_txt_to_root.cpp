@@ -193,6 +193,7 @@ int main(int argc, char *argv[]) {
     int num_pos, num_neg, num_neutral;
     int runnum, evnum, helicity;
     int detector, detector1, detector2, detector3, detector_gamma1, detector_gamma2;
+    int sector;
     double beam_pol, target_pol, e_p, e_theta, e_phi, vz_e, Q2, W, Mx, Mx2, x, y;
     double t, tmin;
     double z, xF, pT, xi, eta, phi, DepA, DepB, DepC, DepV, DepW;
@@ -392,6 +393,7 @@ int main(int argc, char *argv[]) {
         tree->Branch("DepC", &DepC, "DepC/D");
         tree->Branch("DepV", &DepV, "DepV/D");
         tree->Branch("DepW", &DepW, "DepW/D");
+        tree->Branch("sector", &sector, "sector/I");
     }
     // Case for one hadron and is monte carlo
     else if (script_index == 1 && is_mc == 1) {
@@ -1232,7 +1234,8 @@ int main(int argc, char *argv[]) {
             runnum >> evnum >> helicity >> detector >> e_p >> e_theta >> e_phi >> vz_e >> 
             p_p >> p_theta >> p_phi >> vz_p >> open_angle >> Egamma >> isrTheta >> isrPhi >> 
             Q2 >> W >> Mx2 >> x >> t >> tmin >> y >> z >> xF >> 
-            pT >> xi >> eta >> phi >> DepA >> DepB >> DepC >> DepV >> DepW) {
+            pT >> xi >> eta >> phi >> DepA >> DepB >> DepC >> DepV >> DepW >>
+            sector) {
 
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }
