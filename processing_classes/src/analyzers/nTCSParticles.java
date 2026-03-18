@@ -39,7 +39,7 @@ public class nTCSParticles {
     // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
     // event selection :)
 
-    public static boolean channel_test(TCSParticles variables) {
+    public static boolean channel_test(nTCSParticles variables) {
         if (variables.helicity == 0 && variables.runnum != 11) {
             return false;
         }
