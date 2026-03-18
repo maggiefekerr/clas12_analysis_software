@@ -174,12 +174,13 @@ public class tcs_fitter extends GenericKinematicFitter {
                     inbending = true;
                 }
 
+                // removing chi2pid requirements as these are already added
                 //energy_loss_corrections energy_loss_corrections = new energy_loss_corrections();
                 //momentum_corrections momentum_corrections = new momentum_corrections();
 
                 //if (pid == 11 && electron_test(particle_Index, p, rec_Bank, cal_Bank,
                         //traj_Bank, run_Bank, cc_Bank)) {
-                if (pid == 11 && Math.abs(chi2pid) < 5.0) {
+                if (pid == 11) {
 
                     float[] momentum = {px, py, pz};
 //                    if (inbending) {
@@ -196,7 +197,7 @@ public class tcs_fitter extends GenericKinematicFitter {
                     // System.out.println(Double.toString(pz));
                 }
 
-                if (pid == -11 && Math.abs(chi2pid) < 5.0) {
+                if (pid == -11) {
 
                     float[] momentum = {px, py, pz};
 
@@ -210,7 +211,7 @@ public class tcs_fitter extends GenericKinematicFitter {
 
                 //if (pid == 2212 && proton_test(particle_Index, pid, vz, vz_e, rec_Bank, cal_Bank,
                         //traj_Bank, run_Bank)) {
-                if (pid == 2212 && Math.abs(chi2pid) < 5.0) {
+                if (pid == 2212) {
 
                     float[] momentum = {px, py, pz};
 //                    energy_loss_corrections.proton_energy_loss_corrections(particle_Index, momentum, rec_Bank, run_Bank);

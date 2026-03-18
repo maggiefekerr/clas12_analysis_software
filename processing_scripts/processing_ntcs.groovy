@@ -4,10 +4,10 @@
  * and derivative files of
  * Timothy B. Hayward as template
  * 
- * TCS
+ * nTCS
  */
 
-// import CLAS12 physics classes
+ // import CLAS12 physics classes
 import org.jlab.io.hipo.*;
 import org.jlab.io.base.DataEvent;
 import org.jlab.clas.physics.*;
@@ -41,9 +41,9 @@ public static void main(String[] args) {
 		{ if (it.name.endsWith('.hipo')) hipo_list << it }
 
     // Set the output file name based on the provided 2nd argument or use the default name
-	String output_file = args.length < 2 ? "tcs_dummy_out.txt" : args[1];
+	String output_file = args.length < 2 ? "ntcs_dummy_out.txt" : args[1];
 	if (args.length < 2) 
-	    println("WARNING: Specify an output file name. Set to \"tcs_dummy_out.txt\".");
+	    println("WARNING: Specify an output file name. Set to \"ntcs_dummy_out.txt\".");
 	File file = new File(output_file);
 	file.delete();
 	BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -65,7 +65,7 @@ public static void main(String[] args) {
 	    println("No beam energy provided, defaulting to 10.6 GeV.");
 	}
 
-	// Set the user-provided run number if available
+    // Set the user-provided run number if available
 	Integer userProvidedRun = null
 	if (args.length < 5) {
 	    println("Run number not provided, will pull from hipo files.")
@@ -74,7 +74,7 @@ public static void main(String[] args) {
 		userProvidedRun = Integer.parseInt(args[4]);
 	}
 
-	// Allow for QADB override (usually meaning you're processing MC)
+    // Allow for QADB override (usually meaning you're processing MC)
 	Integer userProvidedOverride = 0;
 	if (args.length < 6) {
 		println("No indication of QADB provided. Will use QADB.");
@@ -82,26 +82,24 @@ public static void main(String[] args) {
 		userProvidedOverride = Integer.parseInt(args[5]);
 	}
 
-    // ~~~~~~~~~~~~~~~~ prepare physics analysis ~~~~~~~~~~~~~~~~ //
-
     // declare physics event variables
 
     int helicity;
 	int num_pos, num_neg, num_neutrals; 
-    int elec_detector, posi_detector, prot_detector;
-	double elec_chi2, posi_chi2, prot_chi2;
+    int elec_detector, posi_detector, neut_detector;
+	double elec_chi2, posi_chi2, neut_chi2;
 	double elec_px, elec_py, elec_pz, elec_p, elec_e, elec_theta, elec_phi;
     double posi_px, posi_py, posi_pz, posi_p, posi_e, posi_theta, posi_phi;
-    double prot_px, prot_py, prot_pz, prot_p, prot_e, prot_theta, prot_phi;
+    double neut_px, neut_py, neut_pz, neut_p, neut_e, neut_theta, neut_phi;
     double elec_vx, elec_vy, elec_vz;
     double posi_vx, posi_vy, posi_vz;
-	double prot_vx, prot_vy, prot_vz; // will need to readjust these
+	double neut_vx, neut_vy, neut_vz; // will need to readjust these
 
     // load kinematic fitter/PID
-	GenericKinematicFitter fitter = new tcs_fitter(10.6041);
+	GenericKinematicFitter fitter = new ntcs_fitter(10.6041);
 
     // set filter for final states
-	EventFilter filter = new EventFilter("11:-11:2212");  
+	EventFilter filter = new EventFilter("11:-11:2112");
 
     // setup QA database
 	QADB qa = new QADB("latest");
@@ -166,19 +164,19 @@ public static void main(String[] args) {
 				// get # of particles 
 		        int elec_num = research_Event.countByPid(11);
 		        int posi_num = research_Event.countByPid(-11);
-				int prot_num = research_Event.countByPid(2212);
+				int neut_num = research_Event.countByPid(2112);
 
 				// supply runnum and boolean for radiative simulation or not
 				BeamEnergy Eb = new BeamEnergy(research_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
 				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
-				TCSParticles variables = new TCSParticles(event, research_Event, energy); 
+				nTCSParticles variables = new nTCSParticles(event, research_Event, energy); 
 				// this is the class for defining all relevant kinematic variables
 				if (variables.channel_test(variables)) {
 					helicity = variables.get_helicity(); // helicity of event
 	                elec_detector = variables.get_elec_detector();
 	                posi_detector = variables.get_posi_detector();
-					prot_detector = variables.get_prot_detector();
+					neut_detector = variables.get_neut_detector();
 	                num_pos = variables.get_num_pos();
 	                num_neg = variables.get_num_neg();
 	                num_neutrals = variables.get_num_neutrals();
@@ -186,7 +184,7 @@ public static void main(String[] args) {
 					// pid elec_chi2
 					elec_chi2 = variables.get_elec_chi2pid();
 					posi_chi2 = variables.get_posi_chi2pid();
-					prot_chi2 = variables.get_prot_chi2pid();
+					neut_chi2 = variables.get_neut_chi2pid();
 
 					// lab kinematics
 					elec_px    = variables.get_elec_px();
@@ -203,13 +201,13 @@ public static void main(String[] args) {
 					posi_e     = variables.get_posi_e(); 
 					posi_theta = variables.get_posi_theta();
 					posi_phi   = variables.get_posi_phi();
-					prot_px    = variables.get_prot_px();
-					prot_py    = variables.get_prot_py(); 
-					prot_pz    = variables.get_prot_pz(); 
-					prot_p     = variables.get_prot_p(); 
-					prot_e     = variables.get_prot_e(); 
-					prot_theta = variables.get_prot_theta();
-					prot_phi   = variables.get_prot_phi();
+					neut_px    = variables.get_neut_px();
+					neut_py    = variables.get_neut_py(); 
+					neut_pz    = variables.get_neut_pz(); 
+					neut_p     = variables.get_neut_p(); 
+					neut_e     = variables.get_neut_e(); 
+					neut_theta = variables.get_neut_theta();
+					neut_phi   = variables.get_neut_phi();
 
 					// vertices
 					elec_vx = variables.get_elec_vx();
@@ -218,9 +216,9 @@ public static void main(String[] args) {
 					posi_vx = variables.get_posi_vx();
 					posi_vy = variables.get_posi_vy();
 					posi_vz = variables.get_posi_vz();
-					prot_vx = variables.get_prot_vx();
-					prot_vy = variables.get_prot_vy();
-					prot_vz = variables.get_prot_vz();
+					neut_vx = variables.get_neut_vx();
+					neut_vy = variables.get_neut_vy();
+					neut_vz = variables.get_neut_vz();
 
 					// Use a StringBuilder to append all data in a single call
 					StringBuilder line = new StringBuilder();
@@ -232,10 +230,10 @@ public static void main(String[] args) {
 	                	.append(helicity).append(" ")
 	                	.append(elec_detector).append(" ")
 	                	.append(posi_detector).append(" ")
-						.append(prot_detector).append(" ")
+						.append(neut_detector).append(" ")
 						.append(elec_chi2).append(" ")
 						.append(posi_chi2).append(" ")
-						.append(prot_chi2).append(" ")
+						.append(neut_chi2).append(" ")
 	                	.append(elec_p).append(" ")
 	                	.append(elec_theta).append(" ")
 	                	.append(elec_phi).append(" ")
@@ -244,10 +242,10 @@ public static void main(String[] args) {
 	                	.append(posi_theta).append(" ")
 	                	.append(posi_phi).append(" ")
 	                	.append(posi_vz).append(" ")
-	                	.append(prot_p).append(" ")
-	                	.append(prot_theta).append(" ")
-	                	.append(prot_phi).append(" ")
-	                	.append(prot_vz).append("\n");
+	                	.append(neut_p).append(" ")
+	                	.append(neut_theta).append(" ")
+	                	.append(neut_phi).append(" ")
+	                	.append(neut_vz).append("\n");
 
 					// print(line)
 
@@ -283,16 +281,7 @@ public static void main(String[] args) {
 	    "63: DepA, 64: DepB, 65: DepC, 66: DepV, 67: DepW, 68: Emiss2, 69: theta_gamma_gamma, " +
 	    "70: pTmiss");*/ // not introducing this line until we have all the variables we want to use
 
-		println("Analyzing tcs.");
+		println("Analyzing ntcs.");
 		println("output text file is: $file");
 	}
-
-	writer.close();
-
-	// End time
-	long endTime = System.currentTimeMillis()
-	// Calculate the elapsed time
-	long elapsedTime = endTime - startTime
-	// Print the elapsed time in milliseconds
-	println("Elapsed time: ${elapsedTime} ms");
 }

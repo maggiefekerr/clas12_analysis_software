@@ -13,28 +13,28 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.hipo.HipoDataBank;
 import org.jlab.clas.physics.*;
 
-public class TCSParticles {
+public class nTCSParticles {
 
     protected byte helicity;
     protected int runnum;
 
     protected int elec_detector = -1;
     protected int posi_detector = -1;
-    protected int prot_detector = -1;
+    protected int neut_detector = -1;
 
     protected int num_electrons, num_piplus, num_piminus, num_kplus, num_kminus, num_protons, num_neutrons, num_particles;
     protected int num_pos, num_neg, num_neutrals;
     protected int num_positrons, num_antiprotons, num_antineutrons;
 
-    protected double elec_chi2, posi_chi2, prot_chi2; // pid chi2 values
+    protected double elec_chi2, posi_chi2, neut_chi2; // pid chi2 values
 
     protected double elec_px, elec_py, elec_pz, elec_p, elec_e, elec_theta, elec_phi; // electron kinematics
     protected double posi_px, posi_py, posi_pz, posi_p, posi_e, posi_theta, posi_phi; // positron kinematics
-    protected double prot_px, prot_py, prot_pz, prot_p, prot_e, prot_theta, prot_phi; // proton kinematics
+    protected double neut_px, neut_py, neut_pz, neut_p, neut_e, neut_theta, neut_phi; // neutron kinematics
 
     protected double elec_vx, elec_vy, elec_vz; // electron vertex
     protected double posi_vx, posi_vy, posi_vz; // positron vertex
-    protected double prot_vx, prot_vy, prot_vz; // proton vertex
+    protected double neut_vx, neut_vy, neut_vz; // neutron vertex
 
     // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
     // event selection :)
@@ -61,8 +61,8 @@ public class TCSParticles {
         return -1;
     }
 
-    public TCSParticles(DataEvent event, PhysicsEvent recEvent, double Eb) {
-        // Alterring to remove PID numbers as input as just for TCS
+    public nTCSParticles(DataEvent event, PhysicsEvent recEvent, double Eb) {
+        // Alterring to remove PID numbers as input as just for nTCS
 
         kinematic_variables kinematic_variables = new kinematic_variables();
 
@@ -96,11 +96,11 @@ public class TCSParticles {
 
         int elec_rec_index = getIndex(rec_Bank, 11, 0);
         int posi_rec_index = getIndex(rec_Bank, -11, 0);
-        int prot_rec_index = getIndex(rec_Bank, 2212, 0);
+        int neut_rec_index = getIndex(rec_Bank, 2112, 0);
 
         elec_chi2 = rec_Bank.getFloat("chi2pid", elec_rec_index);
         posi_chi2 = rec_Bank.getFloat("chi2pid", posi_rec_index);
-        prot_chi2 = rec_Bank.getFloat("chi2pid", prot_rec_index);
+        neut_chi2 = rec_Bank.getFloat("chi2pid", neut_rec_index);
 
         // Fiducial cuts & fiducial status, will need to add this in later
 
@@ -122,19 +122,19 @@ public class TCSParticles {
             posi_detector = 2; // Central Detector
         }
 
-        // proton detector
-        if (generic_tests.forward_tagger_cut(prot_rec_index, rec_Bank)) {
-            prot_detector = 0; // Forward Tagger
-        } else if (generic_tests.forward_detector_cut(prot_rec_index, rec_Bank)) {
-            prot_detector = 1; // Forward Detector
-        } else if (generic_tests.central_detector_cut(prot_rec_index, rec_Bank)) {
-            prot_detector = 2; // Central Detector
+        // neutron detector
+        if (generic_tests.forward_tagger_cut(neut_rec_index, rec_Bank)) {
+            neut_detector = 0; // Forward Tagger
+        } else if (generic_tests.forward_detector_cut(neut_rec_index, rec_Bank)) {
+            neut_detector = 1; // Forward Detector
+        } else if (generic_tests.central_detector_cut(neut_rec_index, rec_Bank)) {
+            neut_detector = 2; // Central Detector
         }
 
         // Set up Lorentz vectors
         // target
         LorentzVector target_lv = new LorentzVector();
-        target_lv.setPxPyPzM(0,0,0,kinematic_variables.particle_mass(2212));
+        target_lv.setPxPyPzM(0,0,0,kinematic_variables.particle_mass(2112));
         // beam electron (not sure how relevant or necessary here but for completeness)
         LorentzVector beam_lv = new LorentzVector();
         beam_lv.setPxPyPzM(0, 0, Math.pow(Eb * Eb - kinematic_variables.particle_mass(11) * kinematic_variables.particle_mass(11), 0.5),
@@ -152,23 +152,23 @@ public class TCSParticles {
         //System.out.println(Double.toString(scattered_positron.pz()));
         posi_lv.setPxPyPzM(scattered_positron.px(), scattered_positron.py(),
                            scattered_positron.pz(), kinematic_variables.particle_mass(-11));
-        // proton
-        String proton_string = "[2212,0]"; // using found index value for all in case e+ listed first
-        Particle scattered_proton = recEvent.getParticle(proton_string);
-        LorentzVector prot_lv = new LorentzVector();
-        prot_lv.setPxPyPzM(scattered_proton.px(), scattered_proton.py(),
-                           scattered_proton.pz(), kinematic_variables.particle_mass(2212));
+        // neutron
+        String neutron_string = "[2112,0]"; // using found index value for all in case e+ listed first
+        Particle scattered_neutron = recEvent.getParticle(neutron_string);
+        LorentzVector neut_lv = new LorentzVector();
+        neut_lv.setPxPyPzM(scattered_neutron.px(), scattered_neutron.py(),
+                           scattered_neutron.pz(), kinematic_variables.particle_mass(2112));
 
-        // positions of electron, positron, proton
+        // positions of electron, positron, neutron
         elec_vx = scattered_electron.vx();
         posi_vx = scattered_positron.vx();
-        prot_vx = scattered_proton.vx();
+        neut_vx = scattered_neutron.vx();
         elec_vy = scattered_electron.vy();
         posi_vy = scattered_positron.vy();
-        prot_vy = scattered_proton.vy();
+        neut_vy = scattered_neutron.vy();
         elec_vz = scattered_electron.vz();
         posi_vz = scattered_positron.vz();
-        prot_vz = scattered_proton.vz();
+        neut_vz = scattered_neutron.vz();
 
         // Initialize momentum corrections at some point
 
@@ -194,16 +194,16 @@ public class TCSParticles {
         if (posi_phi < 0) {
             posi_phi = 2 * Math.PI + posi_phi;
         }
-        // kinematics of proton
-        prot_px    = prot_lv.px();
-        prot_py    = prot_lv.py();
-        prot_pz    = prot_lv.pz();
-        prot_p     = prot_lv.p();
-        prot_e     = prot_lv.e();
-        prot_theta = scattered_proton.theta();
-        prot_phi   = scattered_proton.phi();
-        if (prot_phi < 0) {
-            prot_phi = 2 * Math.PI + prot_phi;
+        // kinematics of neutron
+        neut_px    = neut_lv.px();
+        neut_py    = neut_lv.py();
+        neut_pz    = neut_lv.pz();
+        neut_p     = neut_lv.p();
+        neut_e     = neut_lv.e();
+        neut_theta = scattered_neutron.theta();
+        neut_phi   = scattered_neutron.phi();
+        if (neut_phi < 0) {
+            neut_phi = 2 * Math.PI + neut_phi;
         }
     }
 
@@ -237,9 +237,9 @@ public class TCSParticles {
         return posi_detector;
     } // returns integer value representing the detector of positron track
 
-    public int get_prot_detector() {
-        return prot_detector;
-    } // returns integer value representing the detector of proton track
+    public int get_neut_detector() {
+        return neut_detector;
+    } // returns integer value representing the detector of neutron track
 
     public int get_num_pos() {
         return num_pos;
@@ -293,9 +293,9 @@ public class TCSParticles {
         return posi_chi2;
     } // returns chi2 value of positron pid
 
-    public double get_prot_chi2pid() {
-        return prot_chi2;
-    } // returns chi2 value of proton pid
+    public double get_neut_chi2pid() {
+        return neut_chi2;
+    } // returns chi2 value of neutron pid
 
     public double get_elec_px(){
         return elec_px;
@@ -353,33 +353,33 @@ public class TCSParticles {
         return posi_phi;
     } // returns positron phi
 
-    public double get_prot_px(){
-        return prot_px;
-    } // returns proton px
+    public double get_neut_px(){
+        return neut_px;
+    } // returns neutron px
 
-    public double get_prot_py() {
-        return prot_py;
-    } // returns proton py
+    public double get_neut_py() {
+        return neut_py;
+    } // returns neutron py
 
-    public double get_prot_pz(){
-        return prot_pz;
-    } // returns proton pz
+    public double get_neut_pz(){
+        return neut_pz;
+    } // returns neutron pz
 
-    public double get_prot_p() {
-        return prot_p;
-    } // returns proton p
+    public double get_neut_p() {
+        return neut_p;
+    } // returns neutron p
 
-    public double get_prot_e() {
-        return prot_e;
-    } // returns proton e
+    public double get_neut_e() {
+        return neut_e;
+    } // returns neutron e
 
-    public double get_prot_theta() {
-        return prot_theta;
-    } // returns proton theta
+    public double get_neut_theta() {
+        return neut_theta;
+    } // returns neutron theta
 
-    public double get_prot_phi() {
-        return prot_phi;
-    } // returns proton phi
+    public double get_neut_phi() {
+        return neut_phi;
+    } // returns neutron phi
 
     public double get_elec_vx() {
         return elec_vx;
@@ -405,15 +405,16 @@ public class TCSParticles {
         return posi_vz;
     } // returns positron vz
 
-    public double get_prot_vx() {
-        return prot_vx;
-    } // returns proton vx
+    public double get_neut_vx() {
+        return neut_vx;
+    } // returns neutron vx
 
-    public double get_prot_vy() {
-        return prot_vy;
-    } // returns proton vy
+    public double get_neut_vy() {
+        return neut_vy;
+    } // returns neutron vy
 
-    public double get_prot_vz() {
-        return prot_vz;
-    } // returns proton vz
+    public double get_neut_vz() {
+        return neut_vz;
+    } // returns neutron vz
+
 }

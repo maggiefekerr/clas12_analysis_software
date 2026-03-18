@@ -37,6 +37,8 @@ public class kinematic_variables {
             return 0.493677;
         } else if (pid == 2212 || pid == -2212) { // protons
             return 0.938272;
+        } else if (pid == 2112 || pid == -2112) { // neutrons
+            return 0.939565;
         } else if (pid == 113) { // rho0
             return 0.7754;
         }
