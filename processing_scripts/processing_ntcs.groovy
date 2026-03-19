@@ -82,6 +82,8 @@ public static void main(String[] args) {
 		userProvidedOverride = Integer.parseInt(args[5]);
 	}
 
+    // ~~~~~~~~~~~~~~~~ prepare physics analysis ~~~~~~~~~~~~~~~~ //
+
     // declare physics event variables
 
     int helicity;
@@ -184,6 +186,7 @@ public static void main(String[] args) {
 					// pid elec_chi2
 					elec_chi2 = variables.get_elec_chi2pid();
 					posi_chi2 = variables.get_posi_chi2pid();
+					System.out.println(posi_chi2);
 					neut_chi2 = variables.get_neut_chi2pid();
 
 					// lab kinematics
