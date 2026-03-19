@@ -186,7 +186,6 @@ public static void main(String[] args) {
 					// pid elec_chi2
 					elec_chi2 = variables.get_elec_chi2pid();
 					posi_chi2 = variables.get_posi_chi2pid();
-					System.out.println(posi_chi2);
 					neut_chi2 = variables.get_neut_chi2pid();
 
 					// lab kinematics
@@ -255,6 +254,7 @@ public static void main(String[] args) {
 					// Append the line to the batchLines StringBuilder
 	                batchLines.append(line.toString());
 	                lineCount++; // Increment the line count
+					System.out.println(lineCount);
 
 	                // If the line count reaches 1000, write to the file and reset
 	                if (lineCount >= max_lines) {
