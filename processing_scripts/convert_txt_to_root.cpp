@@ -1649,7 +1649,6 @@ int main(int argc, char *argv[]) {
             else { 
                 for (const auto& run_info : run_info_list) {
                     if (run_info.runnum == runnum) {
-                        //cout << "HERE" << endl;
                         target_pol = run_info.target_polarization;
                         break;
                     }
@@ -1689,7 +1688,6 @@ int main(int argc, char *argv[]) {
             else { 
                 for (const auto& run_info : run_info_list) {
                     if (run_info.runnum == runnum) {
-                        //cout << "HERE" << endl;
                         target_pol = run_info.target_polarization;
                         break;
                     }
