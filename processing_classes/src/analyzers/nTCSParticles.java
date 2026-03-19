@@ -205,7 +205,6 @@ public class nTCSParticles {
         if (neut_phi < 0) {
             neut_phi = 2 * Math.PI + neut_phi;
         }
-        System.out.println(neut_px);
     }
 
     public int get_helicity() { // -1, 0, or 1. 0 equals unassigned by EventBuilder
@@ -355,6 +354,7 @@ public class nTCSParticles {
     } // returns positron phi
 
     public double get_neut_px(){
+        System.out.println(neut_px);
         return neut_px;
     } // returns neutron px
 
