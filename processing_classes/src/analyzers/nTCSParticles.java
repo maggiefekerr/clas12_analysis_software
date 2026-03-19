@@ -158,6 +158,7 @@ public class nTCSParticles {
         LorentzVector neut_lv = new LorentzVector();
         neut_lv.setPxPyPzM(scattered_neutron.px(), scattered_neutron.py(),
                            scattered_neutron.pz(), kinematic_variables.particle_mass(2112));
+        System.out.println(scattered_neutron.px());
 
         // positions of electron, positron, neutron
         elec_vx = scattered_electron.vx();
