@@ -284,4 +284,13 @@ public static void main(String[] args) {
 		println("Analyzing ntcs.");
 		println("output text file is: $file");
 	}
+
+	writer.close();
+
+	// End time
+	long endTime = System.currentTimeMillis()
+	// Calculate the elapsed time
+	long elapsedTime = endTime - startTime
+	// Print the elapsed time in milliseconds
+	println("Elapsed time: ${elapsedTime} ms");
 }
