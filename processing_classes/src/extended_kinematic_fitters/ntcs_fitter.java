@@ -99,7 +99,7 @@ public class ntcs_fitter extends GenericKinematicFitter {
                     physEvent.addParticle(posi);
                 }
 
-                if (pid == 2112) {
+                if (pid == 2112 && (px != 0.0 || py != 0.0 || pz != 0.0)) {
                     float[] momentum = {px, py, pz};
                     px = momentum[0];
                     py = momentum[1];
