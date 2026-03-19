@@ -202,7 +202,6 @@ public static void main(String[] args) {
 					posi_theta = variables.get_posi_theta();
 					posi_phi   = variables.get_posi_phi();
 					neut_px    = variables.get_neut_px();
-					System.out.println(neut_px);
 					neut_py    = variables.get_neut_py(); 
 					neut_pz    = variables.get_neut_pz(); 
 					neut_p     = variables.get_neut_p(); 
