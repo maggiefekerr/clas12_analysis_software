@@ -354,7 +354,6 @@ public class nTCSParticles {
     } // returns positron phi
 
     public double get_neut_px(){
-        System.out.println(neut_px);
         return neut_px;
     } // returns neutron px
 
