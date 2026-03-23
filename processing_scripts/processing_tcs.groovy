@@ -101,7 +101,7 @@ public static void main(String[] args) {
 	GenericKinematicFitter fitter = new tcs_fitter(10.6041);
 
     // set filter for final states
-	EventFilter filter = new EventFilter("11:-11:2212");  
+	EventFilter filter = new EventFilter("11:-11:2212:X+:X-:Xn");  
 
     // setup QA database
 	QADB qa = new QADB("latest");
