@@ -41,7 +41,7 @@ public static void main(String[] args) {
 
     String nucl_str = args.length >= 2 ? ((args[1].equals("2212") || args[1].equals("2112")) ? args[1] : "2212") : "2212";
     if (args.length < 2) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212).")
-    if ((args[1] != "2212") && (args[1] !="2112")) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212). " + args[1])
+    if ((args[1] != "2212") && (args[1] !="2112")) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212).")
     println("Set PID for TCS type = $nucl_str")
     int nucl_int = nucl_str.toInteger()
 
