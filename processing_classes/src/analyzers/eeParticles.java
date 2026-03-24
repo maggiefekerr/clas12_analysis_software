@@ -13,33 +13,27 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.hipo.HipoDataBank;
 import org.jlab.clas.physics.*;
 
-public class nTCSParticles {
+public class eeParticles {
 
     protected byte helicity;
     protected int runnum;
 
     protected int elec_detector = -1;
     protected int posi_detector = -1;
-    protected int neut_detector = -1;
 
     protected int num_electrons, num_piplus, num_piminus, num_kplus, num_kminus, num_protons, num_neutrons, num_particles;
     protected int num_pos, num_neg, num_neutrals;
     protected int num_positrons, num_antiprotons, num_antineutrons;
 
-    protected double elec_chi2, posi_chi2, neut_chi2; // pid chi2 values
+    protected double elec_chi2, posi_chi2; // pid chi2 values
 
     protected double elec_px, elec_py, elec_pz, elec_p, elec_e, elec_theta, elec_phi; // electron kinematics
     protected double posi_px, posi_py, posi_pz, posi_p, posi_e, posi_theta, posi_phi; // positron kinematics
-    protected double neut_px, neut_py, neut_pz, neut_p, neut_e, neut_theta, neut_phi; // neutron kinematics
 
     protected double elec_vx, elec_vy, elec_vz; // electron vertex
     protected double posi_vx, posi_vy, posi_vz; // positron vertex
-    protected double neut_vx, neut_vy, neut_vz; // neutron vertex
 
-    // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
-    // event selection :)
-
-    public static boolean channel_test(nTCSParticles variables) {
+    public static boolean channel_test(eeParticles variables) {
         if (variables.helicity == 0 && variables.runnum != 11) {
             return false;
         }
@@ -61,8 +55,7 @@ public class nTCSParticles {
         return -1;
     }
 
-    public nTCSParticles(DataEvent event, PhysicsEvent recEvent, double Eb) {
-        // Alterring to remove PID numbers as input as just for nTCS
+    public eeParticles(DataEvent event, PhysicsEvent recEvent, double Eb) {
 
         kinematic_variables kinematic_variables = new kinematic_variables();
 
@@ -76,8 +69,8 @@ public class nTCSParticles {
         helicity = eventBank.getByte("helicity", 0);
         runnum = configBank.getInt("run", 0); // used for beam energy and polarization
 
-        num_electrons = recEvent.countByPid(11); // returns number of electrons
-        num_positrons = recEvent.countByPid(-11); // returns number of positrons
+        num_electrons = recEvent.countByPid(11);
+        num_positrons = recEvent.countByPid(-11);
         num_piplus = recEvent.countByPid(211);
         num_piminus = recEvent.countByPid(-211);
         num_kplus = recEvent.countByPid(321);
@@ -96,11 +89,9 @@ public class nTCSParticles {
 
         int elec_rec_index = getIndex(rec_Bank, 11, 0);
         int posi_rec_index = getIndex(rec_Bank, -11, 0);
-        int neut_rec_index = getIndex(rec_Bank, 2112, 0);
 
         elec_chi2 = rec_Bank.getFloat("chi2pid", elec_rec_index);
         posi_chi2 = rec_Bank.getFloat("chi2pid", posi_rec_index);
-        neut_chi2 = rec_Bank.getFloat("chi2pid", neut_rec_index);
 
         // Fiducial cuts & fiducial status, will need to add this in later
 
@@ -112,7 +103,7 @@ public class nTCSParticles {
         } else if (generic_tests.central_detector_cut(elec_rec_index, rec_Bank)) {
             elec_detector = 2; // Central Detector
         }
-        
+
         // positron detector
         if (generic_tests.forward_tagger_cut(posi_rec_index, rec_Bank)) {
             posi_detector = 0; // Forward Tagger
@@ -122,55 +113,28 @@ public class nTCSParticles {
             posi_detector = 2; // Central Detector
         }
 
-        // neutron detector
-        if (generic_tests.forward_tagger_cut(neut_rec_index, rec_Bank)) {
-            neut_detector = 0; // Forward Tagger
-        } else if (generic_tests.forward_detector_cut(neut_rec_index, rec_Bank)) {
-            neut_detector = 1; // Forward Detector
-        } else if (generic_tests.central_detector_cut(neut_rec_index, rec_Bank)) {
-            neut_detector = 2; // Central Detector
-        }
-
         // Set up Lorentz vectors
-        // target
-        LorentzVector target_lv = new LorentzVector();
-        target_lv.setPxPyPzM(0,0,0,kinematic_variables.particle_mass(2112));
-        // beam electron (not sure how relevant or necessary here but for completeness)
-        LorentzVector beam_lv = new LorentzVector();
-        beam_lv.setPxPyPzM(0, 0, Math.pow(Eb * Eb - kinematic_variables.particle_mass(11) * kinematic_variables.particle_mass(11), 0.5),
-                           kinematic_variables.particle_mass(11));
         // electron
-        String electron_string = "[11,0]"; // using found index value for all in case e+ listed first
+        String electron_string = "[11,0]";
         Particle scattered_electron = recEvent.getParticle(electron_string);
         LorentzVector elec_lv = new LorentzVector();
         elec_lv.setPxPyPzM(scattered_electron.px(), scattered_electron.py(),
                            scattered_electron.pz(), kinematic_variables.particle_mass(11));
         // positron
-        String positron_string = "[-11,0]"; // using found index value for all in case e+ listed first
+        String positron_string = "[-11,0]";
         Particle scattered_positron = recEvent.getParticle(positron_string);
         LorentzVector posi_lv = new LorentzVector();
         //System.out.println(Double.toString(scattered_positron.pz()));
         posi_lv.setPxPyPzM(scattered_positron.px(), scattered_positron.py(),
                            scattered_positron.pz(), kinematic_variables.particle_mass(-11));
-        // neutron
-        String neutron_string = "[2112,0]"; // using found index value for all in case e+ listed first
-        Particle scattered_neutron = recEvent.getParticle(neutron_string);
-        LorentzVector neut_lv = new LorentzVector();
-        neut_lv.setPxPyPzM(scattered_neutron.px(), scattered_neutron.py(),
-                           scattered_neutron.pz(), kinematic_variables.particle_mass(2112));
-
-        // positions of electron, positron, neutron
+        
+        // positions of electron, positron, nucleon
         elec_vx = scattered_electron.vx();
         posi_vx = scattered_positron.vx();
-        neut_vx = scattered_neutron.vx();
         elec_vy = scattered_electron.vy();
         posi_vy = scattered_positron.vy();
-        neut_vy = scattered_neutron.vy();
         elec_vz = scattered_electron.vz();
         posi_vz = scattered_positron.vz();
-        neut_vz = scattered_neutron.vz();
-
-        // Initialize momentum corrections at some point
 
         // kinematics of electron
         elec_px    = elec_lv.px();
@@ -193,17 +157,6 @@ public class nTCSParticles {
         posi_phi   = scattered_positron.phi();
         if (posi_phi < 0) {
             posi_phi = 2 * Math.PI + posi_phi;
-        }
-        // kinematics of neutron
-        neut_px    = neut_lv.px();
-        neut_py    = neut_lv.py();
-        neut_pz    = neut_lv.pz();
-        neut_p     = neut_lv.p();
-        neut_e     = neut_lv.e();
-        neut_theta = scattered_neutron.theta();
-        neut_phi   = scattered_neutron.phi();
-        if (neut_phi < 0) {
-            neut_phi = 2 * Math.PI + neut_phi;
         }
     }
 
@@ -237,10 +190,6 @@ public class nTCSParticles {
         return posi_detector;
     } // returns integer value representing the detector of positron track
 
-    public int get_neut_detector() {
-        return neut_detector;
-    } // returns integer value representing the detector of neutron track
-
     public int get_num_pos() {
         return num_pos;
     } // returns number of positively charged particles
@@ -260,10 +209,6 @@ public class nTCSParticles {
     public int get_num_piplus() {
         return num_piplus;
     } // returns number of piplus
-
-    public int get_num_piminus() {
-        return num_piminus;
-    } // returns number of piminus
 
     public int get_num_kplus() {
         return num_kplus;
@@ -292,10 +237,6 @@ public class nTCSParticles {
     public double get_posi_chi2pid() {
         return posi_chi2;
     } // returns chi2 value of positron pid
-
-    public double get_neut_chi2pid() {
-        return neut_chi2;
-    } // returns chi2 value of neutron pid
 
     public double get_elec_px(){
         return elec_px;
@@ -353,34 +294,6 @@ public class nTCSParticles {
         return posi_phi;
     } // returns positron phi
 
-    public double get_neut_px(){
-        return neut_px;
-    } // returns neutron px
-
-    public double get_neut_py() {
-        return neut_py;
-    } // returns neutron py
-
-    public double get_neut_pz(){
-        return neut_pz;
-    } // returns neutron pz
-
-    public double get_neut_p() {
-        return neut_p;
-    } // returns neutron p
-
-    public double get_neut_e() {
-        return neut_e;
-    } // returns neutron e
-
-    public double get_neut_theta() {
-        return neut_theta;
-    } // returns neutron theta
-
-    public double get_neut_phi() {
-        return neut_phi;
-    } // returns neutron phi
-
     public double get_elec_vx() {
         return elec_vx;
     } // returns electron vx
@@ -404,17 +317,4 @@ public class nTCSParticles {
     public double get_posi_vz() {
         return posi_vz;
     } // returns positron vz
-
-    public double get_neut_vx() {
-        return neut_vx;
-    } // returns neutron vx
-
-    public double get_neut_vy() {
-        return neut_vy;
-    } // returns neutron vy
-
-    public double get_neut_vz() {
-        return neut_vz;
-    } // returns neutron vz
-
 }

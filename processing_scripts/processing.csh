@@ -42,12 +42,10 @@ else if ($arg1 == "processing_scripts/processing_tcs.groovy") then
     set convert_arg3 = 7 # tcs
 else if ($arg1 == "processing_scripts/processing_mc_tcs.groovy") then
     set convert_arg3 = 7 # tcs
-else if ($arg1 == "processing_scripts/processing_ntcs.groovy") then
-    set convert_arg3 = 8 # ntcs
-else if ($arg1 == "processing_scripts/processing_mc_ntcs.groovy") then
-    set convert_arg3 = 8 # ntcs
-else if ($arg1 == "processing_scripts/processing_xtcs.groovy") then
-    set convert_arg3 = 9 # xtcs # TEMP
+else if ($arg1 == "processing_scripts/processing_ee.groovy") then
+    set convert_arg3 = 8 # ee (for tcs)
+else if ($arg1 == "processing_scripts/processing_mc_ee.groovy") then
+    set convert_arg3 = 8 # ee (for tcs)
 else
     echo "Error: unrecognized processing script: $arg1"
     exit 1
@@ -65,7 +63,7 @@ else if ($arg1 == "processing_scripts/processing_mc_dvcs.groovy") then
     set is_mc = 1;
 else if ($arg1 == "processing_scripts/processing_mc_tcs.groovy") then
     set is_mc = 1;
-else if ($arg1 == "processing_scripts/processing_mc_ntcs.groovy") then
+else if ($arg1 == "processing_scripts/processing_mc_ee.groovy") then
     set is_mc = 1;
 endif
 
@@ -159,33 +157,27 @@ else if ($arg1 == "processing_scripts/processing_dvcs_calibration.groovy") then
     set root_file = "$3.root"
     ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
 else if ($arg1 == "processing_scripts/processing_tcs.groovy") then
-    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
-    # Run the convert_txt_to_root program
-    set txt_file = "$3.txt"
-    set root_file = "$3.root"
-    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
-else if ($arg1 == "processing_scripts/processing_mc_tcs.groovy") then
-    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
-    # Run the convert_txt_to_root program
-    set txt_file = "$3.txt"
-    set root_file = "$3.root"
-    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
-else if ($arg1 == "processing_scripts/processing_ntcs.groovy") then
-    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
-    # Run the convert_txt_to_root program
-    set txt_file = "$3.txt"
-    set root_file = "$3.root"
-    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
-else if ($arg1 == "processing_scripts/processing_mc_ntcs.groovy") then
-    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
-    # Run the convert_txt_to_root program
-    set txt_file = "$3.txt"
-    set root_file = "$3.root"
-    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
-else if ($arg1 == "processing_scripts/processing_xtcs.groovy") then
     coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3" "$4.txt" "$5" "$6" "$7" "$8"
     # Run the convert_txt_to_root program
     set txt_file = "$4.txt"
     set root_file = "$4.root"
+    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
+else if ($arg1 == "processing_scripts/processing_mc_tcs.groovy") then
+    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3" "$4.txt" "$5" "$6" "$7" "$8"
+    # Run the convert_txt_to_root program
+    set txt_file = "$4.txt"
+    set root_file = "$4.root"
+    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
+else if ($arg1 == "processing_scripts/processing_ee.groovy") then
+    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
+    # Run the convert_txt_to_root program
+    set txt_file = "$3.txt"
+    set root_file = "$3.root"
+    ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
+else if ($arg1 == "processing_scripts/processing_mc_ee.groovy") then
+    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3.txt" "$4" "$5" "$6" "$7"
+    # Run the convert_txt_to_root program
+    set txt_file = "$3.txt"
+    set root_file = "$3.root"
     ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
 endif

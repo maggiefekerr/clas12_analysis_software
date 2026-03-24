@@ -170,8 +170,7 @@ int main(int argc, char *argv[]) {
         cout << " <script_index> = 5 for eppi0" << endl;
         cout << " <script_index> = 6 for calibration" << endl;
         cout << " <script_index> = 7 for tcs" << endl;
-        cout << " <script_index> = 8 for ntcs" << endl;
-        cout << " <script_index> = 9 for xtcs" << endl;
+        cout << " <script_index> = 8 for ee" << endl;
         return 1;
     }
     
@@ -273,14 +272,12 @@ int main(int argc, char *argv[]) {
     double traj_x_12, traj_y_12, traj_z_12, traj_edge_12;
     double ft_energy, ft_x, ft_y, ft_z, ft_radius;
 
-    // Additional variables for TCS/nTCS
-    int elec_detector, posi_detector, prot_detector, neut_detector, nucl_detector;
+    // Additional variables for TCS/e+e- (TCS with missing nucleon)
+    int elec_detector, posi_detector, nucl_detector;
     int nucl_pid;
-    double elec_chi2, posi_chi2, prot_chi2, neut_chi2, nucl_chi2;
+    double elec_chi2, posi_chi2, nucl_chi2;
     double elec_p, elec_theta, elec_phi, elec_vz;
     double posi_p, posi_theta, posi_phi, posi_vz;
-    double prot_p, prot_theta, prot_phi, prot_vz;
-    double neut_p, neut_theta, neut_phi, neut_vz;
     double nucl_p, nucl_theta, nucl_phi, nucl_vz;
 
     // Case for zero hadrons (inclusive)
@@ -1143,70 +1140,8 @@ int main(int argc, char *argv[]) {
         tree->Branch("ft_z", &ft_z, "ft_z/D");
         tree->Branch("ft_radius", &ft_radius, "ft_radius/D");
     }
-    // Case for tcs 
+    // Case for tcs
     if (script_index == 7 && is_mc == 0) {
-        // Link TTree branches to variables for tcs
-        tree->Branch("runnum", &runnum, "runnum/I");
-        tree->Branch("evnum", &evnum, "evnum/I");
-        tree->Branch("helicity", &helicity, "helicity/I");
-        tree->Branch("beam_pol", &beam_pol, "beam_pol/D");
-        tree->Branch("target_pol", &target_pol, "target_pol/D");
-        tree->Branch("elec_detector", &elec_detector, "elec_detector/I");
-        tree->Branch("posi_detector", &posi_detector, "posi_detector/I");
-        tree->Branch("prot_detector", &prot_detector, "prot_detector/I");
-        tree->Branch("elec_chi2", &elec_chi2, "elec_chi2/D");
-        tree->Branch("posi_chi2", &posi_chi2, "posi_chi2/D");
-        tree->Branch("prot_chi2", &prot_chi2, "prot_chi2/D");
-        tree->Branch("elec_p", &elec_p, "elec_p/D");
-        tree->Branch("elec_theta", &elec_theta, "elec_theta/D");
-        tree->Branch("elec_phi", &elec_phi, "elec_phi/D");
-        tree->Branch("elec_vz", &elec_vz, "elec_vz/D");
-        tree->Branch("posi_p", &posi_p, "posi_p/D");
-        tree->Branch("posi_theta", &posi_theta, "posi_theta/D");
-        tree->Branch("posi_phi", &posi_phi, "posi_phi/D");
-        tree->Branch("posi_vz", &posi_vz, "posi_vz/D");
-        tree->Branch("prot_p", &prot_p, "prot_p/D");
-        tree->Branch("prot_theta", &prot_theta, "prot_theta/D");
-        tree->Branch("prot_phi", &prot_phi, "prot_phi/D");
-        tree->Branch("prot_vz", &prot_vz, "prot_vz/D");
-    }
-    // Case for tcs mc 
-    if (script_index == 7 && is_mc == 1) {
-        // to be completed later
-    }
-    // Case for ntcs 
-    if (script_index == 8 && is_mc == 0) {
-        // Link TTree branches to variables for tcs
-        tree->Branch("runnum", &runnum, "runnum/I");
-        tree->Branch("evnum", &evnum, "evnum/I");
-        tree->Branch("helicity", &helicity, "helicity/I");
-        tree->Branch("beam_pol", &beam_pol, "beam_pol/D");
-        tree->Branch("target_pol", &target_pol, "target_pol/D");
-        tree->Branch("elec_detector", &elec_detector, "elec_detector/I");
-        tree->Branch("posi_detector", &posi_detector, "posi_detector/I");
-        tree->Branch("neut_detector", &neut_detector, "neut_detector/I");
-        tree->Branch("elec_chi2", &elec_chi2, "elec_chi2/D");
-        tree->Branch("posi_chi2", &posi_chi2, "posi_chi2/D");
-        tree->Branch("neut_chi2", &neut_chi2, "neut_chi2/D");
-        tree->Branch("elec_p", &elec_p, "elec_p/D");
-        tree->Branch("elec_theta", &elec_theta, "elec_theta/D");
-        tree->Branch("elec_phi", &elec_phi, "elec_phi/D");
-        tree->Branch("elec_vz", &elec_vz, "elec_vz/D");
-        tree->Branch("posi_p", &posi_p, "posi_p/D");
-        tree->Branch("posi_theta", &posi_theta, "posi_theta/D");
-        tree->Branch("posi_phi", &posi_phi, "posi_phi/D");
-        tree->Branch("posi_vz", &posi_vz, "posi_vz/D");
-        tree->Branch("neut_p", &neut_p, "neut_p/D");
-        tree->Branch("neut_theta", &neut_theta, "neut_theta/D");
-        tree->Branch("neut_phi", &neut_phi, "neut_phi/D");
-        tree->Branch("neut_vz", &neut_vz, "neut_vz/D");
-    }
-    // Case for ntcs mc 
-    if (script_index == 8 && is_mc == 1) {
-        // to be completed later
-    }
-    // Case for xtcs
-    if (script_index == 9 && is_mc == 0) {
         // Link TTree branches to variables for tcs
         tree->Branch("runnum", &runnum, "runnum/I");
         tree->Branch("evnum", &evnum, "evnum/I");
@@ -1232,6 +1167,32 @@ int main(int argc, char *argv[]) {
         tree->Branch("nucl_theta", &nucl_theta, "nucl_theta/D");
         tree->Branch("nucl_phi", &nucl_phi, "nucl_phi/D");
         tree->Branch("nucl_vz", &nucl_vz, "nucl_vz/D");
+    }
+    if (script_index == 7 && is_mc == 1) {
+        // complete later
+    }
+    // Case for ee
+    if (script_index == 8 && is_mc == 0) {
+        // Link TTree branches to variables for tcs
+        tree->Branch("runnum", &runnum, "runnum/I");
+        tree->Branch("evnum", &evnum, "evnum/I");
+        tree->Branch("helicity", &helicity, "helicity/I");
+        tree->Branch("beam_pol", &beam_pol, "beam_pol/D");
+        tree->Branch("target_pol", &target_pol, "target_pol/D");
+        tree->Branch("elec_detector", &elec_detector, "elec_detector/I");
+        tree->Branch("posi_detector", &posi_detector, "posi_detector/I");
+        tree->Branch("elec_chi2", &elec_chi2, "elec_chi2/D");
+        tree->Branch("posi_chi2", &posi_chi2, "posi_chi2/D");
+        tree->Branch("elec_p", &elec_p, "elec_p/D");
+        tree->Branch("elec_theta", &elec_theta, "elec_theta/D");
+        tree->Branch("elec_phi", &elec_phi, "elec_phi/D");
+        tree->Branch("elec_vz", &elec_vz, "elec_vz/D");
+        tree->Branch("posi_p", &posi_p, "posi_p/D");
+        tree->Branch("posi_theta", &posi_theta, "posi_theta/D");
+        tree->Branch("posi_phi", &posi_phi, "posi_phi/D");
+        tree->Branch("posi_vz", &posi_vz, "posi_vz/D");
+    }
+    if (script_index == 8 && is_mc == 1) {
     }
     // Find the root directory of the repository
     std::string package_location = findPackageRoot();
@@ -1528,7 +1489,6 @@ int main(int argc, char *argv[]) {
             tree->Fill(); // Fill the tree with the read data
         }
     }
-
     if (script_index == 4 && is_mc == 1) {
         int rec_flag;  // temporary flag read from the file as the last value of the line (0 or 1)
         int eventCounter = 0;  // event index for debug printing
@@ -1590,7 +1550,6 @@ int main(int argc, char *argv[]) {
             tree->Fill();
         }
     }
-
     // eppi0
     if (script_index == 5 && is_mc == 0) {
         while (infile >> fiducial_status >> num_pos >> num_neg >> num_neutral >>
@@ -1637,7 +1596,6 @@ int main(int argc, char *argv[]) {
             tree->Fill(); // Fill the tree with the read data
         }
     }
-
     // calibration script
     if (script_index == 6 && is_mc == 0) {
         while (infile >> config_run >> config_event >> event_helicity >> particle_pid >>
@@ -1659,83 +1617,8 @@ int main(int argc, char *argv[]) {
             tree->Fill(); // Fill the tree with the read data
         }
     }
-
     // TCS
     if (script_index == 7 && is_mc == 0) {
-        while (infile >> num_pos >> num_neg >> num_neutral >> 
-                         runnum >> evnum >> helicity >> 
-                         elec_detector >> posi_detector >> prot_detector >> 
-                         elec_chi2 >> posi_chi2 >> prot_chi2 >>
-                         elec_p >> elec_theta >> elec_phi >> elec_vz >> 
-                         posi_p >> posi_theta >> posi_phi >> posi_vz >> 
-                         prot_p >> prot_theta >> prot_phi >> prot_vz ) {
-
-            beam_pol = getPol(runnum);
-            if (runnum < 16000) { target_pol = 0; }
-            else { 
-                for (const auto& run_info : run_info_list) {
-                    if (run_info.runnum == runnum) {
-                        target_pol = run_info.target_polarization;
-                        break;
-                    }
-                }
-            }
-
-            // Convert spherical coordinates to Cartesian coordinates for each hadron
-            double elec_px, elec_py, elec_pz;
-            sphericalToCartesian(elec_p, elec_phi, elec_theta, elec_px, elec_py, elec_pz);
-            
-            double posi_px, posi_py, posi_pz;
-            sphericalToCartesian(posi_p, posi_phi, posi_theta, posi_px, posi_py, posi_pz);
-            
-            double prot_px, prot_py, prot_pz;
-            sphericalToCartesian(prot_p, prot_phi, prot_theta, prot_px, prot_py, prot_pz);
-
-            tree->Fill(); // Fill the tree with the read data
-        }
-    }
-    if (script_index == 7 && is_mc == 1) {
-        // need to complete this later
-    }
-    // nTCS
-    if (script_index == 8 && is_mc == 0) {
-        while (infile >> num_pos >> num_neg >> num_neutral >> 
-                         runnum >> evnum >> helicity >> 
-                         elec_detector >> posi_detector >> neut_detector >> 
-                         elec_chi2 >> posi_chi2 >> neut_chi2 >>
-                         elec_p >> elec_theta >> elec_phi >> elec_vz >> 
-                         posi_p >> posi_theta >> posi_phi >> posi_vz >> 
-                         neut_p >> neut_theta >> neut_phi >> neut_vz ) {
-
-            beam_pol = getPol(runnum);
-            if (runnum < 16000) { target_pol = 0; }
-            else { 
-                for (const auto& run_info : run_info_list) {
-                    if (run_info.runnum == runnum) {
-                        target_pol = run_info.target_polarization;
-                        break;
-                    }
-                }
-            }
-
-            // Convert spherical coordinates to Cartesian coordinates for each hadron
-            double elec_px, elec_py, elec_pz;
-            sphericalToCartesian(elec_p, elec_phi, elec_theta, elec_px, elec_py, elec_pz);
-            
-            double posi_px, posi_py, posi_pz;
-            sphericalToCartesian(posi_p, posi_phi, posi_theta, posi_px, posi_py, posi_pz);
-            
-            double neut_px, neut_py, neut_pz;
-            sphericalToCartesian(neut_p, neut_phi, neut_theta, neut_px, neut_py, neut_pz);
-
-            tree->Fill(); // Fill the tree with the read data
-        }
-    }
-    if (script_index == 8 && is_mc == 1) {
-        // need to complete this later
-    }
-    // xTCS
-    if (script_index == 9 && is_mc == 0) {
         while (infile >> num_pos >> num_neg >> num_neutral >> 
                          runnum >> evnum >> helicity >> nucl_pid >>
                          elec_detector >> posi_detector >> nucl_detector >> 
@@ -1767,7 +1650,39 @@ int main(int argc, char *argv[]) {
             tree->Fill(); // Fill the tree with the read data
         }
     }
-    
+    if (script_index == 7 && is_mc == 1) {
+    }
+    // TCS
+    if (script_index == 8 && is_mc == 0) {
+        while (infile >> num_pos >> num_neg >> num_neutral >> 
+                         runnum >> evnum >> helicity >>
+                         elec_detector >> posi_detector >> 
+                         elec_chi2 >> posi_chi2 >>
+                         elec_p >> elec_theta >> elec_phi >> elec_vz >> 
+                         posi_p >> posi_theta >> posi_phi >> posi_vz ) {
+            beam_pol = getPol(runnum);
+            if (runnum < 16000) { target_pol = 0; }
+            else { 
+                for (const auto& run_info : run_info_list) {
+                    if (run_info.runnum == runnum) {
+                        target_pol = run_info.target_polarization;
+                        break;
+                    }
+                }
+            }
+
+            // Convert spherical coordinates to Cartesian coordinates for each hadron
+            double elec_px, elec_py, elec_pz;
+            sphericalToCartesian(elec_p, elec_phi, elec_theta, elec_px, elec_py, elec_pz);
+            
+            double posi_px, posi_py, posi_pz;
+            sphericalToCartesian(posi_p, posi_phi, posi_theta, posi_px, posi_py, posi_pz);
+
+            tree->Fill(); // Fill the tree with the read data
+        }
+    }
+    if (script_index == 8 && is_mc == 1) {
+    }
     // Write the TTree to the ROOT file and close it
     tree->Write();
     outfile->Close();

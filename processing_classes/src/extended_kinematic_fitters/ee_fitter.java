@@ -12,11 +12,11 @@ import org.jlab.io.hipo.HipoDataBank;
 
 import org.jlab.clas.physics.*;
 
-public class xtcs_fitter extends GenericKinematicFitter {
+public class ee_fitter extends GenericKinematicFitter {
 
     protected final Double mybeam;
 
-    public xtcs_fitter(double beam) {
+    public ee_fitter(double beam) {
         super(beam);
         mybeam = beam;
     }
@@ -24,7 +24,7 @@ public class xtcs_fitter extends GenericKinematicFitter {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public PhysicsEvent getPhysicsEvent(DataEvent event) {
-        
+
         generic_tests generic_tests = new generic_tests();
         if (generic_tests.banks_test(event)) {
             PhysicsEvent physEvent = new PhysicsEvent();
@@ -69,9 +69,7 @@ public class xtcs_fitter extends GenericKinematicFitter {
                 double p = Math.sqrt(px * px + py * py + pz * pz);
 
                 int sector = generic_tests.sector(particle_Index, track_Bank); // 0 FT/CD, 1-6 FD
-
                 int runnum = run_Bank.getInt("run", 0);
-
                 boolean inbending = false;
                 boolean outbending = false;
                 if (run_Bank.getFloat("torus", 0) == 1) {
@@ -96,24 +94,6 @@ public class xtcs_fitter extends GenericKinematicFitter {
                     pz = momentum[2];
                     Particle posi = new Particle(pid, px, py, pz, vx, vy, vz);
                     physEvent.addParticle(posi);
-                }
-
-                if (pid == 2212 && (p > 0.0001)) {
-                    float[] momentum = {px, py, pz};
-                    px = momentum[0];
-                    py = momentum[1];
-                    pz = momentum[2];
-                    Particle prot = new Particle(pid, px, py, pz, vx, vy, vz);
-                    physEvent.addParticle(prot);
-                }
-
-                if (pid == 2112 && (p > 0.0001)) {
-                    float[] momentum = {px, py, pz};
-                    px = momentum[0];
-                    py = momentum[1];
-                    pz = momentum[2];
-                    Particle neut = new Particle(pid, px, py, pz, vx, vy, vz);
-                    physEvent.addParticle(neut);
                 }
             }
             return physEvent;
