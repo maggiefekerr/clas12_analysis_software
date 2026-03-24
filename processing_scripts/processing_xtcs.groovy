@@ -41,7 +41,7 @@ public static void main(String[] args) {
 
     String nucl_str = args.length >= 2 ? ((args[1].equals("2212") || args[1].equals("2112")) ? args[1] : "2212") : "2212";
     if (args.length < 2) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212).")
-    if ((args[1] != "2212") && (args[1] !="2112")) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212).")
+    if ((args[1] != "2212") && (args[1] !="2112")) println("WARNING: Specify either proton or neutron PDG PID for TCS type! Set to proton (2212). " + args[1])
     println("Set PID for TCS type = $nucl_str")
     int nucl_int = nucl_str.toInteger()
 
@@ -152,6 +152,8 @@ public static void main(String[] args) {
 		    // collect info for QA
 		    int runnum = userProvidedRun ?: event.getBank("RUN::config").getInt('run', 0);
 		    int evnum = event.getBank("RUN::config").getInt('event', 0);
+
+            PhysicsEvent research_Event = fitter.getPhysicsEvent(event);
 
             // do not use the qa if it is MC (runnum = 11)
 			boolean process_event = filter.isValid(research_Event) && 
