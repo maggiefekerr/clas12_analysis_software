@@ -96,7 +96,7 @@ public static void main(String[] args) {
 	double nucl_vx, nucl_vy, nucl_vz;
 
     // load kinematic fitter/PID
-	GenericKinematicFitter fitter = new xtcs_fitter(10.6041); // FITTER FILE NEEDS TO BE CREATED
+	GenericKinematicFitter fitter = new xtcs_fitter(10.6041);
 
     // set filter for final states
 	EventFilter filter = new EventFilter("11:-11:"+nucl_str+":X+:X-:Xn");
