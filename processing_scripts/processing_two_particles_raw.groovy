@@ -141,6 +141,7 @@ public static void main(String[] args) {
 
             event = reader.getNextEvent()
             int runnum = event.getBank("RUN::config").getInt('run', 0)
+            print(runnum+"\n")
             if ((userProvidedRun!=null)&&(userProvidedRun!=runnum)) {
                 print(runnum+" "+userProvidedRun+"\n")
                 break
