@@ -46,6 +46,8 @@ else if ($arg1 == "processing_scripts/processing_ee.groovy") then
     set convert_arg3 = 8 # ee (for tcs)
 else if ($arg1 == "processing_scripts/processing_mc_ee.groovy") then
     set convert_arg3 = 8 # ee (for tcs)
+else if ($arg1 == "processing_scripts/processing_two_particles_raw.groovy") then
+    set convert_arg3 = 9 # (for single hadron with no cuts)
 else
     echo "Error: unrecognized processing script: $arg1"
     exit 1
@@ -180,4 +182,9 @@ else if ($arg1 == "processing_scripts/processing_mc_ee.groovy") then
     set txt_file = "$3.txt"
     set root_file = "$3.root"
     ./processing_scripts/convert_txt_to_root $txt_file $root_file $convert_arg3 $is_mc
+else if ($arg1 == "processing_scripts/processing_two_particles_raw.groovy") then
+    coatjava/bin/run-groovy -cp processing_classes/dist/processing_classes.jar "$arg1" "$arg2" "$3" "$4.txt" "$5" "$6" "$7"
+    # Run the convert_txt_to_root program
+    set txt_file = "$4.txt"
+    set root_file = "$4.root"
 endif

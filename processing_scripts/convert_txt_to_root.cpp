@@ -171,6 +171,7 @@ int main(int argc, char *argv[]) {
         cout << " <script_index> = 6 for calibration" << endl;
         cout << " <script_index> = 7 for tcs" << endl;
         cout << " <script_index> = 8 for ee" << endl;
+        cout << " <script_index> = 9 for two particles w/o cuts" << endl;
         return 1;
     }
     
@@ -279,6 +280,11 @@ int main(int argc, char *argv[]) {
     double elec_p, elec_theta, elec_phi, elec_vz;
     double posi_p, posi_theta, posi_phi, posi_vz;
     double nucl_p, nucl_theta, nucl_phi, nucl_vz;
+
+    // Additional variables for two particles "raw" (without quality cuts)
+    int qadb_status;
+    int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut;
+    int p_chi2pid_cut, p_vertex_cut;
 
     // Case for zero hadrons (inclusive)
     if (script_index == 0 && is_mc == 0) {
@@ -1194,6 +1200,58 @@ int main(int argc, char *argv[]) {
     }
     if (script_index == 8 && is_mc == 1) {
     }
+    // Case for one hadron without quality cuts
+    if (script_index == 9 && is_mc == 0) {
+        // Link TTree branches to variables for one hadron
+        tree->Branch("fiducial_status", &fiducial_status, "fiducial_status/I");
+        tree->Branch("num_pos", &num_pos, "num_pos/I");
+        tree->Branch("num_neg", &num_neg, "num_neg/I");
+        tree->Branch("num_neutral", &num_neutral, "num_neutral/I");
+        tree->Branch("runnum", &runnum, "runnum/I");
+        tree->Branch("evnum", &evnum, "evnum/I");
+        tree->Branch("helicity", &helicity, "helicity/I");
+        tree->Branch("detector", &detector, "detector/I");
+        tree->Branch("e_p", &e_p, "e_p/D");
+        tree->Branch("e_theta", &e_theta, "e_theta/D");
+        tree->Branch("e_phi", &e_phi, "e_phi/D");
+        tree->Branch("vz_e", &vz_e, "vz_e/D");
+        tree->Branch("p_p", &p_p, "p_p/D");
+        tree->Branch("p_theta", &p_theta, "p_theta/D");
+        tree->Branch("p_phi", &p_phi, "p_phi/D");
+        tree->Branch("vz_p", &vz_p, "vz_p/D");
+        tree->Branch("open_angle", &open_angle, "open_angle/D");
+        tree->Branch("Egamma", &Egamma, "Egamma/D");
+        tree->Branch("isrTheta", &isrTheta, "isrTheta/D");
+        tree->Branch("isrPhi", &isrPhi, "isrPhi/D");
+        tree->Branch("Q2", &Q2, "Q2/D");
+        tree->Branch("W", &W, "W/D");
+        tree->Branch("Mx2", &Mx2, "Mx2/D");
+        tree->Branch("x", &x, "x/D");
+        tree->Branch("y", &y, "y/D");
+        tree->Branch("t", &t, "t/D");
+        tree->Branch("tmin", &tmin, "tmin/D");
+        tree->Branch("z", &z, "z/D");
+        tree->Branch("xF", &xF, "xF/D");
+        tree->Branch("pT", &pT, "pT/D");
+        tree->Branch("xi", &xi, "xi/D");
+        tree->Branch("eta", &eta, "eta/D");
+        tree->Branch("phi", &phi, "phi/D");
+        tree->Branch("DepA", &DepA, "DepA/D");
+        tree->Branch("DepB", &DepB, "DepB/D");
+        tree->Branch("DepC", &DepC, "DepC/D");
+        tree->Branch("DepV", &DepV, "DepV/D");
+        tree->Branch("DepW", &DepW, "DepW/D");
+        tree->Branch("sector", &sector, "sector/I");
+        tree->Branch("qadb_status", &qadb_status, "qadb_status/I");
+        tree->Branch("e_fd_cut", &e_fd_cut, "e_fd_cut/I");
+        tree->Branch("e_vertex_cut", &e_vertex_cut, "e_vertex_cut/I");
+        tree->Branch("e_sf_cut", &e_sf_cut, "e_sf_cut/I");
+        tree->Branch("e_diag_cut", &e_diag_cut, "e_diag_cut/I");
+        tree->Branch("e_pcal_fid_cut", &e_pcal_fid_cut, "e_pcal_fid_cut/I");
+        tree->Branch("e_dc_fid_cut", &e_dc_fid_cut, "e_dc_fid_cut/I");
+        tree->Branch("p_chi2pid_cut", &p_chi2pid_cut, "p_chi2pid_cut/I");
+        tree->Branch("p_vertex_cut", &p_vertex_cut, "p_vertex_cut/I");
+    }
     // Find the root directory of the repository
     std::string package_location = findPackageRoot();
     // Define the CSV path relative to the package root
@@ -1682,6 +1740,21 @@ int main(int argc, char *argv[]) {
         }
     }
     if (script_index == 8 && is_mc == 1) {
+    }
+    // One Hadron, no quality cuts
+    if (script_index == 9 && is_mc == 0) {
+        while (infile >> fiducial_status >> num_pos >> num_neg >> num_neutral >> 
+            runnum >> evnum >> helicity >> detector >> e_p >> e_theta >> e_phi >> vz_e >> 
+            p_p >> p_theta >> p_phi >> vz_p >> open_angle >> Egamma >> isrTheta >> isrPhi >> 
+            Q2 >> W >> Mx2 >> x >> t >> tmin >> y >> z >> xF >> 
+            pT >> xi >> eta >> phi >> DepA >> DepB >> DepC >> DepV >> DepW >>
+            sector >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
+            e_pcal_fid_cut >> e_dc_fid_cut >> p_chi2pid_cut >> p_vertex_cut ) {
+            // t = gett(p_p, p_theta); // for SIDIS we calculate t with proton kinematics
+            // tmin = gettmin(x); 
+
+            tree->Fill(); // Fill the tree with the read data
+        }
     }
     // Write the TTree to the ROOT file and close it
     tree->Write();
