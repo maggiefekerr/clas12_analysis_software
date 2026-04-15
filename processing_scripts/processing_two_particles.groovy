@@ -73,7 +73,7 @@ public static void main(String[] args) {
     }
 
     Integer userProvidedRun = null
-    if (args.length < 6 || Integer.parseInt(args[5] == 0)) {
+    if (args.length < 6 || Integer.parseInt(args[5]) == 0) {
         println("Run number not provided, will pull from hipo files.")
         println("Think carefully about this if you are processing MC.")
     } else {
