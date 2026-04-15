@@ -134,11 +134,6 @@ public static void main(String[] args) {
         reader.open(hipo_list[current_file])
 
         HipoDataEvent event = reader.getNextEvent()
-        int file_runnum = event.getBank("RUN::config").getInt('run', 0)
-        if ((userProvidedRun != null) && (userProvidedRun != file_runnum)) {
-            print(file_runnum+" "+userProvidedRun+"\n")
-            continue
-        }
 
         while (reader.hasEvent()) {
             ++num_events
@@ -146,9 +141,13 @@ public static void main(String[] args) {
 
             event = reader.getNextEvent()
             int runnum = event.getBank("RUN::config").getInt('run', 0)
+            if ((userProvidedRun!=null)&&(userProvidedRun!=runnum)) {
+                print(runnum+" "+userProvidedRun+"\n")
+                break
+            }
             // if (runnum > 16600 && runnum < 16700) break // Hall C bleedthrough
             int evnum = event.getBank("RUN::config").getInt('event', 0)
-            print(runnum+" "+evnum+"\n")
+            // print(runnum+" "+evnum+"\n")
             PhysicsEvent research_Event = fitter.getPhysicsEvent(event)
 
             boolean process_event = filter.isValid(research_Event)
