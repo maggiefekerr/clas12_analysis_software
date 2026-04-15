@@ -6,6 +6,7 @@ package analyzers;
  */
 import extended_kinematic_fitters.fiducial_cuts;
 import extended_kinematic_fitters.generic_tests;
+import extended_kinematic_fitters.pid_cuts;
 import extended_kinematic_fitters.momentum_corrections;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.hipo.HipoDataBank;
@@ -46,6 +47,9 @@ public class TwoParticles {
 
     protected int RICH_pid;
     protected double chi2pid, beta, RQ_prob, el_prob, pi_prob, k_prob, pr_prob;
+
+    protected int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut; // electron status variables
+    protected int p_chi2pid_cut, p_vertex_cut; // hadron status variables
 
     // --- NEW: one-shot inverse-ISR photon to subtract from q ---
     private static boolean useInverseISRNext = false;
@@ -117,6 +121,7 @@ public class TwoParticles {
 
         generic_tests generic_tests = new generic_tests();
         fiducial_cuts fiducial_cuts = new fiducial_cuts();
+        pid_cuts pid_cuts = new pid_cuts();
 
         boolean electron_pcal_fiducial = fiducial_cuts.pcal_fiducial_cut(0, 1, configBank, rec_Bank, cal_Bank);
         boolean electron_fd_fiducial = fiducial_cuts.dc_fiducial_cut(0, rec_Bank, traj_Bank, configBank);
@@ -336,6 +341,32 @@ public class TwoParticles {
         if (sinPhiH < 0.0) {
             phi = 2 * Math.PI - phi;
         }
+
+        // status variables
+        if (generic_tests.forward_detector_cut(0, rec_Bank)) { e_fd_cut = 1; }
+        else { e_fd_cut = -1; }
+
+        if (generic_tests.vertex_cut(0, rec_Bank, configBank)) { e_vertex_cut = 1; }
+        else { e_vertex_cut = -1; }
+
+        if (pid_cuts.calorimeter_sampling_fraction_cut(0, e_p, configBank, cal_Bank)) { e_sf_cut = 1; }
+        else { e_sf_cut = -1; }
+
+        if (pid_cuts.calorimeter_diagonal_cut(0, e_p, cal_Bank, configBank)) { e_diag_cut = 1; }
+        else { e_diag_cut = -1; }
+
+        if (fiducial_cuts.pcal_fiducial_cut(0, 2, configBank, rec_Bank, cal_Bank)) { e_pcal_fid_cut = 1; }
+        else { e_pcal_fid_cut = -1; }
+
+        if (fiducial_cuts.dc_fiducial_cut(0, rec_Bank, traj_Bank, configBank)) { e_dc_fid_cut = 1; }
+        else { e_dc_fid_cut = -1; }
+
+        if (pid_cuts.charged_hadron_pass2_chi2pid_cut(p_rec_index, rec_Bank)) { p_chi2pid_cut = 1; }
+        else { p_chi2pid_cut = -1; }
+
+        if (generic_tests.vertex_cut(p_rec_index, rec_Bank, configBank)) { p_vertex_cut = 1; }
+        else { p_vertex_cut = -1; }
+
         // end
     }
 
@@ -413,4 +444,14 @@ public class TwoParticles {
     public double vz_e() { return ((int) (vz_e * 100000)) / 100000.0; }
     public double vz_p() { return ((int) (vz_p * 100000)) / 100000.0; }
     public double open_angle() { return ((int) (open_angle * 100000)) / 100000.0; }
+
+    // status values
+    public int e_fd_cut() { return e_fd_cut; }
+    public int e_vertex_cut() { return e_vertex_cut; }
+    public int e_sf_cut() { return e_sf_cut; }
+    public int e_diag_cut() { return e_diag_cut; }
+    public int e_pcal_fid_cut() { return e_pcal_fid_cut; }
+    public int e_dc_fid_cut() { return e_dc_fid_cut; }
+    public int p_chi2pid_cut() { return p_chi2pid_cut; }
+    public int p_vertex_cut() { return p_vertex_cut; }
 }
