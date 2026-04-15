@@ -141,6 +141,7 @@ public static void main(String[] args) {
 
             event = reader.getNextEvent()
             int runnum = userProvidedRun ?: event.getBank("RUN::config").getInt('run', 0)
+            print(runnum)
             // if (runnum > 16600 && runnum < 16700) break // Hall C bleedthrough
             int evnum = event.getBank("RUN::config").getInt('event', 0)
 
