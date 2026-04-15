@@ -31,13 +31,13 @@ public class analysis_fitter extends GenericKinematicFitter {
 
         return true
                 && p > 2.0 // higher cut ultimately enforced when we cut on y, this speeds processing
-                && generic_tests.forward_detector_cut(particle_Index, rec_Bank)
-                && generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank)
+                //&& generic_tests.forward_detector_cut(particle_Index, rec_Bank)                     // commented out by mkerr as ND3 test
+                //&& generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank)                     // commented out by mkerr as ND3 test
 //                && pid_cuts.calorimeter_energy_cut(particle_Index, cal_Bank, run_Bank)
-                && pid_cuts.calorimeter_sampling_fraction_cut(particle_Index, p, run_Bank, cal_Bank)
-                && pid_cuts.calorimeter_diagonal_cut(particle_Index, p, cal_Bank, run_Bank)
-                && fiducial_cuts.pcal_fiducial_cut(particle_Index, 2, run_Bank, rec_Bank, cal_Bank)
-                && fiducial_cuts.dc_fiducial_cut(particle_Index, rec_Bank, traj_Bank, run_Bank)
+                //&& pid_cuts.calorimeter_sampling_fraction_cut(particle_Index, p, run_Bank, cal_Bank)// commented out by mkerr as ND3 test
+                //&& pid_cuts.calorimeter_diagonal_cut(particle_Index, p, cal_Bank, run_Bank)         // commented out by mkerr as ND3 test
+                //&& fiducial_cuts.pcal_fiducial_cut(particle_Index, 2, run_Bank, rec_Bank, cal_Bank) // commented out by mkerr as ND3 test
+                //&& fiducial_cuts.dc_fiducial_cut(particle_Index, rec_Bank, traj_Bank, run_Bank)     // commented out by mkerr as ND3 test
                 ;
     }
 
@@ -58,8 +58,9 @@ public class analysis_fitter extends GenericKinematicFitter {
         return true
                 //                                && p > 1.20
                 //                            && p < 5.00 
-                && pid_cuts.charged_hadron_pass2_chi2pid_cut(particle_Index, rec_Bank)
-                && generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank) //                                && (passesForwardDetector // dedicated PID cuts for forward
+                //&& pid_cuts.charged_hadron_pass2_chi2pid_cut(particle_Index, rec_Bank) // commented out by mkerr as ND3 test (already cuts on 5sigma in event builder)
+                //&& generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank)        // commented out by mkerr as ND3 test
+                // //                                && (passesForwardDetector // dedicated PID cuts for forward
                 //                                        //                        ? pid_cuts.charged_hadron_pass2_chi2pid_cut(particle_Index, rec_Bank)
                 //                                        ? pid_cuts.charged_hadron_chi2pid_cut(particle_Index, rec_Bank, run_Bank)
                 //                                        : true)
