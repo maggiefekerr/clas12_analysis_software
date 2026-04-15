@@ -134,13 +134,18 @@ public static void main(String[] args) {
         reader.open(hipo_list[current_file])
 
         HipoDataEvent event = reader.getNextEvent()
+        int file_runnum = event.getBank("RUN::config").getInt('run', 0)
+        if ((userProvidedRun != null) && (userProvidedRun != file_runnum)) {
+            print(file_runnum+" "+userProvidedRun+"\n")
+            continue
+        }
 
         while (reader.hasEvent()) {
             ++num_events
             if (num_events % 500000 == 0) print("processed: " + num_events + " events. ")
 
             event = reader.getNextEvent()
-            int runnum = userProvidedRun ?: event.getBank("RUN::config").getInt('run', 0)
+            int runnum = event.getBank("RUN::config").getInt('run', 0)
             // if (runnum > 16600 && runnum < 16700) break // Hall C bleedthrough
             int evnum = event.getBank("RUN::config").getInt('event', 0)
             print(runnum+" "+evnum+"\n")
