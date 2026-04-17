@@ -280,6 +280,14 @@ int main(int argc, char *argv[]) {
     double elec_p, elec_theta, elec_phi, elec_vz;
     double posi_p, posi_theta, posi_phi, posi_vz;
     double nucl_p, nucl_theta, nucl_phi, nucl_vz;
+    double elec_e_pcal, elec_e_ecin, elec_e_ecout;
+	double posi_e_pcal, posi_e_ecin, posi_e_ecout;
+	double elec_m2_pcal_u, elec_m2_pcal_v, elec_m2_pcal_w;
+	double elec_m2_ecin_u, elec_m2_ecin_v, elec_m2_ecin_w;
+	double elec_m2_ecout_u, elec_m2_ecout_v, elec_m2_ecout_w;
+	double posi_m2_pcal_u, posi_m2_pcal_v, posi_m2_pcal_w;
+	double posi_m2_ecin_u, posi_m2_ecin_v, posi_m2_ecin_w;
+	double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w;
 
     // Additional variables for two particles "raw" (without quality cuts)
     int qadb_status;
@@ -1173,6 +1181,30 @@ int main(int argc, char *argv[]) {
         tree->Branch("nucl_theta", &nucl_theta, "nucl_theta/D");
         tree->Branch("nucl_phi", &nucl_phi, "nucl_phi/D");
         tree->Branch("nucl_vz", &nucl_vz, "nucl_vz/D");
+        tree->Branch("elec_e_pcal", &elec_e_pcal, "elec_e_pcal/D");
+        tree->Branch("elec_e_ecin", &elec_e_ecin, "elec_e_ecin/D");
+        tree->Branch("elec_e_ecout", &elec_e_ecout, "elec_e_ecout/D");
+        tree->Branch("posi_e_pcal", &posi_e_pcal, "posi_e_pcal/D");
+        tree->Branch("posi_e_ecin", &posi_e_ecin, "posi_e_ecin/D");
+        tree->Branch("posi_e_ecout", &posi_e_ecout, "posi_e_ecout/D");
+        tree->Branch("elec_m2_pcal_u", &elec_m2_pcal_u, "elec_m2_pcal_u/D");
+        tree->Branch("elec_m2_pcal_v", &elec_m2_pcal_v, "elec_m2_pcal_v/D");
+        tree->Branch("elec_m2_pcal_w", &elec_m2_pcal_w, "elec_m2_pcal_w/D");
+        tree->Branch("elec_m2_ecin_u", &elec_m2_ecin_u, "elec_m2_ecin_u/D");
+        tree->Branch("elec_m2_ecin_v", &elec_m2_ecin_v, "elec_m2_ecin_v/D");
+        tree->Branch("elec_m2_ecin_w", &elec_m2_ecin_w, "elec_m2_ecin_w/D");
+        tree->Branch("elec_m2_ecout_u", &elec_m2_ecout_u, "elec_m2_ecout_u/D");
+        tree->Branch("elec_m2_ecout_v", &elec_m2_ecout_v, "elec_m2_ecout_v/D");
+        tree->Branch("elec_m2_ecout_w", &elec_m2_ecout_w, "elec_m2_ecout_w/D");
+        tree->Branch("posi_m2_pcal_u", &posi_m2_pcal_u, "posi_m2_pcal_u/D");
+        tree->Branch("posi_m2_pcal_v", &posi_m2_pcal_v, "posi_m2_pcal_v/D");
+        tree->Branch("posi_m2_pcal_w", &posi_m2_pcal_w, "posi_m2_pcal_w/D");
+        tree->Branch("posi_m2_ecin_u", &posi_m2_ecin_u, "posi_m2_ecin_u/D");
+        tree->Branch("posi_m2_ecin_v", &posi_m2_ecin_v, "posi_m2_ecin_v/D");
+        tree->Branch("posi_m2_ecin_w", &posi_m2_ecin_w, "posi_m2_ecin_w/D");
+        tree->Branch("posi_m2_ecout_u", &posi_m2_ecout_u, "posi_m2_ecout_u/D");
+        tree->Branch("posi_m2_ecout_v", &posi_m2_ecout_v, "posi_m2_ecout_v/D");
+        tree->Branch("posi_m2_ecout_w", &posi_m2_ecout_w, "posi_m2_ecout_w/D");
     }
     if (script_index == 7 && is_mc == 1) {
         // complete later
@@ -1683,7 +1715,15 @@ int main(int argc, char *argv[]) {
                          elec_chi2 >> posi_chi2 >> nucl_chi2 >>
                          elec_p >> elec_theta >> elec_phi >> elec_vz >> 
                          posi_p >> posi_theta >> posi_phi >> posi_vz >> 
-                         nucl_p >> nucl_theta >> nucl_phi >> nucl_vz ) {
+                         nucl_p >> nucl_theta >> nucl_phi >> nucl_vz >>
+                         elec_e_pcal >> elec_e_ecin >> elec_e_ecout >>
+                         posi_e_pcal >> posi_e_ecin >> posi_e_ecout >>
+                         elec_m2_pcal_u >> elec_m2_pcal_v >> elec_m2_pcal_w >>
+                         elec_m2_ecin_u >> elec_m2_ecin_v >> elec_m2_ecin_w >>
+                         elec_m2_ecout_u >> elec_m2_ecout_v >> elec_m2_ecout_w >>
+                         posi_m2_pcal_u >> posi_m2_pcal_v >> posi_m2_pcal_w >>
+                         posi_m2_ecin_u >> posi_m2_ecin_v >> posi_m2_ecin_w >>
+                         posi_m2_ecout_u >> posi_m2_ecout_v >> posi_m2_ecout_w) {
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }
             else { 
@@ -1710,7 +1750,7 @@ int main(int argc, char *argv[]) {
     }
     if (script_index == 7 && is_mc == 1) {
     }
-    // TCS
+    // ee
     if (script_index == 8 && is_mc == 0) {
         while (infile >> num_pos >> num_neg >> num_neutral >> 
                          runnum >> evnum >> helicity >>

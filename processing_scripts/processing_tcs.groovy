@@ -94,6 +94,14 @@ public static void main(String[] args) {
     double elec_vx, elec_vy, elec_vz;
     double posi_vx, posi_vy, posi_vz;
 	double nucl_vx, nucl_vy, nucl_vz;
+	double elec_e_pcal, elec_e_ecin, elec_e_ecout;
+	double posi_e_pcal, posi_e_ecin, posi_e_ecout;
+	double elec_m2_pcal_u, elec_m2_pcal_v, elec_m2_pcal_w;
+	double elec_m2_ecin_u, elec_m2_ecin_v, elec_m2_ecin_w;
+	double elec_m2_ecout_u, elec_m2_ecout_v, elec_m2_ecout_w;
+	double posi_m2_pcal_u, posi_m2_pcal_v, posi_m2_pcal_w;
+	double posi_m2_ecin_u, posi_m2_ecin_v, posi_m2_ecin_w;
+	double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w;
 
     // load kinematic fitter/PID
 	GenericKinematicFitter fitter = new tcs_fitter(10.6041);
@@ -222,6 +230,32 @@ public static void main(String[] args) {
 					nucl_vy = variables.get_nucl_vy();
 					nucl_vz = variables.get_nucl_vz();
 
+					// PCAL/ECAL readout
+					elec_e_pcal = variables.get_elec_e_pcal();
+					elec_e_ecin = variables.get_elec_e_ecin();
+					elec_e_ecout = variables.get_elec_e_ecout();
+					posi_e_pcal = variables.get_posi_e_pcal();
+					posi_e_ecin = variables.get_posi_e_ecin();
+					posi_e_ecout = variables.get_posi_e_ecout();
+					elec_m2_pcal_u = variables.get_elec_m2_pcal_u();
+					elec_m2_pcal_v = variables.get_elec_m2_pcal_v();
+					elec_m2_pcal_w = variables.get_elec_m2_pcal_w();
+					elec_m2_ecin_u = variables.get_elec_m2_ecin_u();
+					elec_m2_ecin_v = variables.get_elec_m2_ecin_v();
+					elec_m2_ecin_w = variables.get_elec_m2_ecin_w();
+					elec_m2_ecout_u = variables.get_elec_m2_ecout_u();
+					elec_m2_ecout_v = variables.get_elec_m2_ecout_v();
+					elec_m2_ecout_w = variables.get_elec_m2_ecout_w();
+					posi_m2_pcal_u = variables.get_posi_m2_pcal_u();
+					posi_m2_pcal_v = variables.get_posi_m2_pcal_v();
+					posi_m2_pcal_w = variables.get_posi_m2_pcal_w();
+					posi_m2_ecin_u = variables.get_posi_m2_ecin_u();
+					posi_m2_ecin_v = variables.get_posi_m2_ecin_v();
+					posi_m2_ecin_w = variables.get_posi_m2_ecin_w();
+					posi_m2_ecout_u = variables.get_posi_m2_ecout_u();
+					posi_m2_ecout_v = variables.get_posi_m2_ecout_v();
+					posi_m2_ecout_w = variables.get_posi_m2_ecout_w();
+
                     // Use a StringBuilder to append all data in a single call
 					StringBuilder line = new StringBuilder();
 					line.append(num_pos).append(" ")
@@ -248,7 +282,31 @@ public static void main(String[] args) {
 	                	.append(nucl_p).append(" ")
 	                	.append(nucl_theta).append(" ")
 	                	.append(nucl_phi).append(" ")
-	                	.append(nucl_vz).append("\n");
+	                	.append(nucl_vz).append(" ")
+						.append(elec_e_pcal).append(" ")
+						.append(elec_e_ecin).append(" ")
+						.append(elec_e_ecout).append(" ")
+						.append(posi_e_pcal).append(" ")
+						.append(posi_e_ecin).append(" ")
+						.append(posi_e_ecout).append(" ")
+						.append(elec_m2_pcal_u).append(" ")
+						.append(elec_m2_pcal_v).append(" ")
+						.append(elec_m2_pcal_w).append(" ")
+						.append(elec_m2_ecin_u).append(" ")
+						.append(elec_m2_ecin_v).append(" ")
+						.append(elec_m2_ecin_w).append(" ")
+						.append(elec_m2_ecout_u).append(" ")
+						.append(elec_m2_ecout_v).append(" ")
+						.append(elec_m2_ecout_w).append(" ")
+						.append(posi_m2_pcal_u).append(" ")
+						.append(posi_m2_pcal_v).append(" ")
+						.append(posi_m2_pcal_w).append(" ")
+						.append(posi_m2_ecin_u).append(" ")
+						.append(posi_m2_ecin_v).append(" ")
+						.append(posi_m2_ecin_w).append(" ")
+						.append(posi_m2_ecout_u).append(" ")
+						.append(posi_m2_ecout_v).append(" ")
+						.append(posi_m2_ecout_w).append("\n");
 					// print(line)
 
                     // Append the line to the batchLines StringBuilder

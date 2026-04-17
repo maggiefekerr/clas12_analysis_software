@@ -36,6 +36,15 @@ public class TCSParticles {
     protected double posi_vx, posi_vy, posi_vz; // positron vertex
     protected double nucl_vx, nucl_vy, nucl_vz; // nucleon vertex
 
+    protected double elec_e_pcal, elec_e_ecin, elec_e_ecout; // electron energy deposits in ECAL layers
+	protected double posi_e_pcal, posi_e_ecin, posi_e_ecout; // positron energy deposits in ECAL layers
+	protected double elec_m2_pcal_u, elec_m2_pcal_v, elec_m2_pcal_w; // electron M2 PCAL values wrt U,V,W
+	protected double elec_m2_ecin_u, elec_m2_ecin_v, elec_m2_ecin_w; // electron M2 ECIN values wrt U,V,W
+	protected double elec_m2_ecout_u, elec_m2_ecout_v, elec_m2_ecout_w; // electron M2 ECOUT values wrt U,V,W
+	protected double posi_m2_pcal_u, posi_m2_pcal_v, posi_m2_pcal_w; // positron M2 PCAL values wrt U,V,W
+	protected double posi_m2_ecin_u, posi_m2_ecin_v, posi_m2_ecin_w; // positron M2 ECIN values wrt U,V,W
+	protected double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w; // positron M2 ECOUT values wrt U,V,W
+
     // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
     // event selection :)
 
@@ -203,6 +212,59 @@ public class TCSParticles {
         nucl_phi   = scattered_nucleon.phi();
         if (nucl_phi < 0) {
             nucl_phi = 2 * Math.PI + nucl_phi;
+        }
+
+        // More ECAL information
+        for (int current_Row = 0; current_Row < cal_Bank.rows(); current_Row++) {
+            int pindex = cal_Bank.getInt("pindex", current_Row);
+            if (pindex == elec_rec_index) { // electron
+                int detector = cal_Bank.getInt("detector", current_Row);
+                if (detector == 7) { // ECAL has detector int 7
+                    int layer = cal_Bank.getInt("layer", current_Row);
+                    if (layer == 1) { // PCAL has layer int 1
+                        elec_e_pcal = cal_Bank.getFloat("energy", current_Row);
+                        elec_m2_pcal_u = cal_Bank.getFloat("m2u", current_Row);
+                        elec_m2_pcal_v = cal_Bank.getFloat("m2v", current_Row);
+                        elec_m2_pcal_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                    else if (layer == 4) { // ECIN has layer int 4
+                        elec_e_ecin = cal_Bank.getFloat("energy", current_Row);
+                        elec_m2_ecin_u = cal_Bank.getFloat("m2u", current_Row);
+                        elec_m2_ecin_v = cal_Bank.getFloat("m2v", current_Row);
+                        elec_m2_ecin_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                    else if (layer == 7) { // PCAL has layer int 7
+                        elec_e_ecout = cal_Bank.getFloat("energy", current_Row);
+                        elec_m2_ecout_u = cal_Bank.getFloat("m2u", current_Row);
+                        elec_m2_ecout_v = cal_Bank.getFloat("m2v", current_Row);
+                        elec_m2_ecout_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                }
+            }
+            else if (pindex == posi_rec_index) { // positron
+                int detector = cal_Bank.getInt("detector", current_Row);
+                if (detector == 7) { // ECAL has detector int 7
+                    int layer = cal_Bank.getInt("layer", current_Row);
+                    if (layer == 1) { // PCAL has layer int 1
+                        posi_e_pcal = cal_Bank.getFloat("energy", current_Row);
+                        posi_m2_pcal_u = cal_Bank.getFloat("m2u", current_Row);
+                        posi_m2_pcal_v = cal_Bank.getFloat("m2v", current_Row);
+                        posi_m2_pcal_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                    else if (layer == 4) { // ECIN has layer int 4
+                        posi_e_ecin = cal_Bank.getFloat("energy", current_Row);
+                        posi_m2_ecin_u = cal_Bank.getFloat("m2u", current_Row);
+                        posi_m2_ecin_v = cal_Bank.getFloat("m2v", current_Row);
+                        posi_m2_ecin_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                    else if (layer == 7) { // PCAL has layer int 7
+                        posi_e_ecout = cal_Bank.getFloat("energy", current_Row);
+                        posi_m2_ecout_u = cal_Bank.getFloat("m2u", current_Row);
+                        posi_m2_ecout_v = cal_Bank.getFloat("m2v", current_Row);
+                        posi_m2_ecout_w = cal_Bank.getFloat("m2w", current_Row);
+                    }
+                }
+            }
         }
     }
 
@@ -411,4 +473,100 @@ public class TCSParticles {
     public double get_nucl_vz() {
         return nucl_vz;
     } // returns nucleon vz
+
+    public double get_elec_e_pcal() {
+        return elec_e_pcal;
+    } // returns electron PCAL energy
+
+    public double get_elec_e_ecin() {
+        return elec_e_ecin;
+    } // returns electron ECIN energy
+
+    public double get_elec_e_ecout() {
+        return elec_e_ecout;
+    } // returns electron ECOUT energy
+
+    public double get_posi_e_pcal() {
+        return posi_e_pcal;
+    } // returns positron PCAL energy
+
+    public double get_posi_e_ecin() {
+        return posi_e_ecin;
+    } // returns positron ECIN energy
+
+    public double get_posi_e_ecout() {
+        return posi_e_ecout;
+    } // returns positron ECOUT energy
+
+    public double get_elec_m2_pcal_u() {
+        return elec_m2_pcal_u;
+    } // returns electron M2(U) from PCAL
+
+    public double get_elec_m2_pcal_v(){
+        return elec_m2_pcal_v;
+    } // returns electron M2(V) from PCAL
+
+    public double get_elec_m2_pcal_w(){
+        return elec_m2_pcal_w;
+    } // returns electron M2(W) from PCAL
+
+    public double get_elec_m2_ecin_u() {
+        return elec_m2_ecin_u;
+    } // returns electron M2(U) from ECIN
+
+    public double get_elec_m2_ecin_v(){
+        return elec_m2_ecin_v;
+    } // returns electron M2(V) from ECIN
+
+    public double get_elec_m2_ecin_w(){
+        return elec_m2_ecin_w;
+    } // returns electron M2(W) from ECIN
+
+    public double get_elec_m2_ecout_u() {
+        return elec_m2_ecout_u;
+    } // returns electron M2(U) from ECOUT
+
+    public double get_elec_m2_ecout_v(){
+        return elec_m2_ecout_v;
+    } // returns electron M2(V) from ECOUT
+
+    public double get_elec_m2_ecout_w(){
+        return elec_m2_ecout_w;
+    } // returns electron M2(W) from ECOUT
+
+    public double get_posi_m2_pcal_u() {
+        return posi_m2_pcal_u;
+    } // returns positron M2(U) from PCAL
+
+    public double get_posi_m2_pcal_v(){
+        return posi_m2_pcal_v;
+    } // returns positron M2(V) from PCAL
+
+    public double get_posi_m2_pcal_w(){
+        return posi_m2_pcal_w;
+    } // returns positron M2(W) from PCAL
+
+    public double get_posi_m2_ecin_u() {
+        return posi_m2_ecin_u;
+    } // returns positron M2(U) from ECIN
+
+    public double get_posi_m2_ecin_v(){
+        return posi_m2_ecin_v;
+    } // returns positron M2(V) from ECIN
+
+    public double get_posi_m2_ecin_w(){
+        return posi_m2_ecin_w;
+    } // returns positron M2(W) from ECIN
+
+    public double get_posi_m2_ecout_u() {
+        return posi_m2_ecout_u;
+    } // returns positron M2(U) from ECOUT
+
+    public double get_posi_m2_ecout_v(){
+        return posi_m2_ecout_v;
+    } // returns positron M2(V) from ECOUT
+
+    public double get_posi_m2_ecout_w(){
+        return posi_m2_ecout_w;
+    } // returns positron M2(W) from ECOUT
 }
