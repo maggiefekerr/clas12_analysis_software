@@ -297,9 +297,6 @@ int main(int argc, char *argv[]) {
     int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut;
     int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut;
 
-    // Additional variables for three particles "raw" (without quality cuts)
-    int p2_chi2pid_cut, p2_vertex_cut;
-
     // Case for zero hadrons (inclusive)
     if (script_index == 0 && is_mc == 0) {
         // Link TTree branches to variables for zero hadrons
