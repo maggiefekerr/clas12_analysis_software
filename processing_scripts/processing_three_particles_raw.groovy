@@ -167,6 +167,8 @@ public static void main(String[] args) {
 
 		    PhysicsEvent research_Event = fitter.getPhysicsEvent(event);
 
+			boolean process_event = filter.isValid(research_Event)
+
 	    	// processing all events but recording the qadb status
             if (qa.pass(runnum,evnum)) { qadb_status = 1 }
             else                       { qadb_status = -1}
