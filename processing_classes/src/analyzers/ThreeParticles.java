@@ -6,6 +6,7 @@
  */
 import extended_kinematic_fitters.fiducial_cuts;
 import extended_kinematic_fitters.generic_tests;
+import extended_kinematic_fitters.pid_cuts;
 import extended_kinematic_fitters.momentum_corrections;
 import org.jlab.clas.physics.Particle;
 import org.jlab.clas.physics.PhysicsEvent;
@@ -82,6 +83,10 @@ public class ThreeParticles {
 
     protected double gN_angle_p1_p2, gN_angle_p1_X, gN_angle_p2_X;
 
+    protected int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut; // electron status variables
+    protected int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut; // hadron 1 (proton) status variables
+    protected int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut; // hadron 2 (pion) status variables
+
     public static boolean channel_test(ThreeParticles variables) {
         if (variables.helicity == 0 && variables.runnum != 11) {
             return false;
@@ -127,6 +132,7 @@ public class ThreeParticles {
         HipoDataBank rec_Bank = (HipoDataBank) event.getBank("REC::Particle");
         HipoDataBank cal_Bank = (HipoDataBank) event.getBank("REC::Calorimeter");
         HipoDataBank traj_Bank = (HipoDataBank) event.getBank("REC::Traj");
+        HipoDataBank track_Bank = (HipoDataBank) event.getBank("REC::Track");
 
         helicity = eventBank.getByte("helicity", 0);
         runnum = configBank.getInt("run", 0); // used for beam energy and polarization
@@ -146,6 +152,7 @@ public class ThreeParticles {
         
         generic_tests generic_tests = new generic_tests();
         fiducial_cuts fiducial_cuts = new fiducial_cuts();
+        pid_cuts pid_cuts = new pid_cuts();
 
         boolean electron_pcal_fiducial = fiducial_cuts.pcal_fiducial_cut(0, 1, configBank, rec_Bank, cal_Bank);
         boolean electron_fd_fiducial = fiducial_cuts.dc_fiducial_cut(0, rec_Bank, traj_Bank, configBank);
@@ -564,6 +571,38 @@ public class ThreeParticles {
             Delta_phi += 2 * Math.PI;
         }
 
+        // status variables
+        // electron
+        if (generic_tests.forward_detector_cut(0, rec_Bank)) { e_fd_cut = 1; }
+        else { e_fd_cut = -1; }
+        if (generic_tests.vertex_cut(0, rec_Bank, configBank)) { e_vertex_cut = 1; }
+        else { e_vertex_cut = -1; }
+        if (pid_cuts.calorimeter_sampling_fraction_cut(0, e_p, configBank, cal_Bank)) { e_sf_cut = 1; }
+        else { e_sf_cut = -1; }
+        if (pid_cuts.calorimeter_diagonal_cut(0, e_p, cal_Bank, configBank)) { e_diag_cut = 1; }
+        else { e_diag_cut = -1; }
+        if (fiducial_cuts.pcal_fiducial_cut(0, 2, configBank, rec_Bank, cal_Bank)) { e_pcal_fid_cut = 1; }
+        else { e_pcal_fid_cut = -1; }
+        if (fiducial_cuts.dc_fiducial_cut(0, rec_Bank, traj_Bank, configBank)) { e_dc_fid_cut = 1; }
+        else { e_dc_fid_cut = -1; }
+
+        // hadron 1 (proton)
+        if (pid_cuts.charged_hadron_pass2_chi2pid_cut(p1_rec_index, rec_Bank)) { p1_chi2pid_cut = 1; }
+        else { p1_chi2pid_cut = -1; }
+        if (generic_tests.vertex_cut(p2_rec_index, rec_Bank, configBank)) { p1_vertex_cut = 1; }
+        else { p1_vertex_cut = -1; }
+        if (fiducial_cuts.dc_fiducial_cut(p2_rec_index, rec_Bank, traj_Bank, configBank)) { p1_dc_fid_cut = 1; }
+        else { p1_dc_fid_cut = -1; }
+        if (fiducial_cuts.cvt_fiducial_cut(p2_rec_index, rec_Bank, traj_Bank, 2)) { p1_cvt_fid_cut = 1; }
+        else { p1_cvt_fid_cut = -1; }
+
+        // hadron 2 (pion)
+        if (pid_cuts.charged_hadron_pass2_chi2pid_cut(p2_rec_index, rec_Bank)) { p2_chi2pid_cut = 1; }
+        else { p2_chi2pid_cut = -1; }
+        if (generic_tests.vertex_cut(p2_rec_index, rec_Bank, configBank)) { p2_vertex_cut = 1; }
+        else { p2_vertex_cut = -1; }
+        if (fiducial_cuts.dc_fiducial_cut(p2_rec_index, rec_Bank, traj_Bank, configBank)) { p2_dc_fid_cut = 1; }
+        else { p2_dc_fid_cut = -1; }
     }
 
     public int get_helicity() { // -1, 0, or 1. 0 equals unassigned by EventBuilder
@@ -1072,4 +1111,24 @@ public class ThreeParticles {
     public double pTmiss() {
         return Double.valueOf(Math.round(pTmiss * 100000)) / 100000;
     }// returns pTmiss
+
+    // status values
+    // electron
+    public int e_fd_cut() { return e_fd_cut; }
+    public int e_vertex_cut() { return e_vertex_cut; }
+    public int e_sf_cut() { return e_sf_cut; }
+    public int e_diag_cut() { return e_diag_cut; }
+    public int e_pcal_fid_cut() { return e_pcal_fid_cut; }
+    public int e_dc_fid_cut() { return e_dc_fid_cut; }
+
+    // hadron 1 (proton)
+    public int p1_chi2pid_cut() { return p1_chi2pid_cut; }
+    public int p1_vertex_cut() { return p1_vertex_cut; }
+    public int p1_dc_fid_cut() { return p1_dc_fid_cut; }
+    public int p1_cvt_fid_cut() { return p1_cvt_fid_cut; }
+
+    // hadron 2 (pion)
+    public int p2_chi2pid_cut() { return p2_chi2pid_cut; }
+    public int p2_vertex_cut() { return p2_vertex_cut; }
+    public int p2_dc_fid_cut() { return p2_dc_fid_cut; }
 }

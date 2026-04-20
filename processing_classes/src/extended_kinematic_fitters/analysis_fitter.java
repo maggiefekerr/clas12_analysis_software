@@ -133,13 +133,13 @@ public class analysis_fitter extends GenericKinematicFitter {
                                 && (passesForwardDetector && (torus < 0) ? p > 0.50 : true)
                                 // && p < 1.2 // this bound is enforced at p < 1.14 by -t < 1, done here to speed up processing
                                 && generic_tests.theta_calculation(px, py, pz) < 64.23
-                                && generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank)
+                                /*&& generic_tests.vertex_cut(particle_Index, rec_Bank, run_Bank)
                 && (passesForwardDetector
                         ? fiducial_cuts.dc_fiducial_cut(particle_Index, rec_Bank, traj_Bank, run_Bank)
                         : true)
                 && (passesCentralDetector
                         ? fiducial_cuts.cvt_fiducial_cut(particle_Index, rec_Bank, traj_Bank, 2)
-                        : true) //               
+                        : true)*/ // removed by Maggie for ND3 studies to acquire full set of events             
 //                && (passesForwardDetector // dedicated PID cuts for forward
 //                                        ? pid_cuts.charged_hadron_chi2pid_cut(particle_Index, rec_Bank, run_Bank)
 //                                        : true)

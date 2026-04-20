@@ -49,7 +49,7 @@ public class TwoParticles {
     protected double chi2pid, beta, RQ_prob, el_prob, pi_prob, k_prob, pr_prob;
 
     protected int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut; // electron status variables
-    protected int p_chi2pid_cut, p_vertex_cut; // hadron status variables
+    protected int p_chi2pid_cut, p_vertex_cut, p_dc_fid_cut; // hadron (pion) status variables
 
     // --- NEW: one-shot inverse-ISR photon to subtract from q ---
     private static boolean useInverseISRNext = false;
@@ -367,6 +367,9 @@ public class TwoParticles {
         if (generic_tests.vertex_cut(p_rec_index, rec_Bank, configBank)) { p_vertex_cut = 1; }
         else { p_vertex_cut = -1; }
 
+        if (fiducial_cuts.dc_fiducial_cut(p_rec_index, rec_Bank, traj_Bank, configBank)) { p_dc_fid_cut = 1; }
+        else { p_dc_fid_cut = -1; }
+
         // end
     }
 
@@ -454,4 +457,5 @@ public class TwoParticles {
     public int e_dc_fid_cut() { return e_dc_fid_cut; }
     public int p_chi2pid_cut() { return p_chi2pid_cut; }
     public int p_vertex_cut() { return p_vertex_cut; }
+    public int p_dc_fid_cut() { return p_dc_fid_cut; }
 }

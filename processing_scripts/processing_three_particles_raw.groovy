@@ -98,6 +98,10 @@ public static void main(String[] args) {
 	double phi1, phi2, Delta_phi, phih, phiR, theta;
 	double Depolarization_A, Depolarization_B, Depolarization_C;
 	double Depolarization_V, Depolarization_W;
+	int qadb_status
+    int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut
+	int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut
+    int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut
 
 	// load my kinematic fitter/PID
 	GenericKinematicFitter fitter = new analysis_fitter(10.6041); 
@@ -158,27 +162,14 @@ public static void main(String[] args) {
 		    event = reader.getNextEvent();
 		    // collect info for QA
 		    int runnum = userProvidedRun ?: event.getBank("RUN::config").getInt('run', 0);
-		    if (runnum > 16600 && runnum < 16700) break; // Hall C bleedthrough
+		    // if (runnum > 16600 && runnum < 16700) break; // Hall C bleedthrough
 		    int evnum = event.getBank("RUN::config").getInt('event', 0);
 
 		    PhysicsEvent research_Event = fitter.getPhysicsEvent(event);
 
-		    // do not use the qa if it is MC (runnum = 11) 
-		    // do not use the qa if the run is from RGC (until QA is produced!)
-		    // boolean process_event = filter.isValid(research_Event);
-		    // boolean process_event = filter.isValid(research_Event) && 
-		    // 	(runnum == 11 || runnum == 16194 || runnum == 16089 || runnum == 16185 ||
-	    	// 	runnum == 16308 || runnum == 16184 || runnum == 16307 || runnum == 16309 ||
-	    	// 	qa.OkForAsymmetry(runnum, evnum));
-	    	boolean process_event = filter.isValid(research_Event) && 
-		    	(runnum == 11 ||  // MC
-		    	runnum < 3087 || // RGA Sp18 Inb
-		     	(runnum > 3306 && runnum < 3817) || // RGA Sp18 Inb
-		     	(runnum > 4003 && runnum < 5020) || // RGA Sp18 Inb
-		    	qa.pass(runnum, evnum));
-	    	if (runnum > 17768) process_event = false; // outbending RGC Sp23
-	    	if (runnum == 17331 || runnum == 16987 || runnum == 17079 || runnum == 17190 || runnum == 17639) process_event = false; // low live time
-	    	if (runnum == 16850 || runnum == 16851 || runnum == 16852 || runnum == 16855 || runnum == 16879) process_event = false; // luminosity scans
+	    	// processing all events but recording the qadb status
+            if (qa.pass(runnum,evnum)) { qadb_status = 1 }
+            else                       { qadb_status = -1}
 	    	
 		    if (process_event) {
 
@@ -281,6 +272,23 @@ public static void main(String[] args) {
 			                Depolarization_V = variables.Depolarization_V();
 					    	Depolarization_W = variables.Depolarization_W();
 
+							// status of different cuts
+							e_fd_cut = variables.e_fd_cut()
+							e_vertex_cut = variables.e_vertex_cut()
+							e_sf_cut = variables.e_sf_cut()
+							e_diag_cut = variables.e_diag_cut()
+							e_pcal_fid_cut = variables.e_pcal_fid_cut()
+							e_dc_fid_cut = variables.e_dc_fid_cut()
+
+							p1_chi2pid_cut = variables.p1_chi2pid_cut()
+							p1_vertex_cut = variables.p1_vertex_cut()
+							p1_dc_fid_cut = variables.p1_dc_fid_cut()
+							p1_cvt_fid_cut = variables.p1_cvt_fid_cut()
+
+							p2_chi2pid_cut = variables.p2_chi2pid_cut()
+							p2_vertex_cut = variables.p2_vertex_cut()
+							p2_dc_fid_cut = variables.p2_dc_fid_cut()
+
 			                // Use a StringBuilder to append all data in a single call
 			                StringBuilder line = new StringBuilder();
 			                line.append(fiducial_status).append(" ")
@@ -349,7 +357,21 @@ public static void main(String[] args) {
 			                    .append(Depolarization_B).append(" ")
 			                    .append(Depolarization_C).append(" ")
 			                    .append(Depolarization_V).append(" ")
-			                    .append(Depolarization_W).append("\n");
+			                    .append(Depolarization_W).append(" ")
+								.append(qadb_status).append(" ")
+                                .append(e_fd_cut).append(" ")
+                                .append(e_vertex_cut).append(" ")
+                                .append(e_sf_cut).append(" ")
+                                .append(e_diag_cut).append(" ")
+                                .append(e_pcal_fid_cut).append(" ")
+                                .append(e_dc_fid_cut).append(" ")
+								.append(p1_chi2pid_cut).append(" ")
+                                .append(p1_vertex_cut).append(" ")
+								.append(p1_dc_fid_cut).append(" ")
+								.append(p1_cvt_fid_cut).append(" ")
+                                .append(p2_chi2pid_cut).append(" ")
+                                .append(p2_vertex_cut).append(" ")
+								.append(p2_dc_fid_cut).append("\n");
 
 			                // Append the line to the batchLines StringBuilder
 			                batchLines.append(line.toString());
@@ -382,7 +404,10 @@ public static void main(String[] args) {
 	    "38: z1, 39: z2, 40: Mh, 41: xF, 42: xF1, 43: xF2, 44: pT, 45: pT1, 46: pT2, 47: pTpT, " +
 	    "48: xi, 49: xi1, 50: xi2, 51: eta, 52: eta1, 53: eta2, 54: Delta_eta, 55: eta1_gN, 56: eta2_gN, " +
 	    "57: phi1, 58: phi2, 59: Delta_phi, 60: phih, 61: phiR, 62: theta, " +
-	    "63: DepA, 64: DepB, 65: DepC, 66: DepV, 67: DepW");
+	    "63: DepA, 64: DepB, 65: DepC, 66: DepV, 67: DepW, " +
+		"68: qadb_status, 69: e_fd_cut, 70: e_vertex_cut, 71: e_sf_cut, 72: e_diag_cut, 73: e_pcal_fid_cut, 74: e_dc_fid_cut, " +
+		"75: p1_chi2pid_cut, 77: p1_vertex_cut, 78: p1_dc_fid_cut, 79: p1_cvt_fid_cut, " +
+        "80: p2_chi2pid_cut, 81: p2_vertex_cut, 82: p2_dc_fid_cut");
 
 		println("Set p1 PID = $p1_Str");
 		println("Set p2 PID = $p2_Str");
@@ -397,5 +422,4 @@ public static void main(String[] args) {
 	long elapsedTime = endTime - startTime
 	// Print the elapsed time in milliseconds
 	println("Elapsed time: ${elapsedTime} ms");
-
 }

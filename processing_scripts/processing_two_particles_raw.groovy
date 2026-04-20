@@ -88,7 +88,7 @@ public static void main(String[] args) {
     double Depolarization_A, Depolarization_B, Depolarization_C, Depolarization_V, Depolarization_W
     int qadb_status
     int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut
-    int p_chi2pid_cut, p_vertex_cut
+    int p_chi2pid_cut, p_vertex_cut, p_dc_fid_cut
 
     GenericKinematicFitter fitter = new analysis_fitter(10.6041);
     // GenericKinematicFitter fitter = new monte_carlo_fitter(10.6041);
@@ -228,6 +228,7 @@ public static void main(String[] args) {
                         e_dc_fid_cut = variables.e_dc_fid_cut()
                         p_chi2pid_cut = variables.p_chi2pid_cut()
                         p_vertex_cut = variables.p_vertex_cut()
+                        p_dc_fid_cut = variables.p_dc_fid_cut()
 
                         // Output the sampled R (or zeros if baseline)
                         double isrTheta_deg = Math.toDegrees(isrTheta)
@@ -280,7 +281,8 @@ public static void main(String[] args) {
                                 .append(e_pcal_fid_cut).append(" ")
                                 .append(e_dc_fid_cut).append(" ")
                                 .append(p_chi2pid_cut).append(" ")
-                                .append(p_vertex_cut).append("\n");
+                                .append(p_vertex_cut).append(" ")
+                                .append(p_dc_fid_cut).append("\n");
                         batchLines.append(line.toString())
                         lineCount++
 
@@ -348,7 +350,8 @@ public static void main(String[] args) {
           "45: e_pcal_fid_cut    " +
           "46: e_dc_fid_cut      " +
           "47: p_chi2pid_cut     " +
-          "48: p_vertex_cut"
+          "48: p_vertex_cut      " +
+          "49: p_dc_fid_cut"
         )
 
         println("Set p1 PID = $p1_Str")
