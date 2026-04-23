@@ -180,7 +180,7 @@ public static void main(String[] args) {
                     TwoParticles variables = new TwoParticles(event, research_Event, p1_int, current_p1, Ebeam)
 
                     if (TwoParticles.channel_test(variables)) {
-                        int fiducial_status = variables.get_fiducial_status()
+                        fiducial_status = variables.get_fiducial_status()
                         helicity = variables.get_helicity()
                         detector = variables.get_detector()
                         sector = variables.get_sector()
