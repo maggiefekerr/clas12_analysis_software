@@ -1238,7 +1238,7 @@ int main(int argc, char *argv[]) {
     // Case for one hadron without quality cuts
     if (script_index == 9 && is_mc == 0) {
         // Link TTree branches to variables for one hadron
-        tree->Branch("fiducial_status", &fiducial_status, "fiducial_status/I");
+        //tree->Branch("fiducial_status", &fiducial_status, "fiducial_status/I");
         tree->Branch("num_pos", &num_pos, "num_pos/I");
         tree->Branch("num_neg", &num_neg, "num_neg/I");
         tree->Branch("num_neutral", &num_neutral, "num_neutral/I");
@@ -1877,7 +1877,8 @@ int main(int argc, char *argv[]) {
     }
     // One Hadron, no quality cuts
     if (script_index == 9 && is_mc == 0) {
-        while (infile >> fiducial_status >> num_pos >> num_neg >> num_neutral >> 
+        while (infile //>> fiducial_status 
+            >> num_pos >> num_neg >> num_neutral >> 
             runnum >> evnum >> helicity >> detector >> e_p >> e_theta >> e_phi >> vz_e >> 
             p_p >> p_theta >> p_phi >> vz_p >> open_angle >> Egamma >> isrTheta >> isrPhi >> 
             Q2 >> W >> Mx2 >> x >> t >> tmin >> y >> z >> xF >> 
@@ -1885,7 +1886,7 @@ int main(int argc, char *argv[]) {
             sector >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
             e_pcal_fid_cut >> e_dc_fid_cut >> p_chi2pid_cut >> p_vertex_cut >> p_dc_fid_cut) {
 
-            cout << fiducial_status << endl;
+            cout << runnum << endl;
             
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }

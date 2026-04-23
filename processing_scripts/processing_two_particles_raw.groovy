@@ -235,7 +235,7 @@ public static void main(String[] args) {
                         double isrPhi_deg   = Math.toDegrees(isrPhi)
 
                         StringBuilder line = new StringBuilder()
-                        line.append(fiducial_status).append(" ")
+                        line//.append(fiducial_status).append(" ")
                                 .append(num_pos).append(" ")
                                 .append(num_neg).append(" ")
                                 .append(num_neutrals).append(" ")
