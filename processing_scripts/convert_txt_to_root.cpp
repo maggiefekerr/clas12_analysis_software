@@ -1882,7 +1882,7 @@ int main(int argc, char *argv[]) {
             p_p >> p_theta >> p_phi >> vz_p >> open_angle >> Egamma >> isrTheta >> isrPhi >> 
             Q2 >> W >> Mx2 >> x >> t >> tmin >> y >> z >> xF >> 
             pT >> xi >> eta >> phi >> DepA >> DepB >> DepC >> DepV >> DepW >>
-            sector >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
+            qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
             e_pcal_fid_cut >> e_dc_fid_cut >> p_chi2pid_cut >> p_vertex_cut >> p_dc_fid_cut) {
 
             cout << runnum << endl;
