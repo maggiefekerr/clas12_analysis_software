@@ -1885,7 +1885,7 @@ int main(int argc, char *argv[]) {
             sector >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
             e_pcal_fid_cut >> e_dc_fid_cut >> p_chi2pid_cut >> p_vertex_cut >> p_dc_fid_cut) {
 
-            cout << num_neutral << endl;
+            cout << infile << endl;
             
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }
