@@ -234,8 +234,6 @@ public static void main(String[] args) {
                         double isrTheta_deg = Math.toDegrees(isrTheta)
                         double isrPhi_deg   = Math.toDegrees(isrPhi)
 
-                        println(runnum)
-
                         StringBuilder line = new StringBuilder()
                         line.append(fiducial_status).append(" ")
                                 .append(num_pos).append(" ")
