@@ -115,12 +115,18 @@ public static void main(String[] args) {
 	qa.checkForDefect('TerminalOutlier')
 	qa.checkForDefect('MarginalOutlier')
 	qa.checkForDefect('SectorLoss')
-	// qa.checkForDefect('LowLiveTime')
+	qa.checkForDefect('LowLiveTime')
 	qa.checkForDefect('Misc')
 	qa.checkForDefect('ChargeHigh')
 	qa.checkForDefect('ChargeNegative')
 	qa.checkForDefect('ChargeUnknown')
 	qa.checkForDefect('PossiblyNoBeam')
+	qa.checkForDefect('BSAWrong')
+	qa.checkForDefect('BSAUnknown')
+	qa.checkForDefect('TSAWrong')
+	qa.checkForDefect('TSAUnknown')
+	qa.checkForDefect('DSAWrong')
+	qa.checkForDefect('DSAUnknown')
     [ // list of runs with `Misc` that should be allowed, generally empty target etc for dilution factor calculations
   		6736, 6737, 6738,
   		6739, 6740, 6741, 6742, 6743, 6744, 6746, 6747,
