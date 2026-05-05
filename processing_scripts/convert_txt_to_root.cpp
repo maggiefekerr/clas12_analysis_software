@@ -1217,6 +1217,7 @@ int main(int argc, char *argv[]) {
     }
     if (script_index == 7 && is_mc == 1) {
         // Link TTree branches to variables for tcs mc
+        tree->Branch("reconstructed", &reconstructed, "reconstructed/I");
         tree->Branch("runnum", &runnum, "runnum/I");
         tree->Branch("evnum", &evnum, "evnum/I");
         tree->Branch("nucl_pid", &nucl_pid, "nucl_pid/I");
@@ -1906,7 +1907,8 @@ int main(int argc, char *argv[]) {
         }
     }
     if (script_index == 7 && is_mc == 1) {
-        while (infile >> gen_elec_p >> gen_elec_theta >> gen_elec_phi >> gen_elec_vz >> 
+        while (infile >> reconstructed >>
+                         gen_elec_p >> gen_elec_theta >> gen_elec_phi >> gen_elec_vz >> 
                          gen_posi_p >> gen_posi_theta >> gen_posi_phi >> gen_posi_vz >> 
                          gen_nucl_p >> gen_nucl_theta >> gen_nucl_phi >> gen_nucl_vz >>
                          num_pos >> num_neg >> num_neutral >> 

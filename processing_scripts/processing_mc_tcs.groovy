@@ -399,7 +399,8 @@ public static void main(String[] args) {
                 // Use a StringBuilder to append all data in a single call
 	            StringBuilder line = new StringBuilder();
                 // first the generated variables
-                line.append(gen_elec_p).append(" ")
+                line.append(reconstructed).append(" ")
+                    .append(gen_elec_p).append(" ")
                     .append(gen_elec_theta).append(" ")
                     .append(gen_elec_phi).append(" ")
                     .append(gen_elec_vz).append(" ")
