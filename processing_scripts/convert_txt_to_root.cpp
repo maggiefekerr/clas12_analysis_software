@@ -295,6 +295,7 @@ int main(int argc, char *argv[]) {
     double gen_elec_vx, gen_elec_vy, gen_elec_vz;
     double gen_posi_vx, gen_posi_vy, gen_posi_vz;
 	double gen_nucl_vx, gen_nucl_vy, gen_nucl_vz;
+    double weight;
 
     // Additional variables for two particles "raw" (without quality cuts)
     int qadb_status;
@@ -1218,6 +1219,7 @@ int main(int argc, char *argv[]) {
     if (script_index == 7 && is_mc == 1) {
         // Link TTree branches to variables for tcs mc
         tree->Branch("reconstructed", &reconstructed, "reconstructed/I");
+        tree->Branch("weight", &weight, "weight/D");
         tree->Branch("runnum", &runnum, "runnum/I");
         tree->Branch("evnum", &evnum, "evnum/I");
         tree->Branch("nucl_pid", &nucl_pid, "nucl_pid/I");
@@ -1907,7 +1909,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (script_index == 7 && is_mc == 1) {
-        while (infile >> reconstructed >>
+        while (infile >> reconstructed >> weight >> 
                          gen_elec_p >> gen_elec_theta >> gen_elec_phi >> gen_elec_vz >> 
                          gen_posi_p >> gen_posi_theta >> gen_posi_phi >> gen_posi_vz >> 
                          gen_nucl_p >> gen_nucl_theta >> gen_nucl_phi >> gen_nucl_vz >>

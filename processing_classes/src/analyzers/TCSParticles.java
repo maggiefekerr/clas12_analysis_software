@@ -45,6 +45,8 @@ public class TCSParticles {
 	protected double posi_m2_ecin_u, posi_m2_ecin_v, posi_m2_ecin_w; // positron M2 ECIN values wrt U,V,W
 	protected double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w; // positron M2 ECOUT values wrt U,V,W
 
+    protected double weight; // event weight for TCSGen
+
     // Can and will add more variables later of course but want to keep it simple for now that I am just looking at the
     // event selection :)
 
@@ -80,6 +82,15 @@ public class TCSParticles {
         HipoDataBank rec_Bank = (HipoDataBank) event.getBank("REC::Particle");
         HipoDataBank cal_Bank = (HipoDataBank) event.getBank("REC::Calorimeter");
         HipoDataBank traj_Bank = (HipoDataBank) event.getBank("REC::Traj");
+        // TCSGen is a weighted generator, we want to be able to extract the weight for MC
+        HipoDataBank eventMCBank = null;
+        if (event.hasBank("MC::Event")) {
+            eventMCBank = (HipoDataBank) event.getBank("MC::Event");
+            weight = eventMCBank.getFloat("weight", 0);
+        }
+        else {
+            weight = -99;
+        }
 
         helicity = eventBank.getByte("helicity", 0);
         runnum = configBank.getInt("run", 0); // used for beam energy and polarization
@@ -569,4 +580,8 @@ public class TCSParticles {
     public double get_posi_m2_ecout_w(){
         return posi_m2_ecout_w;
     } // returns positron M2(W) from ECOUT
+
+    public double get_weight(){
+        return weight;
+    } // returns weighting of event from TCSGen
 }

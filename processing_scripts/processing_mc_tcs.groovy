@@ -97,6 +97,7 @@ public static void main(String[] args) {
 	double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w;
 
     // "generated" variables (mc)
+    double weight;
     double gen_elec_px, gen_elec_py, gen_elec_pz, gen_elec_p, gen_elec_e, gen_elec_theta, gen_elec_phi;
     double gen_posi_px, gen_posi_py, gen_posi_pz, gen_posi_p, gen_posi_e, gen_posi_theta, gen_posi_phi;
     double gen_nucl_px, gen_nucl_py, gen_nucl_pz, gen_nucl_p, gen_nucl_e, gen_nucl_theta, gen_nucl_phi;
@@ -204,6 +205,8 @@ public static void main(String[] args) {
             posi_m2_ecout_w = -999;
 
             // generated variables
+            weight = -999;
+
             gen_elec_px = -999;
             gen_elec_py = -999;
             gen_elec_pz = -999;
@@ -272,6 +275,8 @@ public static void main(String[] args) {
                 TCSParticles variables = new TCSParticles(event, gen_Event, energy, nucl_int, nucl_str);
                 generated_cut = variables.channel_test(variables);
                 if (generated_cut) {
+                    weight = variables.get_weight();
+
                     gen_elec_px = variables.get_elec_px();
                     gen_elec_py = variables.get_elec_py();
                     gen_elec_pz = variables.get_elec_pz();
@@ -400,6 +405,7 @@ public static void main(String[] args) {
 	            StringBuilder line = new StringBuilder();
                 // first the generated variables
                 line.append(reconstructed).append(" ")
+                    .append(weight).append(" ")
                     .append(gen_elec_p).append(" ")
                     .append(gen_elec_theta).append(" ")
                     .append(gen_elec_phi).append(" ")
