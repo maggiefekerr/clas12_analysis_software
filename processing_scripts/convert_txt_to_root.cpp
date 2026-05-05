@@ -289,6 +289,12 @@ int main(int argc, char *argv[]) {
 	double posi_m2_pcal_u, posi_m2_pcal_v, posi_m2_pcal_w;
 	double posi_m2_ecin_u, posi_m2_ecin_v, posi_m2_ecin_w;
 	double posi_m2_ecout_u, posi_m2_ecout_v, posi_m2_ecout_w;
+    double gen_elec_px, gen_elec_py, gen_elec_pz, gen_elec_p, gen_elec_e, gen_elec_theta, gen_elec_phi;
+    double gen_posi_px, gen_posi_py, gen_posi_pz, gen_posi_p, gen_posi_e, gen_posi_theta, gen_posi_phi;
+    double gen_nucl_px, gen_nucl_py, gen_nucl_pz, gen_nucl_p, gen_nucl_e, gen_nucl_theta, gen_nucl_phi;
+    double gen_elec_vx, gen_elec_vy, gen_elec_vz;
+    double gen_posi_vx, gen_posi_vy, gen_posi_vz;
+	double gen_nucl_vx, gen_nucl_vy, gen_nucl_vz;
 
     // Additional variables for two particles "raw" (without quality cuts)
     int qadb_status;
@@ -1210,7 +1216,64 @@ int main(int argc, char *argv[]) {
         tree->Branch("posi_m2_ecout_w", &posi_m2_ecout_w, "posi_m2_ecout_w/D");
     }
     if (script_index == 7 && is_mc == 1) {
-        // complete later
+        // Link TTree branches to variables for tcs mc
+        tree->Branch("runnum", &runnum, "runnum/I");
+        tree->Branch("evnum", &evnum, "evnum/I");
+        tree->Branch("nucl_pid", &nucl_pid, "nucl_pid/I");
+        tree->Branch("elec_detector", &elec_detector, "elec_detector/I");
+        tree->Branch("posi_detector", &posi_detector, "posi_detector/I");
+        tree->Branch("nucl_detector", &nucl_detector, "nucl_detector/I");
+        tree->Branch("elec_chi2", &elec_chi2, "elec_chi2/D");
+        tree->Branch("posi_chi2", &posi_chi2, "posi_chi2/D");
+        tree->Branch("nucl_chi2", &nucl_chi2, "nucl_chi2/D");
+        tree->Branch("elec_p", &elec_p, "elec_p/D");
+        tree->Branch("elec_theta", &elec_theta, "elec_theta/D");
+        tree->Branch("elec_phi", &elec_phi, "elec_phi/D");
+        tree->Branch("elec_vz", &elec_vz, "elec_vz/D");
+        tree->Branch("posi_p", &posi_p, "posi_p/D");
+        tree->Branch("posi_theta", &posi_theta, "posi_theta/D");
+        tree->Branch("posi_phi", &posi_phi, "posi_phi/D");
+        tree->Branch("posi_vz", &posi_vz, "posi_vz/D");
+        tree->Branch("nucl_p", &nucl_p, "nucl_p/D");
+        tree->Branch("nucl_theta", &nucl_theta, "nucl_theta/D");
+        tree->Branch("nucl_phi", &nucl_phi, "nucl_phi/D");
+        tree->Branch("nucl_vz", &nucl_vz, "nucl_vz/D");
+        tree->Branch("elec_e_pcal", &elec_e_pcal, "elec_e_pcal/D");
+        tree->Branch("elec_e_ecin", &elec_e_ecin, "elec_e_ecin/D");
+        tree->Branch("elec_e_ecout", &elec_e_ecout, "elec_e_ecout/D");
+        tree->Branch("posi_e_pcal", &posi_e_pcal, "posi_e_pcal/D");
+        tree->Branch("posi_e_ecin", &posi_e_ecin, "posi_e_ecin/D");
+        tree->Branch("posi_e_ecout", &posi_e_ecout, "posi_e_ecout/D");
+        tree->Branch("elec_m2_pcal_u", &elec_m2_pcal_u, "elec_m2_pcal_u/D");
+        tree->Branch("elec_m2_pcal_v", &elec_m2_pcal_v, "elec_m2_pcal_v/D");
+        tree->Branch("elec_m2_pcal_w", &elec_m2_pcal_w, "elec_m2_pcal_w/D");
+        tree->Branch("elec_m2_ecin_u", &elec_m2_ecin_u, "elec_m2_ecin_u/D");
+        tree->Branch("elec_m2_ecin_v", &elec_m2_ecin_v, "elec_m2_ecin_v/D");
+        tree->Branch("elec_m2_ecin_w", &elec_m2_ecin_w, "elec_m2_ecin_w/D");
+        tree->Branch("elec_m2_ecout_u", &elec_m2_ecout_u, "elec_m2_ecout_u/D");
+        tree->Branch("elec_m2_ecout_v", &elec_m2_ecout_v, "elec_m2_ecout_v/D");
+        tree->Branch("elec_m2_ecout_w", &elec_m2_ecout_w, "elec_m2_ecout_w/D");
+        tree->Branch("posi_m2_pcal_u", &posi_m2_pcal_u, "posi_m2_pcal_u/D");
+        tree->Branch("posi_m2_pcal_v", &posi_m2_pcal_v, "posi_m2_pcal_v/D");
+        tree->Branch("posi_m2_pcal_w", &posi_m2_pcal_w, "posi_m2_pcal_w/D");
+        tree->Branch("posi_m2_ecin_u", &posi_m2_ecin_u, "posi_m2_ecin_u/D");
+        tree->Branch("posi_m2_ecin_v", &posi_m2_ecin_v, "posi_m2_ecin_v/D");
+        tree->Branch("posi_m2_ecin_w", &posi_m2_ecin_w, "posi_m2_ecin_w/D");
+        tree->Branch("posi_m2_ecout_u", &posi_m2_ecout_u, "posi_m2_ecout_u/D");
+        tree->Branch("posi_m2_ecout_v", &posi_m2_ecout_v, "posi_m2_ecout_v/D");
+        tree->Branch("posi_m2_ecout_w", &posi_m2_ecout_w, "posi_m2_ecout_w/D");
+        tree->Branch("gen_elec_p", &gen_elec_p, "gen_elec_p/D");
+        tree->Branch("gen_elec_theta", &gen_elec_theta, "gen_elec_theta/D");
+        tree->Branch("gen_elec_phi", &gen_elec_phi, "gen_elec_phi/D");
+        tree->Branch("gen_elec_vz", &gen_elec_vz, "gen_elec_vz/D");
+        tree->Branch("gen_posi_p", &gen_posi_p, "gen_posi_p/D");
+        tree->Branch("gen_posi_theta", &gen_posi_theta, "gen_posi_theta/D");
+        tree->Branch("gen_posi_phi", &gen_posi_phi, "gen_posi_phi/D");
+        tree->Branch("gen_posi_vz", &gen_posi_vz, "gen_posi_vz/D");
+        tree->Branch("gen_nucl_p", &gen_nucl_p, "gen_nucl_p/D");
+        tree->Branch("gen_nucl_theta", &gen_nucl_theta, "gen_nucl_theta/D");
+        tree->Branch("gen_nucl_phi", &gen_nucl_phi, "gen_nucl_phi/D");
+        tree->Branch("gen_nucl_vz", &gen_nucl_vz, "gen_nucl_vz/D");
     }
     // Case for ee
     if (script_index == 8 && is_mc == 0) {
@@ -1843,6 +1906,29 @@ int main(int argc, char *argv[]) {
         }
     }
     if (script_index == 7 && is_mc == 1) {
+        while (infile >> gen_elec_p >> gen_elec_theta >> gen_elec_phi >> gen_elec_vz >> 
+                         gen_posi_p >> gen_posi_theta >> gen_posi_phi >> gen_posi_vz >> 
+                         gen_nucl_p >> gen_nucl_theta >> gen_nucl_phi >> gen_nucl_vz >>
+                         num_pos >> num_neg >> num_neutral >> 
+                         runnum >> evnum >> nucl_pid >>
+                         elec_detector >> posi_detector >> nucl_detector >> 
+                         elec_chi2 >> posi_chi2 >> nucl_chi2 >>
+                         elec_p >> elec_theta >> elec_phi >> elec_vz >> 
+                         posi_p >> posi_theta >> posi_phi >> posi_vz >> 
+                         nucl_p >> nucl_theta >> nucl_phi >> nucl_vz >>
+                         elec_e_pcal >> elec_e_ecin >> elec_e_ecout >>
+                         posi_e_pcal >> posi_e_ecin >> posi_e_ecout >>
+                         elec_m2_pcal_u >> elec_m2_pcal_v >> elec_m2_pcal_w >>
+                         elec_m2_ecin_u >> elec_m2_ecin_v >> elec_m2_ecin_w >>
+                         elec_m2_ecout_u >> elec_m2_ecout_v >> elec_m2_ecout_w >>
+                         posi_m2_pcal_u >> posi_m2_pcal_v >> posi_m2_pcal_w >>
+                         posi_m2_ecin_u >> posi_m2_ecin_v >> posi_m2_ecin_w >>
+                         posi_m2_ecout_u >> posi_m2_ecout_v >> posi_m2_ecout_w) {
+            runnum = 11;
+            beam_pol = 0;
+            target_pol = 0;
+            tree->Fill(); // Fill the tree with the read data
+        }
     }
     // ee
     if (script_index == 8 && is_mc == 0) {
