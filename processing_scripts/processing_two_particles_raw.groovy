@@ -205,6 +205,7 @@ public static void main(String[] args) {
                         tmin = variables.tmin()
                         y = variables.y()
                         Mx2 = variables.Mx2()
+                        if (Mx2 > 2) { continue; } // added to reduce size of files
                         z = variables.z()
                         xF = variables.xF()
                         pT = variables.pT()
