@@ -202,7 +202,7 @@ public class TwoParticles {
         // target and missing mass (use corrected q)
         LorentzVector lv_target = new LorentzVector();
         momentum_corrections momentum_corrections = new momentum_corrections();
-        lv_target.setPxPyPzM(0, 0, 0, kinematic_variables.particle_mass(2212));
+        lv_target.setPxPyPzM(0, 0, 0, kinematic_variables.particle_mass(2112));
 
         Mx  = kinematic_variables.Mx (lv_q, lv_target, lv_p);
         Mx2 = kinematic_variables.Mx2(lv_q, lv_target, lv_p);

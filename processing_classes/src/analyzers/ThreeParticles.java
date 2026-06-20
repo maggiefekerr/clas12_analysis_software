@@ -251,7 +251,7 @@ public class ThreeParticles {
         
         LorentzVector lv_target = new LorentzVector();
         momentum_corrections momentum_corrections = new momentum_corrections();
-        lv_target.setPxPyPzM(0,0,0,kinematic_variables.particle_mass(2212));
+        lv_target.setPxPyPzM(0,0,0,kinematic_variables.particle_mass(2112));
         
         // missing mass calculations
         Mx = kinematic_variables.Mx(lv_q, lv_target, lv_p1, lv_p2);
