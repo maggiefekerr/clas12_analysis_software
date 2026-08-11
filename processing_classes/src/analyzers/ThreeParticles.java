@@ -312,7 +312,7 @@ public class ThreeParticles {
         // set up boost to Breit frame, this needs to be cross checked
         LorentzVector Breit = new LorentzVector(lv_q);
         LorentzVector Breit_target = new LorentzVector();
-        Breit_target.setPxPyPzM(0, 0, 0, 2 * x * kinematic_variables.particle_mass(2212));
+        Breit_target.setPxPyPzM(0, 0, 0, 2 * x * kinematic_variables.particle_mass(2112));
         Breit.add(Breit_target);
         Vector3 BreitBoost = Breit.boostVector();
         BreitBoost.negative();
