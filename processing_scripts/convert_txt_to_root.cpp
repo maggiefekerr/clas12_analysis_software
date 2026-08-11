@@ -303,6 +303,7 @@ int main(int argc, char *argv[]) {
     int p_chi2pid_cut, p_vertex_cut, p_dc_fid_cut;
     int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut;
     int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut;
+    double e_chi2, p1_chi2, p2_chi2;
 
     // Case for zero hadrons (inclusive)
     if (script_index == 0 && is_mc == 0) {
@@ -1443,6 +1444,9 @@ int main(int argc, char *argv[]) {
         tree->Branch("p2_chi2pid_cut", &p2_chi2pid_cut, "p2_chi2pid_cut/I");
         tree->Branch("p2_vertex_cut", &p2_vertex_cut, "p2_vertex_cut/I");
         tree->Branch("p2_dc_fid_cut", &p2_dc_fid_cut, "p2_dc_fid_cut/I");
+        tree->Branch("e_chi2", &e_chi2, "e_chi2/D");
+        tree->Branch("p1_chi2", &p1_chi2, "p1_chi2/D");
+        tree->Branch("p2_chi2", &p2_chi2, "p2_chi2/D");
     }
     // Find the root directory of the repository
     std::string package_location = findPackageRoot();
@@ -2003,7 +2007,7 @@ int main(int argc, char *argv[]) {
             eta1_gN >> eta2_gN >> phi1 >> phi2 >> Delta_phi >> phi >> phiR >> theta >> 
             DepA >> DepB >> DepC >> DepV >> DepW >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
             e_pcal_fid_cut >> e_dc_fid_cut >> p1_chi2pid_cut >> p1_vertex_cut >> p1_dc_fid_cut >> p1_cvt_fid_cut >> 
-            p2_chi2pid_cut >> p2_vertex_cut >> p2_dc_fid_cut) {
+            p2_chi2pid_cut >> p2_vertex_cut >> p2_dc_fid_cut >> e_chi2 >> p1_chi2 >> p2_chi2 ) {
 
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }

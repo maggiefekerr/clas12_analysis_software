@@ -91,6 +91,7 @@ public static void main(String[] args) {
 	int helicity, detector1, detector2;
 	double e_p, e_theta, e_phi, p1_phi, p1_p, p1_theta, p2_phi, p2_p, p2_theta; 
 	double vz_e, vz_p1, vz_p2;
+	double e_chi2, p1_chi2, p2_chi2;
 	double open_angle_ep, open_angle_ep1, open_angle_ep2, open_angle_p1p2;
 	double Q2, W, y, Mx2, Mx2_1, Mx2_2; 
 	double x, t, t1, t2, tmin, z, xF, pT, eta, eta_gN, xi;
@@ -134,7 +135,8 @@ public static void main(String[] args) {
   		16872, 16975, 									 // RGC Fa22 He/ET
   		17763, 17764, 17765, 17766, 17767, 17768,		 // RGC Sp23 He/ET
   		17179, 17180, 17181, 17182, 17183, 17188, 17189, // RICH off/partially down
-  		17252
+  		17252,
+		6378 											 // RG-B Helicity Flip but OK
 	].each{ run -> qa.allowMiscBit(run) }
 
 	// create a StringBuilder for accumulating lines
@@ -220,6 +222,11 @@ public static void main(String[] args) {
 			                vz_e = variables.vz_e();
 			                vz_p1 = variables.vz_p1();
 			                vz_p2 = variables.vz_p2();
+
+							// PID chi2
+							e_chi2 = variables.e_chi2();
+							p1_chi2 = variables.p1_chi2();
+							p2_chi2 = variables.p2_chi2();
 
 			                // DIS variables
 			                Q2 = variables.Q2(); // exchanged virtual photon energy
@@ -373,7 +380,10 @@ public static void main(String[] args) {
 								.append(p1_cvt_fid_cut).append(" ")
                                 .append(p2_chi2pid_cut).append(" ")
                                 .append(p2_vertex_cut).append(" ")
-								.append(p2_dc_fid_cut).append("\n");
+								.append(p2_dc_fid_cut).append(" ")
+								.append(e_chi2).append(" ")
+								.append(p1_chi2).append(" ")
+								.append(p2_chi2).append("\n");
 
 			                // Append the line to the batchLines StringBuilder
 			                batchLines.append(line.toString());
@@ -409,7 +419,8 @@ public static void main(String[] args) {
 	    "63: DepA, 64: DepB, 65: DepC, 66: DepV, 67: DepW, " +
 		"68: qadb_status, 69: e_fd_cut, 70: e_vertex_cut, 71: e_sf_cut, 72: e_diag_cut, 73: e_pcal_fid_cut, 74: e_dc_fid_cut, " +
 		"75: p1_chi2pid_cut, 77: p1_vertex_cut, 78: p1_dc_fid_cut, 79: p1_cvt_fid_cut, " +
-        "80: p2_chi2pid_cut, 81: p2_vertex_cut, 82: p2_dc_fid_cut");
+        "80: p2_chi2pid_cut, 81: p2_vertex_cut, 82: p2_dc_fid_cut, " +
+		"83: e_chi2, 84: p1_chi2, 85: p2_chi2");
 
 		println("Set p1 PID = $p1_Str");
 		println("Set p2 PID = $p2_Str");

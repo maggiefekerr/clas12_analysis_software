@@ -66,6 +66,7 @@ public class ThreeParticles {
     protected double p1_px, p1_py, p1_pz, p1_p, p1_e, p1_theta, p1_phi; // p1 kinematics
     protected double p2_px, p2_py, p2_pz, p2_p, p2_e, p2_theta, p2_phi; // p2 kinematics
     protected double vx_e, vx_p1, vx_p2, vy_e, vy_p1, vy_p2, vz_e, vz_p1, vz_p2;
+    protected double e_chi2, p1_chi2, p2_chi2; // PID chi2 for three particles
     protected double open_angle_ep, open_angle_ep1, open_angle_ep2, open_angle_p1p2;
 
     protected double p_Breit_pz, p1_Breit_pz, p2_Breit_pz, p_gN_pz, p1_gN_pz, p2_gN_pz;
@@ -175,6 +176,12 @@ public class ThreeParticles {
         boolean passesForwardTagger_2 = generic_tests.forward_tagger_cut(p2_rec_index, rec_Bank) ? 
                 fiducial_cuts.forward_tagger_fiducial_cut(p2_rec_index, rec_Bank, cal_Bank): true;
         boolean p2_fiducial_check = passesForwardTagger_2 && passesForwardDetector_2 && passesCentralDetector_2;
+
+        int e_rec_index = getIndex(rec_Bank, 11, 0);
+
+        e_chi2 = rec_Bank.getFloat("chi2pid", e_rec_index);
+        p1_chi2 = rec_Bank.getFloat("chi2pid", p1_rec_index);
+        p2_chi2 = rec_Bank.getFloat("chi2pid", p2_rec_index);
         
         // Check if all checks pass
         if (e_fiducial_check && p1_fiducial_check && p2_fiducial_check) {
@@ -1043,6 +1050,18 @@ public class ThreeParticles {
     public double vz_p2() {
         return Double.valueOf(Math.round(vz_p2 * 100000)) / 100000;
     }// returns p2 z vertex
+
+    public double e_chi2() {
+        return Double.valueOf(Math.round(e_chi2 * 100000)) / 100000;
+    }// returns electron pid chi2 value
+
+    public double p1_chi2() {
+        return Double.valueOf(Math.round(p1_chi2 * 100000)) / 100000;
+    }// returns p1 pid chi2 value
+
+    public double p2_chi2() {
+        return Double.valueOf(Math.round(p2_chi2 * 100000)) / 100000;
+    }// returns p2 pid chi2 value
     
     public double open_angle_ep() {
         return Double.valueOf(Math.round(open_angle_ep * 100000)) / 100000;
