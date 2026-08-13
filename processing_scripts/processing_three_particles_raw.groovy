@@ -104,6 +104,34 @@ public static void main(String[] args) {
 	int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut
     int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut
 
+	// Variables for fiducial, electron identification studies
+    // Calorimeter variables
+    double pcal_lu, pcal_lv, pcal_lw; // lu, lv, lw from pcal hit
+    double ecin_lu, ecin_lv, ecin_lw; // lu, lv, lw from ecin hit
+    double ecout_lu, ecout_lv, ecout_lw; // lu, lv, lw from ecout hit
+    double pcal_e, ecin_e, ecout_e; // energy from pcal, ecin, ecout hit
+    double pcal_x, pcal_y, pcal_z; // x, y, z from pcal hit
+    double ecin_x, ecin_y, ecin_z; // x, y, z from ecin hit
+    double ecout_x, ecout_y, ecout_z; // x, y, z from ecout hit
+    // DC
+    double e_dc_track_chi2, p1_dc_track_chi2, p2_dc_track_chi2; // chi2 of track for different particles in DC
+    int e_dc_track_ndf, p1_dc_track_ndf, p2_dc_track_ndf; // ndf of track for different particles in DC
+    double e_dc_edge_r1, e_dc_edge_r2, e_dc_edge_r3; // electron edges for DC regions
+    double p1_dc_edge_r1, p1_dc_edge_r2, p1_dc_edge_r3; // p1 edges for DC regions
+    double p2_dc_edge_r1, p2_dc_edge_r2, p2_dc_edge_r3; // p2 edges for DC regions
+    double e_dc_r1_x, e_dc_r1_y, e_dc_r1_z, e_dc_r2_x, e_dc_r2_y, e_dc_r2_z, e_dc_r3_x, e_dc_r3_y, e_dc_r3_z; // electron x, y, z for DC regions
+    double p1_dc_r1_x, p1_dc_r1_y, p1_dc_r1_z, p1_dc_r2_x, p1_dc_r2_y, p1_dc_r2_z, p1_dc_r3_x, p1_dc_r3_y, p1_dc_r3_z; // p1 x, y, z for DC regions
+    double p2_dc_r1_x, p2_dc_r1_y, p2_dc_r1_z, p2_dc_r2_x, p2_dc_r2_y, p2_dc_r2_z, p2_dc_r3_x, p2_dc_r3_y, p2_dc_r3_z; // p2 x, y, z for DC regions
+    // CVT
+    double p1_cvt_track_chi2, p2_cvt_track_chi2; // chi2 of track for different particles in CVT
+    int p1_cvt_track_ndf, p2_cvt_track_ndf; // ndf of track for different particles in CVT
+    double p1_cvt_edge_l1, p1_cvt_edge_l3, p1_cvt_edge_l5, p1_cvt_edge_l7, p1_cvt_edge_l12; // p1 edges for CVT layers
+    double p2_cvt_edge_l1, p2_cvt_edge_l3, p2_cvt_edge_l5, p2_cvt_edge_l7, p2_cvt_edge_l12; // p2 edges for CVT layers
+    double p1_cvt_l1_x, p1_cvt_l1_y, p1_cvt_l1_z, p1_cvt_l3_x, p1_cvt_l3_y, p1_cvt_l3_z, p1_cvt_l5_x, p1_cvt_l5_y, p1_cvt_l5_z; // p1 x, y, z for CVT layers
+    double p1_cvt_l7_x, p1_cvt_l7_y, p1_cvt_l7_z, p1_cvt_l12_x, p1_cvt_l12_y, p1_cvt_l12_z; // p1 x, y, z for CVT layers
+    double p2_cvt_l1_x, p2_cvt_l1_y, p2_cvt_l1_z, p2_cvt_l3_x, p2_cvt_l3_y, p2_cvt_l3_z, p2_cvt_l5_x, p2_cvt_l5_y, p2_cvt_l5_z; // p2 x, y, z for CVT layers
+    double p2_cvt_l7_x, p2_cvt_l7_y, p2_cvt_l7_z, p2_cvt_l12_x, p2_cvt_l12_y, p2_cvt_l12_z; // p2 x, y, z for CVT layers
+
 	// load my kinematic fitter/PID
 	GenericKinematicFitter fitter = new analysis_fitter(10.6041); 
 	// GenericKinematicFitter fitter = new monte_carlo_fitter(10.6041);
@@ -298,6 +326,118 @@ public static void main(String[] args) {
 							p2_vertex_cut = variables.p2_vertex_cut()
 							p2_dc_fid_cut = variables.p2_dc_fid_cut()
 
+							// variables for fiducial and pid cuts
+							// Calorimeter
+							pcal_lu = variables.pcal_lu();
+							pcal_lv = variables.pcal_lv();
+							pcal_lw = variables.pcal_lw();
+							ecin_lu = variables.ecin_lu();
+							ecin_lv = variables.ecin_lv();
+							ecin_lw = variables.ecin_lw();
+							ecout_lu = variables.ecout_lu();
+							ecout_lv = variables.ecout_lv();
+							ecout_lw = variables.ecout_lw();
+							pcal_e = variables.pcal_e();
+							ecin_e = variables.ecin_e();
+							ecout_e = variables.ecout_e();
+							pcal_x = variables.pcal_x();
+							pcal_y = variables.pcal_y();
+							pcal_z = variables.pcal_z();
+							ecin_x = variables.ecin_x();
+							ecin_y = variables.ecin_y();
+							ecin_z = variables.ecin_z();
+							ecout_x = variables.ecout_x();
+							ecout_y = variables.ecout_y();
+							ecout_z = variables.ecout_z();
+							// DC
+							e_dc_track_chi2 = variables.e_dc_track_chi2();
+							p1_dc_track_chi2 = variables.p1_dc_track_chi2();
+							p2_dc_track_chi2 = variables.p2_dc_track_chi2();
+							e_dc_track_ndf = variables.e_dc_track_ndf();
+							p1_dc_track_ndf = variables.p1_dc_track_ndf();
+							p2_dc_track_ndf = variables.p2_dc_track_ndf();
+							e_dc_edge_r1 = variables.e_dc_edge_r1();
+							e_dc_edge_r2 = variables.e_dc_edge_r2();
+							e_dc_edge_r3 = variables.e_dc_edge_r3();
+							p1_dc_edge_r1 = variables.p1_dc_edge_r1();
+							p1_dc_edge_r2 = variables.p1_dc_edge_r2();
+							p1_dc_edge_r3 = variables.p1_dc_edge_r3();
+							p2_dc_edge_r1 = variables.p2_dc_edge_r1();
+							p2_dc_edge_r2 = variables.p2_dc_edge_r2();
+							p2_dc_edge_r3 = variables.p2_dc_edge_r3();
+							e_dc_r1_x = variables.e_dc_r1_x();
+							e_dc_r1_y = variables.e_dc_r1_y();
+							e_dc_r1_z = variables.e_dc_r1_z();
+							e_dc_r2_x = variables.e_dc_r2_x();
+							e_dc_r2_y = variables.e_dc_r2_y();
+							e_dc_r2_z = variables.e_dc_r2_z();
+							e_dc_r3_x = variables.e_dc_r3_x();
+							e_dc_r3_y = variables.e_dc_r3_y();
+							e_dc_r3_z = variables.e_dc_r3_z();
+							p1_dc_r1_x = variables.p1_dc_r1_x();
+							p1_dc_r1_y = variables.p1_dc_r1_y();
+							p1_dc_r1_z = variables.p1_dc_r1_z();
+							p1_dc_r2_x = variables.p1_dc_r2_x();
+							p1_dc_r2_y = variables.p1_dc_r2_y();
+							p1_dc_r2_z = variables.p1_dc_r2_z();
+							p1_dc_r3_x = variables.p1_dc_r3_x();
+							p1_dc_r3_y = variables.p1_dc_r3_y();
+							p1_dc_r3_z = variables.p1_dc_r3_z();
+							p2_dc_r1_x = variables.p2_dc_r1_x();
+							p2_dc_r1_y = variables.p2_dc_r1_y();
+							p2_dc_r1_z = variables.p2_dc_r1_z();
+							p2_dc_r2_x = variables.p2_dc_r2_x();
+							p2_dc_r2_y = variables.p2_dc_r2_y();
+							p2_dc_r2_z = variables.p2_dc_r2_z();
+							p2_dc_r3_x = variables.p2_dc_r3_x();
+							p2_dc_r3_y = variables.p2_dc_r3_y();
+							p2_dc_r3_z = variables.p2_dc_r3_z();
+							// CVT
+							p1_cvt_track_chi2 = variables.p1_cvt_track_chi2();
+							p2_cvt_track_chi2 = variables.p2_cvt_track_chi2();
+							p1_cvt_track_ndf = variables.p1_cvt_track_ndf();
+							p2_cvt_track_ndf = variables.p2_cvt_track_ndf();
+							p1_cvt_edge_l1 = variables.p1_cvt_edge_l1();
+							p1_cvt_edge_l3 = variables.p1_cvt_edge_l3();
+							p1_cvt_edge_l5 = variables.p1_cvt_edge_l5();
+							p1_cvt_edge_l7 = variables.p1_cvt_edge_l7();
+							p1_cvt_edge_l12 = variables.p1_cvt_edge_l12();
+							p2_cvt_edge_l1 = variables.p2_cvt_edge_l1();
+							p2_cvt_edge_l3 = variables.p2_cvt_edge_l3();
+							p2_cvt_edge_l5 = variables.p2_cvt_edge_l5();
+							p2_cvt_edge_l7 = variables.p2_cvt_edge_l7();
+							p2_cvt_edge_l12 = variables.p2_cvt_edge_l12();
+							p1_cvt_l1_x = variables.p1_cvt_l1_x();
+							p1_cvt_l1_y = variables.p1_cvt_l1_y();
+							p1_cvt_l1_z = variables.p1_cvt_l1_z();
+							p1_cvt_l3_x = variables.p1_cvt_l3_x();
+							p1_cvt_l3_y = variables.p1_cvt_l3_y();
+							p1_cvt_l3_z = variables.p1_cvt_l3_z();
+							p1_cvt_l5_x = variables.p1_cvt_l5_x();
+							p1_cvt_l5_y = variables.p1_cvt_l5_y();
+							p1_cvt_l5_z = variables.p1_cvt_l5_z();
+							p1_cvt_l7_x = variables.p1_cvt_l7_x();
+							p1_cvt_l7_y = variables.p1_cvt_l7_y();
+							p1_cvt_l7_z = variables.p1_cvt_l7_z();
+							p1_cvt_l12_x = variables.p1_cvt_l12_x();
+							p1_cvt_l12_y = variables.p1_cvt_l12_y();
+							p1_cvt_l12_z = variables.p1_cvt_l12_z();
+							p2_cvt_l1_x = variables.p2_cvt_l1_x();
+							p2_cvt_l1_y = variables.p2_cvt_l1_y();
+							p2_cvt_l1_z = variables.p2_cvt_l1_z();
+							p2_cvt_l3_x = variables.p2_cvt_l3_x();
+							p2_cvt_l3_y = variables.p2_cvt_l3_y();
+							p2_cvt_l3_z = variables.p2_cvt_l3_z();
+							p2_cvt_l5_x = variables.p2_cvt_l5_x();
+							p2_cvt_l5_y = variables.p2_cvt_l5_y();
+							p2_cvt_l5_z = variables.p2_cvt_l5_z();
+							p2_cvt_l7_x = variables.p2_cvt_l7_x();
+							p2_cvt_l7_y = variables.p2_cvt_l7_y();
+							p2_cvt_l7_z = variables.p2_cvt_l7_z();
+							p2_cvt_l12_x = variables.p2_cvt_l12_x();
+							p2_cvt_l12_y = variables.p2_cvt_l12_y();
+							p2_cvt_l12_z = variables.p2_cvt_l12_z();
+
 			                // Use a StringBuilder to append all data in a single call
 			                StringBuilder line = new StringBuilder();
 			                line.append(fiducial_status).append(" ")
@@ -383,7 +523,114 @@ public static void main(String[] args) {
 								.append(p2_dc_fid_cut).append(" ")
 								.append(e_chi2).append(" ")
 								.append(p1_chi2).append(" ")
-								.append(p2_chi2).append("\n");
+								.append(p2_chi2).append(" ")
+								.append(pcal_lu).append(" ")
+								.append(pcal_lv).append(" ")
+								.append(pcal_lw).append(" ")
+								.append(ecin_lu).append(" ")
+								.append(ecin_lv).append(" ")
+								.append(ecin_lw).append(" ")
+								.append(ecout_lu).append(" ")
+								.append(ecout_lv).append(" ")
+								.append(ecout_lw).append(" ")
+								.append(pcal_e).append(" ")
+								.append(ecin_e).append(" ")
+								.append(ecout_e).append(" ")
+								.append(pcal_x).append(" ")
+								.append(pcal_y).append(" ")
+								.append(pcal_z).append(" ")
+								.append(ecin_x).append(" ")
+								.append(ecin_y).append(" ")
+								.append(ecin_z).append(" ")
+								.append(ecout_x).append(" ")
+								.append(ecout_y).append(" ")
+								.append(ecout_z).append(" ")
+								.append(e_dc_track_chi2).append(" ")
+								.append(p1_dc_track_chi2).append(" ")
+								.append(p2_dc_track_chi2).append(" ")
+								.append(e_dc_track_ndf).append(" ")
+								.append(p1_dc_track_ndf).append(" ")
+								.append(p2_dc_track_ndf).append(" ")
+								.append(e_dc_edge_r1).append(" ")
+								.append(e_dc_edge_r2).append(" ")
+								.append(e_dc_edge_r3).append(" ")
+								.append(p1_dc_edge_r1).append(" ")
+								.append(p1_dc_edge_r2).append(" ")
+								.append(p1_dc_edge_r3).append(" ")
+								.append(p2_dc_edge_r1).append(" ")
+								.append(p2_dc_edge_r2).append(" ")
+								.append(p2_dc_edge_r3).append(" ")
+								.append(e_dc_r1_x).append(" ")
+								.append(e_dc_r1_y).append(" ")
+								.append(e_dc_r1_z).append(" ")
+								.append(e_dc_r2_x).append(" ")
+								.append(e_dc_r2_y).append(" ")
+								.append(e_dc_r2_z).append(" ")
+								.append(e_dc_r3_x).append(" ")
+								.append(e_dc_r3_y).append(" ")
+								.append(e_dc_r3_z).append(" ")
+								.append(p1_dc_r1_x).append(" ")
+								.append(p1_dc_r1_y).append(" ")
+								.append(p1_dc_r1_z).append(" ")
+								.append(p1_dc_r2_x).append(" ")
+								.append(p1_dc_r2_y).append(" ")
+								.append(p1_dc_r2_z).append(" ")
+								.append(p1_dc_r3_x).append(" ")
+								.append(p1_dc_r3_y).append(" ")
+								.append(p1_dc_r3_z).append(" ")
+								.append(p2_dc_r1_x).append(" ")
+								.append(p2_dc_r1_y).append(" ")
+								.append(p2_dc_r1_z).append(" ")
+								.append(p2_dc_r2_x).append(" ")
+								.append(p2_dc_r2_y).append(" ")
+								.append(p2_dc_r2_z).append(" ")
+								.append(p2_dc_r3_x).append(" ")
+								.append(p2_dc_r3_y).append(" ")
+								.append(p2_dc_r3_z).append(" ")	
+								.append(p1_cvt_track_chi2).append(" ")
+								.append(p2_cvt_track_chi2).append(" ")
+								.append(p1_cvt_track_ndf).append(" ")
+								.append(p2_cvt_track_ndf).append(" ")
+								.append(p1_cvt_edge_l1).append(" ")
+								.append(p1_cvt_edge_l3).append(" ")
+								.append(p1_cvt_edge_l5).append(" ")
+								.append(p1_cvt_edge_l7).append(" ")
+								.append(p1_cvt_edge_l12).append(" ")
+								.append(p2_cvt_edge_l1).append(" ")
+								.append(p2_cvt_edge_l3).append(" ")
+								.append(p2_cvt_edge_l5).append(" ")
+								.append(p2_cvt_edge_l7).append(" ")
+								.append(p2_cvt_edge_l12).append(" ")
+								.append(p1_cvt_l1_x).append(" ")
+								.append(p1_cvt_l1_y).append(" ")
+								.append(p1_cvt_l1_z).append(" ")
+								.append(p1_cvt_l3_x).append(" ")
+								.append(p1_cvt_l3_y).append(" ")
+								.append(p1_cvt_l3_z).append(" ")
+								.append(p1_cvt_l5_x).append(" ")
+								.append(p1_cvt_l5_y).append(" ")
+								.append(p1_cvt_l5_z).append(" ")
+								.append(p1_cvt_l7_x).append(" ")
+								.append(p1_cvt_l7_y).append(" ")
+								.append(p1_cvt_l7_z).append(" ")
+								.append(p1_cvt_l12_x).append(" ")
+								.append(p1_cvt_l12_y).append(" ")
+								.append(p1_cvt_l12_z).append(" ")
+								.append(p2_cvt_l1_x).append(" ")
+								.append(p2_cvt_l1_y).append(" ")
+								.append(p2_cvt_l1_z).append(" ")
+								.append(p2_cvt_l3_x).append(" ")
+								.append(p2_cvt_l3_y).append(" ")
+								.append(p2_cvt_l3_z).append(" ")
+								.append(p2_cvt_l5_x).append(" ")
+								.append(p2_cvt_l5_y).append(" ")
+								.append(p2_cvt_l5_z).append(" ")
+								.append(p2_cvt_l7_x).append(" ")
+								.append(p2_cvt_l7_y).append(" ")
+								.append(p2_cvt_l7_z).append(" ")
+								.append(p2_cvt_l12_x).append(" ")
+								.append(p2_cvt_l12_y).append(" ")
+								.append(p2_cvt_l12_z).append("\n");
 
 			                // Append the line to the batchLines StringBuilder
 			                batchLines.append(line.toString());
@@ -420,7 +667,7 @@ public static void main(String[] args) {
 		"68: qadb_status, 69: e_fd_cut, 70: e_vertex_cut, 71: e_sf_cut, 72: e_diag_cut, 73: e_pcal_fid_cut, 74: e_dc_fid_cut, " +
 		"75: p1_chi2pid_cut, 77: p1_vertex_cut, 78: p1_dc_fid_cut, 79: p1_cvt_fid_cut, " +
         "80: p2_chi2pid_cut, 81: p2_vertex_cut, 82: p2_dc_fid_cut, " +
-		"83: e_chi2, 84: p1_chi2, 85: p2_chi2");
+		"83: e_chi2, 84: p1_chi2, 85: p2_chi2, + values for fiducial cuts");
 
 		println("Set p1 PID = $p1_Str");
 		println("Set p2 PID = $p2_Str");

@@ -297,13 +297,40 @@ int main(int argc, char *argv[]) {
 	double gen_nucl_vx, gen_nucl_vy, gen_nucl_vz;
     double weight;
 
-    // Additional variables for two particles "raw" (without quality cuts)
+    // Additional variables for two/three particles "raw" (without quality cuts)
     int qadb_status;
     int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut;
     int p_chi2pid_cut, p_vertex_cut, p_dc_fid_cut;
     int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut;
     int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut;
     double e_chi2, p1_chi2, p2_chi2;
+
+    // Calorimeter variables
+    double pcal_lu, pcal_lv, pcal_lw; // lu, lv, lw from pcal hit
+    double ecin_lu, ecin_lv, ecin_lw; // lu, lv, lw from ecin hit
+    double ecout_lu, ecout_lv, ecout_lw; // lu, lv, lw from ecout hit
+    double pcal_e, ecin_e, ecout_e; // energy from pcal, ecin, ecout hit
+    double pcal_x, pcal_y, pcal_z; // x, y, z from pcal hit
+    double ecin_x, ecin_y, ecin_z; // x, y, z from ecin hit
+    double ecout_x, ecout_y, ecout_z; // x, y, z from ecout hit
+    // DC
+    double e_dc_track_chi2, p1_dc_track_chi2, p2_dc_track_chi2; // chi2 of track for different particles in DC
+    int e_dc_track_ndf, p1_dc_track_ndf, p2_dc_track_ndf; // ndf of track for different particles in DC
+    double e_dc_edge_r1, e_dc_edge_r2, e_dc_edge_r3; // electron edges for DC regions
+    double p1_dc_edge_r1, p1_dc_edge_r2, p1_dc_edge_r3; // p1 edges for DC regions
+    double p2_dc_edge_r1, p2_dc_edge_r2, p2_dc_edge_r3; // p2 edges for DC regions
+    double e_dc_r1_x, e_dc_r1_y, e_dc_r1_z, e_dc_r2_x, e_dc_r2_y, e_dc_r2_z, e_dc_r3_x, e_dc_r3_y, e_dc_r3_z; // electron x, y, z for DC regions
+    double p1_dc_r1_x, p1_dc_r1_y, p1_dc_r1_z, p1_dc_r2_x, p1_dc_r2_y, p1_dc_r2_z, p1_dc_r3_x, p1_dc_r3_y, p1_dc_r3_z; // p1 x, y, z for DC regions
+    double p2_dc_r1_x, p2_dc_r1_y, p2_dc_r1_z, p2_dc_r2_x, p2_dc_r2_y, p2_dc_r2_z, p2_dc_r3_x, p2_dc_r3_y, p2_dc_r3_z; // p2 x, y, z for DC regions
+    // CVT
+    double p1_cvt_track_chi2, p2_cvt_track_chi2; // chi2 of track for different particles in CVT
+    int p1_cvt_track_ndf, p2_cvt_track_ndf; // ndf of track for different particles in CVT
+    double p1_cvt_edge_l1, p1_cvt_edge_l3, p1_cvt_edge_l5, p1_cvt_edge_l7, p1_cvt_edge_l12; // p1 edges for CVT layers
+    double p2_cvt_edge_l1, p2_cvt_edge_l3, p2_cvt_edge_l5, p2_cvt_edge_l7, p2_cvt_edge_l12; // p2 edges for CVT layers
+    double p1_cvt_l1_x, p1_cvt_l1_y, p1_cvt_l1_z, p1_cvt_l3_x, p1_cvt_l3_y, p1_cvt_l3_z, p1_cvt_l5_x, p1_cvt_l5_y, p1_cvt_l5_z; // p1 x, y, z for CVT layers
+    double p1_cvt_l7_x, p1_cvt_l7_y, p1_cvt_l7_z, p1_cvt_l12_x, p1_cvt_l12_y, p1_cvt_l12_z; // p1 x, y, z for CVT layers
+    double p2_cvt_l1_x, p2_cvt_l1_y, p2_cvt_l1_z, p2_cvt_l3_x, p2_cvt_l3_y, p2_cvt_l3_z, p2_cvt_l5_x, p2_cvt_l5_y, p2_cvt_l5_z; // p2 x, y, z for CVT layers
+    double p2_cvt_l7_x, p2_cvt_l7_y, p2_cvt_l7_z, p2_cvt_l12_x, p2_cvt_l12_y, p2_cvt_l12_z; // p2 x, y, z for CVT layers
 
     // Case for zero hadrons (inclusive)
     if (script_index == 0 && is_mc == 0) {
@@ -1447,6 +1474,113 @@ int main(int argc, char *argv[]) {
         tree->Branch("e_chi2", &e_chi2, "e_chi2/D");
         tree->Branch("p1_chi2", &p1_chi2, "p1_chi2/D");
         tree->Branch("p2_chi2", &p2_chi2, "p2_chi2/D");
+        tree->Branch("pcal_lu", &pcal_lu, "pcal_lu/D");
+        tree->Branch("pcal_lv", &pcal_lv, "pcal_lv/D");
+        tree->Branch("pcal_lw", &pcal_lw, "pcal_lw/D");
+        tree->Branch("ecin_lu", &ecin_lu, "ecin_lu/D");
+        tree->Branch("ecin_lv", &ecin_lv, "ecin_lv/D");
+        tree->Branch("ecin_lw", &ecin_lw, "ecin_lw/D");
+        tree->Branch("ecout_lu", &ecout_lu, "ecout_lu/D");
+        tree->Branch("ecout_lv", &ecout_lv, "ecout_lv/D");
+        tree->Branch("ecout_lw", &ecout_lw, "ecout_lw/D");
+        tree->Branch("pcal_e", &pcal_e, "pcal_e/D");
+        tree->Branch("ecin_e", &ecin_e, "ecin_e/D");
+        tree->Branch("ecout_e", &ecout_e, "ecout_e/D");
+        tree->Branch("pcal_x", &pcal_x, "pcal_x/D");
+        tree->Branch("pcal_y", &pcal_y, "pcal_y/D");
+        tree->Branch("pcal_z", &pcal_z, "pcal_z/D");
+        tree->Branch("ecin_x", &ecin_x, "ecin_x/D");
+        tree->Branch("ecin_y", &ecin_y, "ecin_y/D");
+        tree->Branch("ecin_z", &ecin_z, "ecin_z/D");
+        tree->Branch("ecout_x", &ecout_x, "ecout_x/D");
+        tree->Branch("ecout_y", &ecout_y, "ecout_y/D");
+        tree->Branch("ecout_z", &ecout_z, "ecout_z/D");
+        tree->Branch("e_dc_track_chi2", &e_dc_track_chi2, "e_dc_track_chi2/D");
+        tree->Branch("p1_dc_track_chi2", &p1_dc_track_chi2, "p1_dc_track_chi2/D");
+        tree->Branch("p2_dc_track_chi2", &p2_dc_track_chi2, "p2_dc_track_chi2/D");
+        tree->Branch("e_dc_track_ndf", &e_dc_track_ndf, "e_dc_track_ndf/I");
+        tree->Branch("p1_dc_track_ndf", &p1_dc_track_ndf, "p1_dc_track_ndf/I");
+        tree->Branch("p2_dc_track_ndf", &p2_dc_track_ndf, "p2_dc_track_ndf/I");
+        tree->Branch("e_dc_edge_r1", &e_dc_edge_r1, "e_dc_edge_r1/D");
+        tree->Branch("e_dc_edge_r2", &e_dc_edge_r2, "e_dc_edge_r2/D");
+        tree->Branch("e_dc_edge_r3", &e_dc_edge_r3, "e_dc_edge_r3/D");
+        tree->Branch("p1_dc_edge_r1", &p1_dc_edge_r1, "p1_dc_edge_r1/D");
+        tree->Branch("p1_dc_edge_r2", &p1_dc_edge_r2, "p1_dc_edge_r2/D");
+        tree->Branch("p1_dc_edge_r3", &p1_dc_edge_r3, "p1_dc_edge_r3/D");
+        tree->Branch("p2_dc_edge_r1", &p2_dc_edge_r1, "p2_dc_edge_r1/D");
+        tree->Branch("p2_dc_edge_r2", &p2_dc_edge_r2, "p2_dc_edge_r2/D");
+        tree->Branch("p2_dc_edge_r3", &p2_dc_edge_r3, "p2_dc_edge_r3/D");
+        tree->Branch("e_dc_r1_x", &e_dc_r1_x, "e_dc_r1_x/D");
+        tree->Branch("e_dc_r1_y", &e_dc_r1_y, "e_dc_r1_y/D");
+        tree->Branch("e_dc_r1_z", &e_dc_r1_z, "e_dc_r1_z/D");
+        tree->Branch("e_dc_r2_x", &e_dc_r2_x, "e_dc_r2_x/D");
+        tree->Branch("e_dc_r2_y", &e_dc_r2_y, "e_dc_r2_y/D");
+        tree->Branch("e_dc_r2_z", &e_dc_r2_z, "e_dc_r2_z/D");
+        tree->Branch("e_dc_r3_x", &e_dc_r3_x, "e_dc_r3_x/D");
+        tree->Branch("e_dc_r3_y", &e_dc_r3_y, "e_dc_r3_y/D");
+        tree->Branch("e_dc_r3_z", &e_dc_r3_z, "e_dc_r3_z/D");
+        tree->Branch("p1_dc_r1_x", &p1_dc_r1_x, "p1_dc_r1_x/D");
+        tree->Branch("p1_dc_r1_y", &p1_dc_r1_y, "p1_dc_r1_y/D");
+        tree->Branch("p1_dc_r1_z", &p1_dc_r1_z, "p1_dc_r1_z/D");
+        tree->Branch("p1_dc_r2_x", &p1_dc_r2_x, "p1_dc_r2_x/D");
+        tree->Branch("p1_dc_r2_y", &p1_dc_r2_y, "p1_dc_r2_y/D");
+        tree->Branch("p1_dc_r2_z", &p1_dc_r2_z, "p1_dc_r2_z/D");
+        tree->Branch("p1_dc_r3_x", &p1_dc_r3_x, "p1_dc_r3_x/D");
+        tree->Branch("p1_dc_r3_y", &p1_dc_r3_y, "p1_dc_r3_y/D");
+        tree->Branch("p1_dc_r3_z", &p1_dc_r3_z, "p1_dc_r3_z/D");
+        tree->Branch("p2_dc_r1_x", &p2_dc_r1_x, "p2_dc_r1_x/D");
+        tree->Branch("p2_dc_r1_y", &p2_dc_r1_y, "p2_dc_r1_y/D");
+        tree->Branch("p2_dc_r1_z", &p2_dc_r1_z, "p2_dc_r1_z/D");
+        tree->Branch("p2_dc_r2_x", &p2_dc_r2_x, "p2_dc_r2_x/D");
+        tree->Branch("p2_dc_r2_y", &p2_dc_r2_y, "p2_dc_r2_y/D");
+        tree->Branch("p2_dc_r2_z", &p2_dc_r2_z, "p2_dc_r2_z/D");
+        tree->Branch("p2_dc_r3_x", &p2_dc_r3_x, "p2_dc_r3_x/D");
+        tree->Branch("p2_dc_r3_y", &p2_dc_r3_y, "p2_dc_r3_y/D");
+        tree->Branch("p2_dc_r3_z", &p2_dc_r3_z, "p2_dc_r3_z/D");
+        tree->Branch("p1_cvt_track_chi2", &p1_cvt_track_chi2, "p1_cvt_track_chi2/D");
+        tree->Branch("p2_cvt_track_chi2", &p2_cvt_track_chi2, "p2_cvt_track_chi2/D");
+        tree->Branch("p1_cvt_track_ndf", &p1_cvt_track_ndf, "p1_cvt_track_ndf/I");
+        tree->Branch("p2_cvt_track_ndf", &p2_cvt_track_ndf, "p2_cvt_track_ndf/I");
+        tree->Branch("p1_cvt_edge_l1", &p1_cvt_edge_l1, "p1_cvt_edge_l1/D");
+        tree->Branch("p1_cvt_edge_l3", &p1_cvt_edge_l3, "p1_cvt_edge_l3/D");
+        tree->Branch("p1_cvt_edge_l5", &p1_cvt_edge_l5, "p1_cvt_edge_l5/D");
+        tree->Branch("p1_cvt_edge_l7", &p1_cvt_edge_l7, "p1_cvt_edge_l7/D");
+        tree->Branch("p1_cvt_edge_l12", &p1_cvt_edge_l12, "p1_cvt_edge_l12/D");
+        tree->Branch("p2_cvt_edge_l1", &p2_cvt_edge_l1, "p2_cvt_edge_l1/D");
+        tree->Branch("p2_cvt_edge_l3", &p2_cvt_edge_l3, "p2_cvt_edge_l3/D");
+        tree->Branch("p2_cvt_edge_l5", &p2_cvt_edge_l5, "p2_cvt_edge_l5/D");
+        tree->Branch("p2_cvt_edge_l7", &p2_cvt_edge_l7, "p2_cvt_edge_l7/D");
+        tree->Branch("p2_cvt_edge_l12", &p2_cvt_edge_l12, "p2_cvt_edge_l12/D");
+        tree->Branch("p1_cvt_l1_x", &p1_cvt_l1_x, "p1_cvt_l1_x/D");
+        tree->Branch("p1_cvt_l1_y", &p1_cvt_l1_y, "p1_cvt_l1_y/D");
+        tree->Branch("p1_cvt_l1_z", &p1_cvt_l1_z, "p1_cvt_l1_z/D");
+        tree->Branch("p1_cvt_l3_x", &p1_cvt_l3_x, "p1_cvt_l3_x/D");
+        tree->Branch("p1_cvt_l3_y", &p1_cvt_l3_y, "p1_cvt_l3_y/D");
+        tree->Branch("p1_cvt_l3_z", &p1_cvt_l3_z, "p1_cvt_l3_z/D");
+        tree->Branch("p1_cvt_l5_x", &p1_cvt_l5_x, "p1_cvt_l5_x/D");
+        tree->Branch("p1_cvt_l5_y", &p1_cvt_l5_y, "p1_cvt_l5_y/D");
+        tree->Branch("p1_cvt_l5_z", &p1_cvt_l5_z, "p1_cvt_l5_z/D");
+        tree->Branch("p1_cvt_l7_x", &p1_cvt_l7_x, "p1_cvt_l7_x/D");
+        tree->Branch("p1_cvt_l7_y", &p1_cvt_l7_y, "p1_cvt_l7_y/D");
+        tree->Branch("p1_cvt_l7_z", &p1_cvt_l7_z, "p1_cvt_l7_z/D");
+        tree->Branch("p1_cvt_l12_x", &p1_cvt_l12_x, "p1_cvt_l12_x/D");
+        tree->Branch("p1_cvt_l12_y", &p1_cvt_l12_y, "p1_cvt_l12_y/D");
+        tree->Branch("p1_cvt_l12_z", &p1_cvt_l12_z, "p1_cvt_l12_z/D");
+        tree->Branch("p2_cvt_l1_x", &p2_cvt_l1_x, "p2_cvt_l1_x/D");
+        tree->Branch("p2_cvt_l1_y", &p2_cvt_l1_y, "p2_cvt_l1_y/D");
+        tree->Branch("p2_cvt_l1_z", &p2_cvt_l1_z, "p2_cvt_l1_z/D");
+        tree->Branch("p2_cvt_l3_x", &p2_cvt_l3_x, "p2_cvt_l3_x/D");
+        tree->Branch("p2_cvt_l3_y", &p2_cvt_l3_y, "p2_cvt_l3_y/D");
+        tree->Branch("p2_cvt_l3_z", &p2_cvt_l3_z, "p2_cvt_l3_z/D");
+        tree->Branch("p2_cvt_l5_x", &p2_cvt_l5_x, "p2_cvt_l5_x/D");
+        tree->Branch("p2_cvt_l5_y", &p2_cvt_l5_y, "p2_cvt_l5_y/D");
+        tree->Branch("p2_cvt_l5_z", &p2_cvt_l5_z, "p2_cvt_l5_z/D");
+        tree->Branch("p2_cvt_l7_x", &p2_cvt_l7_x, "p2_cvt_l7_x/D");
+        tree->Branch("p2_cvt_l7_y", &p2_cvt_l7_y, "p2_cvt_l7_y/D");
+        tree->Branch("p2_cvt_l7_z", &p2_cvt_l7_z, "p2_cvt_l7_z/D");
+        tree->Branch("p2_cvt_l12_x", &p2_cvt_l12_x, "p2_cvt_l12_x/D");
+        tree->Branch("p2_cvt_l12_y", &p2_cvt_l12_y, "p2_cvt_l12_y/D");
+        tree->Branch("p2_cvt_l12_z", &p2_cvt_l12_z, "p2_cvt_l12_z/D");
     }
     // Find the root directory of the repository
     std::string package_location = findPackageRoot();
@@ -2007,7 +2141,21 @@ int main(int argc, char *argv[]) {
             eta1_gN >> eta2_gN >> phi1 >> phi2 >> Delta_phi >> phi >> phiR >> theta >> 
             DepA >> DepB >> DepC >> DepV >> DepW >> qadb_status >> e_fd_cut >> e_vertex_cut >> e_sf_cut >> e_diag_cut >>
             e_pcal_fid_cut >> e_dc_fid_cut >> p1_chi2pid_cut >> p1_vertex_cut >> p1_dc_fid_cut >> p1_cvt_fid_cut >> 
-            p2_chi2pid_cut >> p2_vertex_cut >> p2_dc_fid_cut >> e_chi2 >> p1_chi2 >> p2_chi2 ) {
+            p2_chi2pid_cut >> p2_vertex_cut >> p2_dc_fid_cut >> e_chi2 >> p1_chi2 >> p2_chi2 >>
+            pcal_lu >> pcal_lv >> pcal_lw >> ecin_lu >> ecin_lv >> ecin_lw >> ecout_lu >> ecout_lv >> ecout_lw >> pcal_e >> ecin_e >> ecout_e >>
+            pcal_x >> pcal_y >> pcal_z >> ecin_x >> ecin_y >> ecin_z >> ecout_x >> ecout_y >> ecout_z >>
+            e_dc_track_chi2 >> p1_dc_track_chi2 >> p2_dc_track_chi2 >> e_dc_track_ndf >> p1_dc_track_ndf >> p2_dc_track_ndf >>
+            e_dc_edge_r1 >> e_dc_edge_r2 >> e_dc_edge_r3 >> p1_dc_edge_r1 >> p1_dc_edge_r2 >> p1_dc_edge_r3 >> p2_dc_edge_r1 >> p2_dc_edge_r2 >> p2_dc_edge_r3 >>
+            e_dc_r1_x >> e_dc_r1_y >> e_dc_r1_z >> e_dc_r2_x >> e_dc_r2_y >> e_dc_r2_z >> e_dc_r3_x >> e_dc_r3_y >> e_dc_r3_z >> 
+            p1_dc_r1_x >> p1_dc_r1_y >> p1_dc_r1_z >> p1_dc_r2_x >> p1_dc_r2_y >> p1_dc_r2_z >> p1_dc_r3_x >> p1_dc_r3_y >> p1_dc_r3_z >> 
+            p2_dc_r1_x >> p2_dc_r1_y >> p2_dc_r1_z >> p2_dc_r2_x >> p2_dc_r2_y >> p2_dc_r2_z >> p2_dc_r3_x >> p2_dc_r3_y >> p2_dc_r3_z >> 
+            p1_cvt_track_chi2 >> p2_cvt_track_chi2 >> p1_cvt_track_ndf >> p2_cvt_track_ndf >> 
+            p1_cvt_edge_l1 >> p1_cvt_edge_l3 >> p1_cvt_edge_l5 >> p1_cvt_edge_l7 >> p1_cvt_edge_l12 >>
+            p2_cvt_edge_l1 >> p2_cvt_edge_l3 >> p2_cvt_edge_l5 >> p2_cvt_edge_l7 >> p2_cvt_edge_l12 >> 
+            p1_cvt_l1_x >> p1_cvt_l1_y >> p1_cvt_l1_z >> p1_cvt_l3_x >> p1_cvt_l3_y >> p1_cvt_l3_z >> p1_cvt_l5_x >> p1_cvt_l5_y >> p1_cvt_l5_z >>
+            p1_cvt_l7_x >> p1_cvt_l7_y >> p1_cvt_l7_z >> p1_cvt_l12_x >> p1_cvt_l12_y >> p1_cvt_l12_z >>
+            p2_cvt_l1_x >> p2_cvt_l1_y >> p2_cvt_l1_z >> p2_cvt_l3_x >> p2_cvt_l3_y >> p2_cvt_l3_z >> p2_cvt_l5_x >> p2_cvt_l5_y >> p2_cvt_l5_z >>
+            p2_cvt_l7_x >> p2_cvt_l7_y >> p2_cvt_l7_z >> p2_cvt_l12_x >> p2_cvt_l12_y >> p2_cvt_l12_z) {
 
             beam_pol = getPol(runnum);
             if (runnum < 16000) { target_pol = 0; }

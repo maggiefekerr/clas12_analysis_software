@@ -88,6 +88,34 @@ public class ThreeParticles {
     protected int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut; // hadron 1 (proton) status variables
     protected int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut; // hadron 2 (pion) status variables
 
+    // Variables for fiducial, electron identification studies
+    // Calorimeter variables
+    protected double pcal_lu, pcal_lv, pcal_lw; // lu, lv, lw from pcal hit
+    protected double ecin_lu, ecin_lv, ecin_lw; // lu, lv, lw from ecin hit
+    protected double ecout_lu, ecout_lv, ecout_lw; // lu, lv, lw from ecout hit
+    protected double pcal_e, ecin_e, ecout_e; // energy from pcal, ecin, ecout hit
+    protected double pcal_x, pcal_y, pcal_z; // x, y, z from pcal hit
+    protected double ecin_x, ecin_y, ecin_z; // x, y, z from ecin hit
+    protected double ecout_x, ecout_y, ecout_z; // x, y, z from ecout hit
+    // DC
+    protected double e_dc_track_chi2, p1_dc_track_chi2, p2_dc_track_chi2; // chi2 of track for different particles in DC
+    protected int e_dc_track_ndf, p1_dc_track_ndf, p2_dc_track_ndf; // ndf of track for different particles in DC
+    protected double e_dc_edge_r1, e_dc_edge_r2, e_dc_edge_r3; // electron edges for DC regions
+    protected double p1_dc_edge_r1, p1_dc_edge_r2, p1_dc_edge_r3; // p1 edges for DC regions
+    protected double p2_dc_edge_r1, p2_dc_edge_r2, p2_dc_edge_r3; // p2 edges for DC regions
+    protected double e_dc_r1_x, e_dc_r1_y, e_dc_r1_z, e_dc_r2_x, e_dc_r2_y, e_dc_r2_z, e_dc_r3_x, e_dc_r3_y, e_dc_r3_z; // electron x, y, z for DC regions
+    protected double p1_dc_r1_x, p1_dc_r1_y, p1_dc_r1_z, p1_dc_r2_x, p1_dc_r2_y, p1_dc_r2_z, p1_dc_r3_x, p1_dc_r3_y, p1_dc_r3_z; // p1 x, y, z for DC regions
+    protected double p2_dc_r1_x, p2_dc_r1_y, p2_dc_r1_z, p2_dc_r2_x, p2_dc_r2_y, p2_dc_r2_z, p2_dc_r3_x, p2_dc_r3_y, p2_dc_r3_z; // p2 x, y, z for DC regions
+    // CVT
+    protected double p1_cvt_track_chi2, p2_cvt_track_chi2; // chi2 of track for different particles in CVT
+    protected int p1_cvt_track_ndf, p2_cvt_track_ndf; // ndf of track for different particles in CVT
+    protected double p1_cvt_edge_l1, p1_cvt_edge_l3, p1_cvt_edge_l5, p1_cvt_edge_l7, p1_cvt_edge_l12; // p1 edges for CVT layers
+    protected double p2_cvt_edge_l1, p2_cvt_edge_l3, p2_cvt_edge_l5, p2_cvt_edge_l7, p2_cvt_edge_l12; // p2 edges for CVT layers
+    protected double p1_cvt_l1_x, p1_cvt_l1_y, p1_cvt_l1_z, p1_cvt_l3_x, p1_cvt_l3_y, p1_cvt_l3_z, p1_cvt_l5_x, p1_cvt_l5_y, p1_cvt_l5_z; // p1 x, y, z for CVT layers
+    protected double p1_cvt_l7_x, p1_cvt_l7_y, p1_cvt_l7_z, p1_cvt_l12_x, p1_cvt_l12_y, p1_cvt_l12_z; // p1 x, y, z for CVT layers
+    protected double p2_cvt_l1_x, p2_cvt_l1_y, p2_cvt_l1_z, p2_cvt_l3_x, p2_cvt_l3_y, p2_cvt_l3_z, p2_cvt_l5_x, p2_cvt_l5_y, p2_cvt_l5_z; // p2 x, y, z for CVT layers
+    protected double p2_cvt_l7_x, p2_cvt_l7_y, p2_cvt_l7_z, p2_cvt_l12_x, p2_cvt_l12_y, p2_cvt_l12_z; // p2 x, y, z for CVT layers
+
     public static boolean channel_test(ThreeParticles variables) {
         if (variables.helicity == 0 && variables.runnum != 11) {
             return false;
@@ -182,6 +210,204 @@ public class ThreeParticles {
         e_chi2 = rec_Bank.getFloat("chi2pid", e_rec_index);
         p1_chi2 = rec_Bank.getFloat("chi2pid", p1_rec_index);
         p2_chi2 = rec_Bank.getFloat("chi2pid", p2_rec_index);
+
+        // Values for fiducial, PID cuts
+        // Calorimeter
+        for (int current_Row = 0; current_Row < cal_Bank.rows(); current_Row++) {
+            int pindex = cal_Bank.getInt("pindex", current_Row);
+            int detector = cal_Bank.getInt("detector", current_Row);
+            int layer = cal_Bank.getInt("layer", current_Row); 
+            if (pindex == e_rec_index) { // electron
+                if ((detector==7) && (layer==1)) {
+                    pcal_lu = cal_Bank.getFloat("lu", current_Row);
+                    pcal_lv = cal_Bank.getFloat("lv", current_Row);
+                    pcal_lw = cal_Bank.getFloat("lw", current_Row);
+                    pcal_e = cal_Bank.getFloat("energy", current_Row);
+                    pcal_x = cal_Bank.getFloat("x", current_Row);
+                    pcal_y = cal_Bank.getFloat("y", current_Row);
+                    pcal_z = cal_Bank.getFloat("z", current_Row);
+                }
+                else if ((detector==7) && (layer==4)) {
+                    ecin_lu = cal_Bank.getFloat("lu", current_Row);
+                    ecin_lv = cal_Bank.getFloat("lv", current_Row);
+                    ecin_lw = cal_Bank.getFloat("lw", current_Row);
+                    ecin_e = cal_Bank.getFloat("energy", current_Row);
+                    ecin_x = cal_Bank.getFloat("x", current_Row);
+                    ecin_y = cal_Bank.getFloat("y", current_Row);
+                    ecin_z = cal_Bank.getFloat("z", current_Row);
+                }
+                else if ((detector==7) && (layer==7)) {
+                    ecout_lu = cal_Bank.getFloat("lu", current_Row);
+                    ecout_lv = cal_Bank.getFloat("lv", current_Row);
+                    ecout_lw = cal_Bank.getFloat("lw", current_Row);
+                    ecout_e = cal_Bank.getFloat("energy", current_Row);
+                    ecout_x = cal_Bank.getFloat("x", current_Row);
+                    ecout_y = cal_Bank.getFloat("y", current_Row);
+                    ecout_z = cal_Bank.getFloat("z", current_Row);
+                }
+            }
+        }
+        // Track chi2 and ndf for DC and CVT
+        for (int current_Row = 0; current_Row < track_Bank.rows(); current_Row++) {
+            int pindex = track_Bank.getInt("pindex", current_Row);
+            int detector = track_Bank.getInt("detector", current_Row);
+            if (pindex == e_rec_index) { // electron
+                if (detector==6) { // DC
+                    e_dc_track_chi2 = track_Bank.getFloat("chi2", current_Row);
+                    e_dc_track_ndf = track_Bank.getInt("NDF", current_Row);
+                }
+            }
+            if (pindex == p1_rec_index) { // p1
+                if (detector==6) { // DC
+                    p1_dc_track_chi2 = track_Bank.getFloat("chi2", current_Row);
+                    p1_dc_track_ndf = track_Bank.getInt("NDF", current_Row);
+                }
+                else if (detector==5) { // CVT
+                    p1_cvt_track_chi2 = track_Bank.getFloat("chi2", current_Row);
+                    p1_cvt_track_ndf = track_Bank.getInt("NDF", current_Row);
+                }
+            }
+            if (pindex == p2_rec_index) { // p2
+                if (detector==6) { // DC
+                    p2_dc_track_chi2 = track_Bank.getFloat("chi2", current_Row);
+                    p2_dc_track_ndf = track_Bank.getInt("NDF", current_Row);
+                }
+                else if (detector==5) { // CVT
+                    p2_cvt_track_chi2 = track_Bank.getFloat("chi2", current_Row);
+                    p2_cvt_track_ndf = track_Bank.getInt("NDF", current_Row);
+                }
+            }
+        }
+        // Drift Chamber and CVT edges, positions
+        for (int current_Row = 0; current_Row < traj_Bank.rows(); current_Row++) {
+            int pindex = traj_Bank.getInt("pindex", current_Row);
+            int detector = traj_Bank.getInt("detector", current_Row);
+            int layer = traj_Bank.getInt("layer", current_Row);
+            if (pindex == e_rec_index) { // electron
+                if ((detector==6) && (layer==6)) {
+                    e_dc_edge_r1 = traj_Bank.getFloat("edge", current_Row);
+                    e_dc_r1_x = traj_Bank.getFloat("x", current_Row);
+                    e_dc_r1_y = traj_Bank.getFloat("y", current_Row);
+                    e_dc_r1_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==18)) {
+                    e_dc_edge_r2 = traj_Bank.getFloat("edge", current_Row);
+                    e_dc_r2_x = traj_Bank.getFloat("x", current_Row);
+                    e_dc_r2_y = traj_Bank.getFloat("y", current_Row);
+                    e_dc_r2_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==36)) {
+                    e_dc_edge_r3 = traj_Bank.getFloat("edge", current_Row);
+                    e_dc_r3_x = traj_Bank.getFloat("x", current_Row);
+                    e_dc_r3_y = traj_Bank.getFloat("y", current_Row);
+                    e_dc_r3_z = traj_Bank.getFloat("z", current_Row);
+                }
+            }
+            if (pindex == p1_rec_index) { // p1
+                // Drift Chamber
+                if ((detector==6) && (layer==6)) {
+                    p1_dc_edge_r1 = traj_Bank.getFloat("edge", current_Row);
+                    p1_dc_r1_x = traj_Bank.getFloat("x", current_Row);
+                    p1_dc_r1_y = traj_Bank.getFloat("y", current_Row);
+                    p1_dc_r1_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==18)) {
+                    p1_dc_edge_r2 = traj_Bank.getFloat("edge", current_Row);
+                    p1_dc_r2_x = traj_Bank.getFloat("x", current_Row);
+                    p1_dc_r2_y = traj_Bank.getFloat("y", current_Row);
+                    p1_dc_r2_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==36)) {
+                    p1_dc_edge_r3 = traj_Bank.getFloat("edge", current_Row);
+                    p1_dc_r3_x = traj_Bank.getFloat("x", current_Row);
+                    p1_dc_r3_y = traj_Bank.getFloat("y", current_Row);
+                    p1_dc_r3_z = traj_Bank.getFloat("z", current_Row);
+                }
+                // Central Vertex Tracker
+                if ((detector==5) && (layer==1)){
+                    p1_cvt_edge_l1 = traj_Bank.getFloat("edge", current_Row);
+                    p1_cvt_l1_x = traj_Bank.getFloat("x", current_Row);
+                    p1_cvt_l1_y = traj_Bank.getFloat("y", current_Row);
+                    p1_cvt_l1_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==3)){
+                    p1_cvt_edge_l3 = traj_Bank.getFloat("edge", current_Row);
+                    p1_cvt_l3_x = traj_Bank.getFloat("x", current_Row);
+                    p1_cvt_l3_y = traj_Bank.getFloat("y", current_Row);
+                    p1_cvt_l3_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==5)){
+                    p1_cvt_edge_l5 = traj_Bank.getFloat("edge", current_Row);
+                    p1_cvt_l5_x = traj_Bank.getFloat("x", current_Row);
+                    p1_cvt_l5_y = traj_Bank.getFloat("y", current_Row);
+                    p1_cvt_l5_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==7)){
+                    p1_cvt_edge_l7 = traj_Bank.getFloat("edge", current_Row);
+                    p1_cvt_l7_x = traj_Bank.getFloat("x", current_Row);
+                    p1_cvt_l7_y = traj_Bank.getFloat("y", current_Row);
+                    p1_cvt_l7_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==12)){
+                    p1_cvt_edge_l12 = traj_Bank.getFloat("edge", current_Row);
+                    p1_cvt_l12_x = traj_Bank.getFloat("x", current_Row);
+                    p1_cvt_l12_y = traj_Bank.getFloat("y", current_Row);
+                    p1_cvt_l12_z = traj_Bank.getFloat("z", current_Row);
+                }
+            }
+            if (pindex == p2_rec_index) { // p2
+                // Drift Chamber
+                if ((detector==6) && (layer==6)) {
+                    p2_dc_edge_r1 = traj_Bank.getFloat("edge", current_Row);
+                    p2_dc_r1_x = traj_Bank.getFloat("x", current_Row);
+                    p2_dc_r1_y = traj_Bank.getFloat("y", current_Row);
+                    p2_dc_r1_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==18)) {
+                    p2_dc_edge_r2 = traj_Bank.getFloat("edge", current_Row);
+                    p2_dc_r2_x = traj_Bank.getFloat("x", current_Row);
+                    p2_dc_r2_y = traj_Bank.getFloat("y", current_Row);
+                    p2_dc_r2_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==6) && (layer==36)) {
+                    p2_dc_edge_r3 = traj_Bank.getFloat("edge", current_Row);
+                    p2_dc_r3_x = traj_Bank.getFloat("x", current_Row);
+                    p2_dc_r3_y = traj_Bank.getFloat("y", current_Row);
+                    p2_dc_r3_z = traj_Bank.getFloat("z", current_Row);
+                }
+                // Central Vertex Tracker
+                if ((detector==5) && (layer==1)){
+                    p2_cvt_edge_l1 = traj_Bank.getFloat("edge", current_Row);
+                    p2_cvt_l1_x = traj_Bank.getFloat("x", current_Row);
+                    p2_cvt_l1_y = traj_Bank.getFloat("y", current_Row);
+                    p2_cvt_l1_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==3)){
+                    p2_cvt_edge_l3 = traj_Bank.getFloat("edge", current_Row);
+                    p2_cvt_l3_x = traj_Bank.getFloat("x", current_Row);
+                    p2_cvt_l3_y = traj_Bank.getFloat("y", current_Row);
+                    p2_cvt_l3_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==5)){
+                    p2_cvt_edge_l5 = traj_Bank.getFloat("edge", current_Row);
+                    p2_cvt_l5_x = traj_Bank.getFloat("x", current_Row);
+                    p2_cvt_l5_y = traj_Bank.getFloat("y", current_Row);
+                    p2_cvt_l5_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==7)){
+                    p2_cvt_edge_l7 = traj_Bank.getFloat("edge", current_Row);
+                    p2_cvt_l7_x = traj_Bank.getFloat("x", current_Row);
+                    p2_cvt_l7_y = traj_Bank.getFloat("y", current_Row);
+                    p2_cvt_l7_z = traj_Bank.getFloat("z", current_Row);
+                }
+                if ((detector==5) && (layer==12)){
+                    p2_cvt_edge_l12 = traj_Bank.getFloat("edge", current_Row);
+                    p2_cvt_l12_x = traj_Bank.getFloat("x", current_Row);
+                    p2_cvt_l12_y = traj_Bank.getFloat("y", current_Row);
+                    p2_cvt_l12_z = traj_Bank.getFloat("z", current_Row);
+                }
+            }
+        }
         
         // Check if all checks pass
         if (e_fiducial_check && p1_fiducial_check && p2_fiducial_check) {
@@ -1150,4 +1376,116 @@ public class ThreeParticles {
     public int p2_chi2pid_cut() { return p2_chi2pid_cut; }
     public int p2_vertex_cut() { return p2_vertex_cut; }
     public int p2_dc_fid_cut() { return p2_dc_fid_cut; }
+
+    // Fiducial and PID values
+    // Calorimeter variables
+    public double pcal_lu() { return pcal_lu; }
+    public double pcal_lv() { return pcal_lv; }
+    public double pcal_lw() { return pcal_lw; }
+    public double ecin_lu() { return ecin_lu; }
+    public double ecin_lv() { return ecin_lv; }
+    public double ecin_lw() { return ecin_lw; }
+    public double ecout_lu() { return ecout_lu; }
+    public double ecout_lv() { return ecout_lv; }
+    public double ecout_lw() { return ecout_lw; }
+    public double pcal_e() { return pcal_e; }
+    public double ecin_e() { return ecin_e; }
+    public double ecout_e() { return ecout_e; }
+    public double pcal_x() { return pcal_x; }
+    public double pcal_y() { return pcal_y; }
+    public double pcal_z() { return pcal_z; }
+    public double ecin_x() { return ecin_x; }
+    public double ecin_y() { return ecin_y; }
+    public double ecin_z() { return ecin_z; }
+    public double ecout_x() { return ecout_x; }
+    public double ecout_y() { return ecout_y; }
+    public double ecout_z() { return ecout_z; }
+    // DC variables
+    public double e_dc_track_chi2() { return e_dc_track_chi2; }
+    public double p1_dc_track_chi2() { return p1_dc_track_chi2; }
+    public double p2_dc_track_chi2() { return p2_dc_track_chi2; }
+    public int e_dc_track_ndf() { return e_dc_track_ndf; }
+    public int p1_dc_track_ndf() { return p1_dc_track_ndf; }
+    public int p2_dc_track_ndf() { return p2_dc_track_ndf; }
+    public double e_dc_edge_r1() { return e_dc_edge_r1; }
+    public double e_dc_edge_r2() { return e_dc_edge_r2; }
+    public double e_dc_edge_r3() { return e_dc_edge_r3; }
+    public double p1_dc_edge_r1() { return p1_dc_edge_r1; }
+    public double p1_dc_edge_r2() { return p1_dc_edge_r2; }
+    public double p1_dc_edge_r3() { return p1_dc_edge_r3; }
+    public double p2_dc_edge_r1() { return p2_dc_edge_r1; }
+    public double p2_dc_edge_r2() { return p2_dc_edge_r2; }
+    public double p2_dc_edge_r3() { return p2_dc_edge_r3; }
+    public double e_dc_r1_x() { return e_dc_r1_x; }
+    public double e_dc_r1_y() { return e_dc_r1_y; }
+    public double e_dc_r1_z() { return e_dc_r1_z; }
+    public double e_dc_r2_x() { return e_dc_r2_x; }
+    public double e_dc_r2_y() { return e_dc_r2_y; }
+    public double e_dc_r2_z() { return e_dc_r2_z; }
+    public double e_dc_r3_x() { return e_dc_r3_x; }
+    public double e_dc_r3_y() { return e_dc_r3_y; }
+    public double e_dc_r3_z() { return e_dc_r3_z; }
+    public double p1_dc_r1_x() { return p1_dc_r1_x; }
+    public double p1_dc_r1_y() { return p1_dc_r1_y; }
+    public double p1_dc_r1_z() { return p1_dc_r1_z; }
+    public double p1_dc_r2_x() { return p1_dc_r2_x; }
+    public double p1_dc_r2_y() { return p1_dc_r2_y; }
+    public double p1_dc_r2_z() { return p1_dc_r2_z; }
+    public double p1_dc_r3_x() { return p1_dc_r3_x; }
+    public double p1_dc_r3_y() { return p1_dc_r3_y; }
+    public double p1_dc_r3_z() { return p1_dc_r3_z; }
+    public double p2_dc_r1_x() { return p2_dc_r1_x; }
+    public double p2_dc_r1_y() { return p2_dc_r1_y; }
+    public double p2_dc_r1_z() { return p2_dc_r1_z; }
+    public double p2_dc_r2_x() { return p2_dc_r2_x; }
+    public double p2_dc_r2_y() { return p2_dc_r2_y; }
+    public double p2_dc_r2_z() { return p2_dc_r2_z; }
+    public double p2_dc_r3_x() { return p2_dc_r3_x; }
+    public double p2_dc_r3_y() { return p2_dc_r3_y; }
+    public double p2_dc_r3_z() { return p2_dc_r3_z; }
+    // CVT variables
+    public double p1_cvt_track_chi2() { return p1_cvt_track_chi2; }
+    public double p2_cvt_track_chi2() { return p2_cvt_track_chi2; }
+    public int p1_cvt_track_ndf() { return p1_cvt_track_ndf; }
+    public int p2_cvt_track_ndf() { return p2_cvt_track_ndf; }
+    public double p1_cvt_edge_l1() { return p1_cvt_edge_l1; }
+    public double p1_cvt_edge_l3() { return p1_cvt_edge_l3; }
+    public double p1_cvt_edge_l5() { return p1_cvt_edge_l5; }
+    public double p1_cvt_edge_l7() { return p1_cvt_edge_l7; }
+    public double p1_cvt_edge_l12() { return p1_cvt_edge_l12; }
+    public double p2_cvt_edge_l1() { return p2_cvt_edge_l1; }
+    public double p2_cvt_edge_l3() { return p2_cvt_edge_l3; }
+    public double p2_cvt_edge_l5() { return p2_cvt_edge_l5; }
+    public double p2_cvt_edge_l7() { return p2_cvt_edge_l7; }
+    public double p2_cvt_edge_l12() { return p2_cvt_edge_l12; }
+    public double p1_cvt_l1_x() { return p1_cvt_l1_x; }
+    public double p1_cvt_l1_y() { return p1_cvt_l1_y; }
+    public double p1_cvt_l1_z() { return p1_cvt_l1_z; }
+    public double p1_cvt_l3_x() { return p1_cvt_l3_x; }
+    public double p1_cvt_l3_y() { return p1_cvt_l3_y; }
+    public double p1_cvt_l3_z() { return p1_cvt_l3_z; }
+    public double p1_cvt_l5_x() { return p1_cvt_l5_x; }
+    public double p1_cvt_l5_y() { return p1_cvt_l5_y; }
+    public double p1_cvt_l5_z() { return p1_cvt_l5_z; }
+    public double p1_cvt_l7_x() { return p1_cvt_l7_x; }
+    public double p1_cvt_l7_y() { return p1_cvt_l7_y; }
+    public double p1_cvt_l7_z() { return p1_cvt_l7_z; }
+    public double p1_cvt_l12_x() { return p1_cvt_l12_x; }
+    public double p1_cvt_l12_y() { return p1_cvt_l12_y; }
+    public double p1_cvt_l12_z() { return p1_cvt_l12_z; }
+    public double p2_cvt_l1_x() { return p2_cvt_l1_x; }
+    public double p2_cvt_l1_y() { return p2_cvt_l1_y; }
+    public double p2_cvt_l1_z() { return p2_cvt_l1_z; }
+    public double p2_cvt_l3_x() { return p2_cvt_l3_x; }
+    public double p2_cvt_l3_y() { return p2_cvt_l3_y; }
+    public double p2_cvt_l3_z() { return p2_cvt_l3_z; }
+    public double p2_cvt_l5_x() { return p2_cvt_l5_x; }
+    public double p2_cvt_l5_y() { return p2_cvt_l5_y; }
+    public double p2_cvt_l5_z() { return p2_cvt_l5_z; }
+    public double p2_cvt_l7_x() { return p2_cvt_l7_x; }
+    public double p2_cvt_l7_y() { return p2_cvt_l7_y; }
+    public double p2_cvt_l7_z() { return p2_cvt_l7_z; }
+    public double p2_cvt_l12_x() { return p2_cvt_l12_x; }
+    public double p2_cvt_l12_y() { return p2_cvt_l12_y; }
+    public double p2_cvt_l12_z() { return p2_cvt_l12_z; }
 }
