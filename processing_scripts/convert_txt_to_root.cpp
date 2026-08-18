@@ -186,6 +186,7 @@ int main(int argc, char *argv[]) {
     // Create a new ROOT file and TTree for output
     TFile *outfile = new TFile(argv[2], "RECREATE");
     TTree *tree = new TTree("PhysicsEvents", "Physics Events Tree");
+    tree->SetMaxFileSize(200);
 
     // Determine the hadron count from the command line argument
     int script_index = atoi(argv[3]);
