@@ -271,7 +271,8 @@ public static void main(String[] args) {
                 // supply runnum and boolean for radiative simulation or not
 				BeamEnergy Eb = new BeamEnergy(gen_Event, runnum, false);
 				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
-				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+				//double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+                double energy = beam_energy
                 TCSParticles variables = new TCSParticles(event, gen_Event, energy, nucl_int, nucl_str);
                 generated_cut = variables.channel_test(variables);
                 if (generated_cut) {
