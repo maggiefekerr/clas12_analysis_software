@@ -51,7 +51,7 @@ public class TCSParticles {
     // event selection :)
 
     public static boolean channel_test(TCSParticles variables) {
-        if (variables.helicity == 0 && variables.runnum != 11) {
+        if (variables.helicity == 0 && variables.runnum != 19324) { // will need to adjust this just patching for now
             return false;
         }
         // DVCS version includes some exclusivity conditions, just keeping it simple for now 
