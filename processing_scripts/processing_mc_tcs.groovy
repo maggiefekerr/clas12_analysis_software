@@ -255,9 +255,9 @@ public static void main(String[] args) {
             PhysicsEvent rec_Event = rec_fitter.getPhysicsEvent(event);
 		    PhysicsEvent gen_Event = gen_fitter.getPhysicsEvent(event);
 
-            if (runnum != 11) {
-			    throw new IllegalArgumentException("error: runnum != 11; this script is intended for use on MC (runnum ==11).")
-			}
+            //if (runnum != 11) {
+			//    throw new IllegalArgumentException("error: runnum != 11; this script is intended for use on MC (runnum ==11).")
+			//}
             boolean process_event = filter.isValid(gen_Event)
 			reconstructed = filter.isValid(rec_Event) ? 1 : 0;
 			generated_cut = false; // not using right now
