@@ -43,8 +43,10 @@ public class tcs_fitter extends GenericKinematicFitter {
             double vz_e = -999;
 
             LorentzVector lv_e = new LorentzVector();
-            if (rec_Bank.getInt("pid", 0) == 11) {
+            //if (rec_Bank.getInt("pid", 0) == 11) {
                 // trigger particle was an electron
+            if (rec_Bank.getInt("pid", 0) == -11) {
+                // trigger particle was a positron
                 // highest momentum electron listed first (used for DIS calculations)
                 float px = rec_Bank.getFloat("px", 0);
                 float py = rec_Bank.getFloat("py", 0);
@@ -53,7 +55,8 @@ public class tcs_fitter extends GenericKinematicFitter {
                 lv_e.setPxPyPzM(px, py, pz, 0.0005109989461);
                 vz_e = rec_Bank.getFloat("vz", 0);
 
-            } else {
+            }
+            else {
                 return physEvent;
             } // trigger particle was not an electron
 
