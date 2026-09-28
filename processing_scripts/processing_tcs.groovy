@@ -136,7 +136,9 @@ public static void main(String[] args) {
   		16872, 16975, 									 // RGC Fa22 He/ET
   		17763, 17764, 17765, 17766, 17767, 17768,		 // RGC Sp23 He/ET
   		17179, 17180, 17181, 17182, 17183, 17188, 17189, // RICH off/partially down
-  		17252
+  		17252,
+		19660, 19662, 19663, 19664, 19665, 19666, 19823, 19824, 19825, // lumi scans
+		19835 // RICH PMTs down
 	].each{ run -> qa.allowMiscBit(run) }
 
     // create a StringBuilder for accumulating lines
