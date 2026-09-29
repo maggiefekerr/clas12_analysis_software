@@ -249,7 +249,7 @@ int main(int argc, char *argv[]) {
     double gen_Depolarization_A, gen_Depolarization_B, gen_Depolarization_C;
     double gen_Depolarization_V, gen_Depolarization_W;
     double gen_Emiss2, gen_theta_gamma_gamma, gen_pTmiss;
-    int reconstructed;
+    int reconstructed. reco_justelec, reco_justposi;
 
     // Additional variables for calibration scripts
     int config_run, config_event, event_helicity;
@@ -1248,6 +1248,8 @@ int main(int argc, char *argv[]) {
     if (script_index == 7 && is_mc == 1) {
         // Link TTree branches to variables for tcs mc
         tree->Branch("reconstructed", &reconstructed, "reconstructed/I");
+        tree->Branch("reco_justelec", &reco_justelec, "reco_justelec/I");
+        tree->Branch("reco_justposi", &reco_justposi, "reco_justposi/I");
         tree->Branch("weight", &weight, "weight/D");
         tree->Branch("runnum", &runnum, "runnum/I");
         tree->Branch("evnum", &evnum, "evnum/I");
@@ -2048,7 +2050,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (script_index == 7 && is_mc == 1) {
-        while (infile >> reconstructed >> weight >> 
+        while (infile >> reconstructed >> reco_justelec >> reco_justposi >> weight >> 
                          gen_elec_p >> gen_elec_theta >> gen_elec_phi >> gen_elec_vz >> 
                          gen_posi_p >> gen_posi_theta >> gen_posi_phi >> gen_posi_vz >> 
                          gen_nucl_p >> gen_nucl_theta >> gen_nucl_phi >> gen_nucl_vz >>

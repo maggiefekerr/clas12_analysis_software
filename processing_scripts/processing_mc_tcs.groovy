@@ -77,6 +77,8 @@ public static void main(String[] args) {
 
     // reconstructed variables
     int reconstructed; // variable to declare whether the generated event has reconstructed particles
+    int reco_justelec;
+    int reco_justposi;
     int nucl_pid;
     int num_pos, num_neg, num_neutrals; 
     int elec_detector, posi_detector, nucl_detector;
@@ -262,8 +264,8 @@ public static void main(String[] args) {
 			//}
             boolean process_event = filter.isValid(gen_Event)
 			reconstructed = filter.isValid(rec_Event) ? 1 : 0;
-            int reco_justelec = filter_justelec.isValid(rec_Event) ? 1 : 0;
-            int reco_justposi = filter_justposi.isValid(rec_Event) ? 1 : 0;
+            reco_justelec = filter_justelec.isValid(rec_Event) ? 1 : 0;
+            reco_justposi = filter_justposi.isValid(rec_Event) ? 1 : 0;
 			generated_cut = false; // not using right now
 
             if (true) {
@@ -534,6 +536,8 @@ public static void main(String[] args) {
 	            StringBuilder line = new StringBuilder();
                 // first the generated variables
                 line.append(reconstructed).append(" ")
+                    .append(reco_justelec).append(" ")
+                    .append(reco_justposi).append(" ")
                     .append(weight).append(" ")
                     .append(gen_elec_p).append(" ")
                     .append(gen_elec_theta).append(" ")
