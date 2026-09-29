@@ -136,6 +136,8 @@ public static void main(String[] args) {
             // instantiating variables to use -999 as a flag
             // reconstructed variables
             reconstructed = -999; // variable to declare whether the generated event has reconstructed particles
+            reco_justelec = -999;
+            reco_justposi = -999;
             nucl_pid = nucl_int;
             num_pos = -999;
             num_neg = -999;
