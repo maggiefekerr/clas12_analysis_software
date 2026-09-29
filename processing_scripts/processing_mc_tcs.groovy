@@ -111,6 +111,8 @@ public static void main(String[] args) {
 
     // set filter for final states
 	EventFilter filter = new EventFilter("11:-11:"+nucl_str+":X+:X-:Xn");
+    EventFilter filter_justelec = new EventFilter("11:"+nucl_str+":X+:X-:Xn");
+    EventFilter filter_justposi = new EventFilter("-11:"+nucl_str+":X+:X-:Xn");
 
     // create a StringBuilder for accumulating lines
 	StringBuilder batchLines = new StringBuilder();
@@ -260,6 +262,8 @@ public static void main(String[] args) {
 			//}
             boolean process_event = filter.isValid(gen_Event)
 			reconstructed = filter.isValid(rec_Event) ? 1 : 0;
+            int reco_justelec = filter_justelec.isValid(rec_Event) ? 1 : 0;
+            int reco_justposi = filter_justposi.isValid(rec_Event) ? 1 : 0;
 			generated_cut = false; // not using right now
 
             if (true) {
@@ -389,6 +393,130 @@ public static void main(String[] args) {
 					elec_m2_ecout_u = variables.get_elec_m2_ecout_u();
 					elec_m2_ecout_v = variables.get_elec_m2_ecout_v();
 					elec_m2_ecout_w = variables.get_elec_m2_ecout_w();
+					posi_m2_pcal_u = variables.get_posi_m2_pcal_u();
+					posi_m2_pcal_v = variables.get_posi_m2_pcal_v();
+					posi_m2_pcal_w = variables.get_posi_m2_pcal_w();
+					posi_m2_ecin_u = variables.get_posi_m2_ecin_u();
+					posi_m2_ecin_v = variables.get_posi_m2_ecin_v();
+					posi_m2_ecin_w = variables.get_posi_m2_ecin_w();
+					posi_m2_ecout_u = variables.get_posi_m2_ecout_u();
+					posi_m2_ecout_v = variables.get_posi_m2_ecout_v();
+					posi_m2_ecout_w = variables.get_posi_m2_ecout_w();
+                }
+            }
+
+            else if (process_event && reco_justelec) { // just detected electron
+                // get # of particles 
+		        int elec_num = rec_Event.countByPid(11);
+				int nucl_num = rec_Event.countByPid(nucl_int);
+
+                // supply runnum and boolean for radiative simulation or not
+				BeamEnergy Eb = new BeamEnergy(rec_Event, runnum, false);
+				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
+				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+                TCSParticles variables = new TCSParticles(event, rec_Event, energy, nucl_int, nucl_str);
+                if (variables.channel_test(variables)) {
+                    elec_detector = variables.get_elec_detector();
+					nucl_detector = variables.get_nucl_detector();
+	                num_pos = variables.get_num_pos();
+	                num_neg = variables.get_num_neg();
+	                num_neutrals = variables.get_num_neutrals();
+                    nucl_pid = nucl_int;
+
+                    // pid chi2
+					elec_chi2 = variables.get_elec_chi2pid();
+					nucl_chi2 = variables.get_nucl_chi2pid();
+
+                    // lab kinematics
+					elec_px    = variables.get_elec_px();
+					elec_py    = variables.get_elec_py(); 
+					elec_pz    = variables.get_elec_pz(); 
+					elec_p     = variables.get_elec_p(); 
+					elec_e     = variables.get_elec_e(); 
+					elec_theta = variables.get_elec_theta();
+					elec_phi   = variables.get_elec_phi();
+					nucl_px    = variables.get_nucl_px();
+					nucl_py    = variables.get_nucl_py(); 
+					nucl_pz    = variables.get_nucl_pz(); 
+					nucl_p     = variables.get_nucl_p(); 
+					nucl_e     = variables.get_nucl_e(); 
+					nucl_theta = variables.get_nucl_theta();
+					nucl_phi   = variables.get_nucl_phi();
+
+                    // vertices
+					elec_vx = variables.get_elec_vx();
+					elec_vy = variables.get_elec_vy();
+					elec_vz = variables.get_elec_vz();
+					nucl_vx = variables.get_nucl_vx();
+					nucl_vy = variables.get_nucl_vy();
+					nucl_vz = variables.get_nucl_vz();
+
+                    // PCAL/ECAL readout
+					elec_e_pcal = variables.get_elec_e_pcal();
+					elec_e_ecin = variables.get_elec_e_ecin();
+					elec_e_ecout = variables.get_elec_e_ecout();
+					elec_m2_pcal_u = variables.get_elec_m2_pcal_u();
+					elec_m2_pcal_v = variables.get_elec_m2_pcal_v();
+					elec_m2_pcal_w = variables.get_elec_m2_pcal_w();
+					elec_m2_ecin_u = variables.get_elec_m2_ecin_u();
+					elec_m2_ecin_v = variables.get_elec_m2_ecin_v();
+					elec_m2_ecin_w = variables.get_elec_m2_ecin_w();
+					elec_m2_ecout_u = variables.get_elec_m2_ecout_u();
+					elec_m2_ecout_v = variables.get_elec_m2_ecout_v();
+					elec_m2_ecout_w = variables.get_elec_m2_ecout_w();
+                }
+            }
+
+            else if (process_event && reco_justposi)  { // just detected positron
+                // get # of particles 
+		        int posi_num = rec_Event.countByPid(-11);
+				int nucl_num = rec_Event.countByPid(nucl_int);
+
+                // supply runnum and boolean for radiative simulation or not
+				BeamEnergy Eb = new BeamEnergy(rec_Event, runnum, false);
+				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
+				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+                TCSParticles variables = new TCSParticles(event, rec_Event, energy, nucl_int, nucl_str);
+                if (variables.channel_test(variables)) {
+	                posi_detector = variables.get_posi_detector();
+					nucl_detector = variables.get_nucl_detector();
+	                num_pos = variables.get_num_pos();
+	                num_neg = variables.get_num_neg();
+	                num_neutrals = variables.get_num_neutrals();
+                    nucl_pid = nucl_int;
+
+                    // pid chi2
+					posi_chi2 = variables.get_posi_chi2pid();
+					nucl_chi2 = variables.get_nucl_chi2pid();
+
+                    // lab kinematics
+					posi_px    = variables.get_posi_px();
+					posi_py    = variables.get_posi_py(); 
+					posi_pz    = variables.get_posi_pz(); 
+					posi_p     = variables.get_posi_p(); 
+					posi_e     = variables.get_posi_e(); 
+					posi_theta = variables.get_posi_theta();
+					posi_phi   = variables.get_posi_phi();
+					nucl_px    = variables.get_nucl_px();
+					nucl_py    = variables.get_nucl_py(); 
+					nucl_pz    = variables.get_nucl_pz(); 
+					nucl_p     = variables.get_nucl_p(); 
+					nucl_e     = variables.get_nucl_e(); 
+					nucl_theta = variables.get_nucl_theta();
+					nucl_phi   = variables.get_nucl_phi();
+
+                    // vertices
+					posi_vx = variables.get_posi_vx();
+					posi_vy = variables.get_posi_vy();
+					posi_vz = variables.get_posi_vz();
+					nucl_vx = variables.get_nucl_vx();
+					nucl_vy = variables.get_nucl_vy();
+					nucl_vz = variables.get_nucl_vz();
+
+                    // PCAL/ECAL readout
+					posi_e_pcal = variables.get_posi_e_pcal();
+					posi_e_ecin = variables.get_posi_e_ecin();
+					posi_e_ecout = variables.get_posi_e_ecout();
 					posi_m2_pcal_u = variables.get_posi_m2_pcal_u();
 					posi_m2_pcal_v = variables.get_posi_m2_pcal_v();
 					posi_m2_pcal_w = variables.get_posi_m2_pcal_w();
