@@ -56,7 +56,16 @@ public class tcs_fitter extends GenericKinematicFitter {
                 vz_e = rec_Bank.getFloat("vz", 0);
 
             }
-            else if (rec_Bank.getInt("pid",0) == -11) {
+            else if (rec_Bank.getInt("pid",0) == -11) { // for CD expansion
+                // trigger particle was a positron
+                float px = rec_Bank.getFloat("px", 0);
+                float py = rec_Bank.getFloat("py", 0);
+                float pz = rec_Bank.getFloat("pz", 0);
+                double p = Math.sqrt(px * px + py * py + pz * pz);
+                lv_e.setPxPyPzM(px, py, pz, 0.0005109989461);
+                vz_e = rec_Bank.getFloat("vz", 0);
+            }
+            else if (rec_Bank.getInt("pid",0) == 2212) { // for CD expansion
                 // trigger particle was a positron
                 float px = rec_Bank.getFloat("px", 0);
                 float py = rec_Bank.getFloat("py", 0);

@@ -115,6 +115,7 @@ public static void main(String[] args) {
 	EventFilter filter = new EventFilter("11:-11:"+nucl_str+":X+:X-:Xn");
     EventFilter filter_justelec = new EventFilter("11:"+nucl_str+":X+:X-:Xn");
     EventFilter filter_justposi = new EventFilter("-11:"+nucl_str+":X+:X-:Xn");
+    EventFilter filter_onlyprot = new EventFilter(nucl_str+":X+:X-:Xn");
 
     // create a StringBuilder for accumulating lines
 	StringBuilder batchLines = new StringBuilder();
@@ -138,6 +139,7 @@ public static void main(String[] args) {
             reconstructed = -999; // variable to declare whether the generated event has reconstructed particles
             reco_justelec = -999;
             reco_justposi = -999;
+            reco_onlyprot = -999;
             nucl_pid = nucl_int;
             num_pos = -999;
             num_neg = -999;
@@ -268,6 +270,7 @@ public static void main(String[] args) {
 			reconstructed = filter.isValid(rec_Event) ? 1 : 0;
             reco_justelec = filter_justelec.isValid(rec_Event) ? 1 : 0;
             reco_justposi = filter_justposi.isValid(rec_Event) ? 1 : 0;
+            reco_onlyprot = filter_onlyprot.isValid(rec_Event) ? 1 : 0;
 			generated_cut = false; // not using right now
 
             if (true) {
@@ -533,6 +536,41 @@ public static void main(String[] args) {
                 }
             }
 
+            else if (process_event && reco_onlyprot)  { // just detected proton
+                // get # of particles 
+				int nucl_num = rec_Event.countByPid(nucl_int);
+
+                // supply runnum and boolean for radiative simulation or not
+				BeamEnergy Eb = new BeamEnergy(rec_Event, runnum, false);
+				// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
+				double energy = (runnum == 11) ? beam_energy : Eb.Eb();
+                TCSParticles variables = new TCSParticles(event, rec_Event, energy, nucl_int, nucl_str);
+                if (variables.channel_test(variables)) {
+					nucl_detector = variables.get_nucl_detector();
+	                num_pos = variables.get_num_pos();
+	                num_neg = variables.get_num_neg();
+	                num_neutrals = variables.get_num_neutrals();
+                    nucl_pid = nucl_int;
+
+                    // pid chi2
+					nucl_chi2 = variables.get_nucl_chi2pid();
+
+                    // lab kinematics
+					nucl_px    = variables.get_nucl_px();
+					nucl_py    = variables.get_nucl_py(); 
+					nucl_pz    = variables.get_nucl_pz(); 
+					nucl_p     = variables.get_nucl_p(); 
+					nucl_e     = variables.get_nucl_e(); 
+					nucl_theta = variables.get_nucl_theta();
+					nucl_phi   = variables.get_nucl_phi();
+
+                    // vertices
+					nucl_vx = variables.get_nucl_vx();
+					nucl_vy = variables.get_nucl_vy();
+					nucl_vz = variables.get_nucl_vz();
+                }
+            }
+
             if (generated_cut) {
                 // Use a StringBuilder to append all data in a single call
 	            StringBuilder line = new StringBuilder();
@@ -540,6 +578,7 @@ public static void main(String[] args) {
                 line.append(reconstructed).append(" ")
                     .append(reco_justelec).append(" ")
                     .append(reco_justposi).append(" ")
+                    .append(reco_onlyprot).append(" ")
                     .append(weight).append(" ")
                     .append(gen_elec_p).append(" ")
                     .append(gen_elec_theta).append(" ")
