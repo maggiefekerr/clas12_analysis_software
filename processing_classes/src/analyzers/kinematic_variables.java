@@ -9,6 +9,21 @@ import java.util.Random;
 
 public class kinematic_variables {
 
+    private int nucl = 2212; // default target is this proton
+
+    public kinematic_variables() {
+        this.nucl = 2212;
+    }
+
+    public kinematic_variables(int nuclInput) { // if one wants to change the target type to neutron
+        if ((nuclInput==2212) || (nuclInput==2112)) {
+            this.nucl = nuclInput;
+        }
+        else {
+            this.nucl = 2212;
+        }
+    }
+
     public static double rand_Gaussian(double mu, double sigma) {
         Random rand = new Random();
         return mu + sigma * rand.nextGaussian();
@@ -61,11 +76,11 @@ public class kinematic_variables {
     }
 
     double x(double Q2, double nu) { // x-Bjorken
-        return Q2 / (2 * particle_mass(2212) * nu);
+        return Q2 / (2 * particle_mass(this.nucl) * nu);
     }
 
     double W(double Q2, double nu) {
-        return Math.pow(Math.pow(particle_mass(2212), 2) + 2 * particle_mass(2212) * nu - Q2, 0.5);
+        return Math.pow(Math.pow(particle_mass(this.nucl), 2) + 2 * particle_mass(this.nucl) * nu - Q2, 0.5);
     }
 
     double y(double nu, LorentzVector lv_beam) {
@@ -73,11 +88,11 @@ public class kinematic_variables {
     }
 
     double gamma(double Q2, double x) {
-        return 2 * particle_mass(2212) * x / Math.pow(Q2, 0.5);
+        return 2 * particle_mass(this.nucl) * x / Math.pow(Q2, 0.5);
     }
 
     double tmin(double x, double Q2) {
-        final double M = particle_mass(2212); // proton mass in GeV
+        final double M = particle_mass(this.nucl); // target mass in GeV
         
         double eps2 = 4.0 * M * M * x * x / Q2;      // this is ε^2
         double root = Math.sqrt(1.0 + eps2);
@@ -87,11 +102,11 @@ public class kinematic_variables {
         return (den != 0.0) ? -num / den : Double.NaN;
         
         // approximation
-        // return -Math.pow((particle_mass(2212) * x), 2) / (1 - x);
+        // return -Math.pow((particle_mass(this.nucl) * x), 2) / (1 - x);
     }
 
     double t(double p, double theta) {
-        double mp = particle_mass(2212); // proton mass in GeV
+        double mp = particle_mass(this.nucl); // proton mass in GeV
         double E = mp; // target proton energy (written as E to help checking calculation but at rest)
         return 2 * mp * (E - p) - 2 * Math.sqrt(mp * mp + E * E) * Math.sqrt(mp * mp + p * p)
                 + 2 * Math.sqrt(mp * mp + E * E) * Math.sqrt(mp * mp + p * p) * Math.cos(theta);

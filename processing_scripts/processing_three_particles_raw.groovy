@@ -38,31 +38,38 @@ public static void main(String[] args) {
 	(args[0] as File).eachFileRecurse(FileType.FILES) 
 		{ if (it.name.endsWith('.hipo')) hipo_list << it }
 
-	// Set the PDG PID for p1 based on the provided 2nd argument or default to 211 (pi+)
-	String p1_Str = args.length < 2 ? "211" : args[1];
-	if (args.length < 2) println("WARNING: Specify a PDG PID for p1! Set to pi+ (211).");
+	// Set the PDG PID for the target particle based on the provided 2nd argument or default to 2212 (proton)
+	String nucl_str = args.length >= 2 ? ((args[1].equals("2212") || args[1].equals("2112")) ? args[1] : "2212") : "2212";
+    if (args.length < 2) println("WARNING: Specify either proton or neutron PDG PID for target type! Set to proton (2212).")
+    if ((args[1] != "2212") && (args[1] !="2112")) println("WARNING: Specify either proton or neutron PDG PID for target type! Set to proton (2212).")
+    println("Set PID for target type = $nucl_str")
+    int nucl_int = nucl_str.toInteger()
+
+	// Set the PDG PID for p1 based on the provided 3rd argument or default to 211 (pi+)
+	String p1_Str = args.length < 3 ? "211" : args[2];
+	if (args.length < 3) println("WARNING: Specify a PDG PID for p1! Set to pi+ (211).");
 	println("Set p1 PID = $p1_Str");
 	int p1_int = p1_Str.toInteger(); // Convert p1_Str to integer
 
-	// Set the PDG PID for p2 based on the provided 3rd argument or default to -211 (pi-)
-	String p2_Str = args.length < 3 ? "-211" : args[2];
-	if (args.length < 3) println("WARNING: Specify a PDG PID for p2! Set to pi- (-211).");
+	// Set the PDG PID for p2 based on the provided 4th argument or default to -211 (pi-)
+	String p2_Str = args.length < 4 ? "-211" : args[3];
+	if (args.length < 4) println("WARNING: Specify a PDG PID for p2! Set to pi- (-211).");
 	println("Set p2 PID = $p2_Str");
 	int p2_int = p2_Str.toInteger(); // Convert p2_Str to integer
 
-	// Set the output file name based on the provided 4th argument or use the default name
-	String output_file = args.length < 4 ? "hadron_dummy_out.txt" : args[3];
-	if (args.length < 4) 
+	// Set the output file name based on the provided 5th argument or use the default name
+	String output_file = args.length < 5 ? "hadron_dummy_out.txt" : args[4];
+	if (args.length < 5) 
 	    println("WARNING: Specify an output file name. Set to \"dihadron_dummy_out.txt\".");
 	File file = new File(output_file);
 	file.delete();
 	BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-	// Set the number of files to process based on the provided 5th argument
+	// Set the number of files to process based on the provided 6th argument
 	// If the argument is "0", default to the full list size
-	int n_files = args.length < 5 || Integer.parseInt(args[4]) == 0 || Integer.parseInt(args[4]) > hipo_list.size()
-	    ? hipo_list.size() : Integer.parseInt(args[4]);
-	if (args.length < 5 || Integer.parseInt(args[4]) == 0 || Integer.parseInt(args[4]) > hipo_list.size()) {
+	int n_files = args.length < 6 || Integer.parseInt(args[5]) == 0 || Integer.parseInt(args[5]) > hipo_list.size()
+	    ? hipo_list.size() : Integer.parseInt(args[5]);
+	if (args.length < 6 || Integer.parseInt(args[5]) == 0 || Integer.parseInt(args[5]) > hipo_list.size()) {
 	    // Print warnings and information if the number of files is not specified, set to 0, or too large
 	    println("WARNING: Number of files not specified, set to 0, or number too large.")
 	    println("Setting # of files to be equal to number of files in the directory.");
@@ -70,19 +77,19 @@ public static void main(String[] args) {
 	}
 
 	// Set the beam energy based on the provided 6th argument or default to 10.6
-	double beam_energy = args.length < 6 ? 10.6 : Double.parseDouble(args[5]);
-	if (args.length < 6) {
+	double beam_energy = args.length < 7 ? 10.6 : Double.parseDouble(args[6]);
+	if (args.length < 7) {
 	    println("No beam energy provided, defaulting to run number based beam energy.");
 	    println("All MC will use 10.604 GeV. You must manually enter a beam energy to change this.")
 	}
 
 	// Set the user-provided run number if available
 	Integer userProvidedRun = null
-	if (args.length < 7) {
+	if (args.length < 8) {
 	    println("Run number not provided, will pull from hipo files.")
 	    println("Think carefully about this if you are processing MC.")
 	} else {
-		userProvidedRun = Integer.parseInt(args[6]);
+		userProvidedRun = Integer.parseInt(args[7]);
 	}
 
 	// ~~~~~~~~~~~~~~~~ prepare physics analysis ~~~~~~~~~~~~~~~~ //
@@ -99,10 +106,10 @@ public static void main(String[] args) {
 	double phi1, phi2, Delta_phi, phih, phiR, theta;
 	double Depolarization_A, Depolarization_B, Depolarization_C;
 	double Depolarization_V, Depolarization_W;
-	int qadb_status
-    int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut
-	int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut
-    int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut
+	int qadb_status;
+    int e_fd_cut, e_vertex_cut, e_sf_cut, e_diag_cut, e_pcal_fid_cut, e_dc_fid_cut;
+	int p1_chi2pid_cut, p1_vertex_cut, p1_dc_fid_cut, p1_cvt_fid_cut;
+    int p2_chi2pid_cut, p2_vertex_cut, p2_dc_fid_cut;
 
 	// Variables for fiducial, electron identification studies
     // Calorimeter variables
@@ -219,7 +226,7 @@ public static void main(String[] args) {
 						// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
 						double energy = (runnum == 11) ? beam_energy : Eb.Eb();
 			            ThreeParticles variables = new ThreeParticles(event, research_Event, 
-							p1_int, current_p1, p2_int, current_p2, energy);
+							p1_int, current_p1, p2_int, current_p2, energy, nucl_int, nucl_str);
 			            // this is my class for defining all relevant kinematic variables
 
 			            if (variables.channel_test(variables)) {

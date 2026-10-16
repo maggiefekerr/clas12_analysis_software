@@ -150,10 +150,10 @@ public class ThreeParticles {
     }
 
     public ThreeParticles(DataEvent event, PhysicsEvent recEvent, int p1PID, int p1Index, int p2PID, int p2Index,
-            double Eb) {
+            double Eb, int nuclPID_int, String nuclPID_str) {
         // provide the PDG PID of the two hadrons
 
-        kinematic_variables kinematic_variables = new kinematic_variables();
+        kinematic_variables kinematic_variables = new kinematic_variables(nuclPID_int);
 
         // load banks
         HipoDataBank eventBank = (HipoDataBank) event.getBank("REC::Event");
