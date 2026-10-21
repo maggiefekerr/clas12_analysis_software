@@ -196,7 +196,7 @@ public static void main(String[] args) {
 						// Use the input beam energy if runnum == 11, otherwise use Eb.Eb()
 						double energy = (runnum == 11) ? beam_energy : Eb.Eb();
 			            ThreeParticles variables = new ThreeParticles(event, research_Event, 
-							p1_int, current_p1, p2_int, current_p2, energy);
+							p1_int, current_p1, p2_int, current_p2, energy, 2112, "2112");
 			            // this is my class for defining all relevant kinematic variables
 
 			            if (variables.channel_test(variables)) {
