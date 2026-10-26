@@ -34,8 +34,7 @@ public static void main(String[] args) {
 	    System.exit(0);
 	}
 	// Just taking one file as input
-	// def hipo_list = [arg[0]]
-	def hipo_list = [ arg[0]+".hipo" ]
+	def hipo_list = [(arg[0] as File)]
 	//(args[0] as File).eachFileRecurse(FileType.FILES) 
 	//{ if (it.name.endsWith('.hipo')) hipo_list << it }
 	print(hipo_list)
