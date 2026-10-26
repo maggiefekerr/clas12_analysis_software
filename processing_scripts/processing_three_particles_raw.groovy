@@ -35,8 +35,10 @@ public static void main(String[] args) {
 	}
 	// Just taking one file as input
 	// def hipo_list = [arg[0]]
+	def hipo_list = []
 	(args[0] as File).eachFileRecurse(FileType.FILES) 
 	{ if (it.name.endsWith('.hipo')) hipo_list << it }
+	print(hipo_list)
 
 	// Set the PDG PID for the target particle based on the provided 2nd argument or default to 2212 (proton)
 	String nucl_str = args.length >= 2 ? ((args[1].equals("2212") || args[1].equals("2112")) ? args[1] : "2212") : "2212";
